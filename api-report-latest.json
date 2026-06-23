@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T15:37:38.8077145Z",
+  "generatedAt": "2026-06-23T15:46:33.3184553Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 77,
+    "componentCount": 78,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -117,6 +117,238 @@
       "signals": [],
       "recommendations": [
         "No CPU fault signal was found. A real thermal/load test is still required to rule out intermittent physical CPU cooling or power issues."
+      ]
+    },
+    {
+      "id": "cpu-live-topology-processor-topology-cache-virtualization-and-live-counters",
+      "category": "CPU Live Topology",
+      "name": "Processor topology, cache, virtualization, and live counters",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProcessorCount": 1,
+        "TotalCores": 8,
+        "TotalLogicalProcessors": 16,
+        "ProcessorRows": [
+          {
+            "Name": "AMD Ryzen 7 9800X3D 8-Core Processor           ",
+            "Manufacturer": "AuthenticAMD",
+            "SocketDesignation": "AM5",
+            "ProcessorId": "178BFBFF00B40F40",
+            "NumberOfCores": "8",
+            "NumberOfEnabledCore": "8",
+            "NumberOfLogicalProcessors": "16",
+            "ThreadCount": "16",
+            "MaxClockSpeed": "4700",
+            "CurrentClockSpeed": "4700",
+            "LoadPercentage": "50",
+            "L2CacheSize": "8192",
+            "L3CacheSize": "98304",
+            "VirtualizationFirmwareEnabled": true,
+            "SecondLevelAddressTranslationExtensions": false,
+            "VMMonitorModeExtensions": false,
+            "Revision": "17408",
+            "Stepping": "0",
+            "Status": "OK"
+          }
+        ],
+        "SystemProcessorQueue": [
+          {
+            "ProcessorQueueLength": "6",
+            "ContextSwitchesPersec": "181641",
+            "SystemCallsPersec": "2330138"
+          }
+        ],
+        "LogicalProcessorCounterCount": 16,
+        "TotalCounterRows": [
+          {
+            "Name": "0,_Total",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "36",
+            "PercentUserTime": "62",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "90645"
+          },
+          {
+            "Name": "_Total",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "36",
+            "PercentUserTime": "62",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "90645"
+          }
+        ],
+        "TotalEnabledCores": 8,
+        "LogicalProcessorSamples": [
+          {
+            "Name": "0,0",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "40",
+            "PercentUserTime": "58",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "15914"
+          },
+          {
+            "Name": "0,1",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "63",
+            "PercentUserTime": "34",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "10639"
+          },
+          {
+            "Name": "0,10",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "69",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "4486"
+          },
+          {
+            "Name": "0,11",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "34",
+            "PercentUserTime": "63",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "4423"
+          },
+          {
+            "Name": "0,12",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "69",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "598"
+          },
+          {
+            "Name": "0,13",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "92",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "1546"
+          },
+          {
+            "Name": "0,14",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "40",
+            "PercentUserTime": "58",
+            "PercentInterruptTime": "5",
+            "InterruptsPerSec": "7468"
+          },
+          {
+            "Name": "0,15",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "69",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "5245"
+          },
+          {
+            "Name": "0,2",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "34",
+            "PercentUserTime": "63",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "6620"
+          },
+          {
+            "Name": "0,3",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "58",
+            "PercentUserTime": "40",
+            "PercentInterruptTime": "5",
+            "InterruptsPerSec": "4895"
+          },
+          {
+            "Name": "0,4",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "46",
+            "PercentUserTime": "52",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "3854"
+          },
+          {
+            "Name": "0,5",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "69",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "3524"
+          },
+          {
+            "Name": "0,6",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "75",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "3156"
+          },
+          {
+            "Name": "0,7",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "46",
+            "PercentUserTime": "52",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "1579"
+          },
+          {
+            "Name": "0,8",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "52",
+            "PercentUserTime": "46",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "9483"
+          },
+          {
+            "Name": "0,9",
+            "PercentProcessorPerformance": "91",
+            "PercentProcessorUtility": "91",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "81",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "7208"
+          }
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "Use these CPU identity, cache, clock, virtualization, interrupt, and queue rows to correlate symptoms with CPU load or scheduler pressure. Physical CPU, cooling, motherboard VRM, and PSU stability still require controlled temperature and load testing if symptoms occur."
       ]
     },
     {
@@ -426,7 +658,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1693.37,
+        "FreeGB": 1689.95,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -483,7 +715,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 469.24,
+        "FreeGB": 447.46,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -535,7 +767,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 469.24,
+            "VolumeFreeGB": 447.46,
             "DirtyBit": true
           },
           {
@@ -586,7 +818,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1693.37,
+            "VolumeFreeGB": 1689.95,
             "DirtyBit": false
           },
           {
@@ -848,16 +1080,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "36",
+          "TemperatureC": "41",
           "FanPercent": "0",
           "PState": "P8",
-          "PowerDrawW": "25.79",
+          "PowerDrawW": "26.60",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "405",
+          "GraphicsClockMhz": "277",
           "MemoryClockMhz": "405",
           "PcieGen": "1",
           "PcieWidth": "16",
-          "UtilizationPercent": "4"
+          "UtilizationPercent": "0"
         }
       },
       "signals": [],
@@ -985,8 +1217,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 890071,
-            "BytesSentPerSec": 495081,
+            "BytesReceivedPerSec": 10618754,
+            "BytesSentPerSec": 1216519,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -3121,9 +3353,15 @@
       "nextStep": "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
     },
     {
+      "name": "CPU topology and live counter sweep",
+      "status": "passed",
+      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=6.",
+      "nextStep": "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
+    },
+    {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 36C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 41C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -3195,7 +3433,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 18:37:38 2026",
+      "Timestamp : Tue Jun 23 18:46:32 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -3215,15 +3453,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 769833871 us",
+      " SW Power Capping : 867626968 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 36 C",
-      " GPU Current T.Limit Temp : 52 C",
+      " GPU Current Temp : 40 C",
+      " GPU Current T.Limit Temp : 48 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -3231,8 +3469,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 25.79 W",
-      " Instantaneous Power Draw : 28.51 W",
+      " Average Power Draw : 26.16 W",
+      " Instantaneous Power Draw : 25.69 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -3244,11 +3482,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.33 sec",
+      " Duration : 2.38 sec",
       " Number of Samples : 119",
-      " Max : 32.12 W",
-      " Min : 23.79 W",
-      " Avg : 25.87 W",
+      " Max : 39.10 W",
+      " Min : 24.94 W",
+      " Avg : 26.27 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",

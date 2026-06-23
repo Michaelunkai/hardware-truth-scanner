@@ -410,6 +410,8 @@ $os = Invoke-Probe "os" { Get-CimInstance Win32_OperatingSystem }
 $bios = Invoke-Probe "bios" { Get-CimInstance Win32_BIOS }
 $baseBoard = Invoke-Probe "baseboard" { Get-CimInstance Win32_BaseBoard }
 $processors = @(Invoke-Probe "cpu" { Get-CimInstance Win32_Processor })
+$processorPerfCounters = @(Invoke-OptionalProbe "processor information counters" { Get-CimInstance Win32_PerfFormattedData_Counters_ProcessorInformation })
+$systemPerfCounters = @(Invoke-OptionalProbe "system processor queue counters" { Get-CimInstance Win32_PerfFormattedData_PerfOS_System })
 $memoryModules = @(Invoke-Probe "memory" { Get-CimInstance Win32_PhysicalMemory })
 $memoryArrays = @(Invoke-OptionalProbe "memory arrays" { Get-CimInstance Win32_PhysicalMemoryArray })
 $diskDrives = @(Invoke-Probe "diskdrives" { Get-CimInstance Win32_DiskDrive })
@@ -665,6 +667,28 @@ foreach ($cpu in $processors) {
     RecentWheaCpuEvents = $cpuEvents.Count
   } -Signals $signals -Recommendations $(if ($status -eq "ok") { @("No CPU fault signal was found. A real thermal/load test is still required to rule out intermittent physical CPU cooling or power issues.") } else { @("Check cooling, CPU power stability, BIOS settings, and run a vendor CPU stress diagnostic.") })
 }
+
+$processorTotalCounters = @($processorPerfCounters | Where-Object { $_.Name -eq "_Total" -or $_.Name -match "^[0-9]+,_Total$" } | Select-Object -First 3)
+$logicalProcessorCounters = @($processorPerfCounters | Where-Object { $_.Name -match "^[0-9]+,[0-9]+$" })
+$systemPerfSample = @($systemPerfCounters | Select-Object -First 1)
+$totalLogicalProcessors = [int](($processors | Measure-Object -Property NumberOfLogicalProcessors -Sum).Sum)
+$highCpuLoadSamples = @($processors | Where-Object { $_.LoadPercentage -ge 90 })
+$cpuQueueLength = if ($systemPerfSample.Count -gt 0) { $systemPerfSample[0].ProcessorQueueLength } else { $null }
+$cpuTopologySignals = @()
+if ($processorPerfCounters.Count -eq 0) { $cpuTopologySignals += "Windows did not expose processor performance counter rows to this scanner." }
+if ($highCpuLoadSamples.Count -gt 0) { $cpuTopologySignals += "The CPU was sampled under high current load ($((@($highCpuLoadSamples | ForEach-Object { $_.LoadPercentage }) | Select-Object -First 3) -join ', ')%). This is workload evidence, not a hardware fault by itself." }
+if ($cpuQueueLength -ne $null -and $totalLogicalProcessors -gt 0 -and $cpuQueueLength -gt ($totalLogicalProcessors * 2)) { $cpuTopologySignals += "Processor queue length was high during the sample ($cpuQueueLength queued thread(s) for $totalLogicalProcessors logical processor(s))." }
+New-Component -Category "CPU Live Topology" -Name "Processor topology, cache, virtualization, and live counters" -Status $(if ($processors.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  ProcessorCount = $processors.Count
+  TotalCores = ($processors | Measure-Object -Property NumberOfCores -Sum).Sum
+  TotalEnabledCores = ($processors | Measure-Object -Property NumberOfEnabledCore -Sum).Sum
+  TotalLogicalProcessors = $totalLogicalProcessors
+  ProcessorRows = @($processors | Select-Object Name, Manufacturer, SocketDesignation, ProcessorId, NumberOfCores, NumberOfEnabledCore, NumberOfLogicalProcessors, ThreadCount, MaxClockSpeed, CurrentClockSpeed, LoadPercentage, L2CacheSize, L3CacheSize, VirtualizationFirmwareEnabled, SecondLevelAddressTranslationExtensions, VMMonitorModeExtensions, Revision, Stepping, Status)
+  TotalCounterRows = @($processorTotalCounters | Select-Object Name, PercentProcessorPerformance, PercentProcessorUtility, ProcessorFrequency, PercentPrivilegedTime, PercentUserTime, PercentInterruptTime, InterruptsPerSec)
+  LogicalProcessorCounterCount = $logicalProcessorCounters.Count
+  LogicalProcessorSamples = @($logicalProcessorCounters | Select-Object -First 24 Name, PercentProcessorPerformance, PercentProcessorUtility, ProcessorFrequency, PercentPrivilegedTime, PercentUserTime, PercentInterruptTime, InterruptsPerSec)
+  SystemProcessorQueue = @($systemPerfSample | Select-Object ProcessorQueueLength, ContextSwitchesPersec, SystemCallsPersec)
+} -Signals $cpuTopologySignals -Recommendations @("Use these CPU identity, cache, clock, virtualization, interrupt, and queue rows to correlate symptoms with CPU load or scheduler pressure. Physical CPU, cooling, motherboard VRM, and PSU stability still require controlled temperature and load testing if symptoms occur.")
 
 foreach ($module in $memoryModules) {
   $name = "DIMM $($module.BankLabel) $([math]::Round(($module.Capacity / 1GB), 2)) GB"
@@ -1328,6 +1352,7 @@ New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($op
 New-Diagnostic -Name "Storage controller and adapter sweep" -Status $(if ($storageControllerProblemDevices.Count -gt 0) { "warning" } elseif ($storageControllerDevices.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageControllerDevices.Count) storage controller/adapter PnP row(s), $($storageControllerProblemDevices.Count) problem device(s)." -NextStep $(if ($storageControllerProblemDevices.Count -gt 0) { "Inspect listed controller/adapter devices, drivers, docks, slots, and cables before replacing disks." } elseif ($storageControllerDevices.Count -eq 0) { "Use Device Manager, BIOS/UEFI, or vendor controller tooling if storage symptoms exist because controller rows were unavailable." } else { "No storage controller/adapter Device Manager problem codes were found; retest during storage disconnect or performance symptoms for intermittent faults." })
 New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyStorageMapRows.Count -gt 0) { "warning" } elseif ($storageMapRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageMapRows.Count) disk/partition mapping row(s), $($mappedLogicalDisks.Count) mapped drive-letter volume(s), $($unmappedLogicalDisks.Count) unmapped drive-letter volume(s), $($dirtyStorageMapRows.Count) dirty mapped volume(s)." -NextStep $(if ($dirtyStorageMapRows.Count -gt 0) { "Use the mapped disk model/index before running repair or replacing storage: $((@($dirtyStorageTargets) | Select-Object -First 5) -join '; ')." } elseif ($storageMapRows.Count -eq 0) { "Use Disk Management or vendor tooling to map affected volumes to physical drives manually." } else { "Volume-to-physical-disk mapping is available for future storage warnings." })
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
+New-Diagnostic -Name "CPU topology and live counter sweep" -Status $(if ($processors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($processors.Count) processor package row(s), $totalLogicalProcessors logical processor(s), $($processorTotalCounters.Count) total counter row(s), $($logicalProcessorCounters.Count) logical processor counter row(s), processor queue length=$cpuQueueLength." -NextStep "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
 New-Diagnostic -Name "Memory slot topology and error-correction sweep" -Status $(if ($memoryArrays.Count -eq 0 -and $memoryModules.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($memoryArrays.Count) memory-array row(s), $populatedMemorySlotCount populated DIMM row(s), $declaredMemorySlotCount declared slot(s), $emptyMemorySlotCount empty slot(s)." -NextStep "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
