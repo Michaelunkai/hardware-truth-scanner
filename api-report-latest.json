@@ -1,16 +1,16 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T11:39:19.402508Z",
-  "host": "user",
+  "generatedAt": "2026-06-23T13:12:09.7670639Z",
+  "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
-    "overallStatus": "unknown",
-    "componentCount": 23,
-    "findingCount": 0,
+    "overallStatus": "warning",
+    "componentCount": 53,
+    "findingCount": 1,
     "criticalCount": 0,
-    "warningCount": 0,
-    "unknownCount": 3
+    "warningCount": 1,
+    "unknownCount": 5
   },
   "components": [
     {
@@ -20,10 +20,10 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "Manufacturer": "Gigabyte Technology Co., Ltd.",
-        "LastBoot": "2026-06-22T23:06:18.5Z",
-        "Model": "X870E AORUS PRO",
         "TotalMemoryGB": 93.64,
+        "Manufacturer": "Gigabyte Technology Co., Ltd.",
+        "Model": "X870E AORUS PRO",
+        "LastBoot": "2026-06-23T15:48:05.5+03:00",
         "OS": "Microsoft Windows 11 Pro"
       },
       "signals": [],
@@ -41,12 +41,49 @@
         "SerialNumber": "Default string",
         "BiosVersion": "FB2a",
         "Manufacturer": "Gigabyte Technology Co., Ltd.",
-        "BiosDate": "2026-06-09T00:00:00Z",
+        "BiosDate": "2026-06-09T03:00:00+03:00",
         "Product": "X870E AORUS PRO"
       },
       "signals": [],
       "recommendations": [
         "No motherboard-specific Windows hardware fault signal was found. Inspect physically only if symptoms persist."
+      ]
+    },
+    {
+      "id": "chassis-default-string-default-string",
+      "category": "Chassis",
+      "name": "Default string Default string",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "SerialNumber": "Default string",
+        "Manufacturer": "Default string",
+        "AssetTag": "Default string",
+        "ChassisTypes": [
+          "3"
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "Windows can identify the chassis, but only visual inspection can prove case damage, dust, loose cables, fan noise, or bent pins."
+      ]
+    },
+    {
+      "id": "firmware-security-hardware-tpm",
+      "category": "Firmware Security Hardware",
+      "name": "TPM",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ManufacturerId": "AMD",
+        "IsEnabled": true,
+        "SpecVersion": "2.0, 0, 1.59",
+        "IsActivated": true,
+        "IsOwned": true
+      },
+      "signals": [],
+      "recommendations": [
+        "TPM hardware is present and enabled according to Windows."
       ]
     },
     {
@@ -56,11 +93,11 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "MaxClockMHz": 4700,
-        "LogicalProcessors": 16,
+        "MaxClockMHz": "4700",
+        "LogicalProcessors": "16",
+        "RecentWheaCpuEvents": 0,
         "Status": "OK",
-        "Cores": 8,
-        "RecentWheaCpuEvents": 0
+        "Cores": "8"
       },
       "signals": [],
       "recommendations": [
@@ -76,10 +113,10 @@
       "evidence": {
         "SerialNumber": "00000000",
         "Manufacturer": "CORSAIR",
-        "CapacityGB": 48,
-        "SpeedMHz": 6000,
-        "ConfiguredClockMHz": 6000,
-        "PartNumber": "CMH96GX5M2B6000Z30"
+        "PartNumber": "CMH96GX5M2B6000Z30",
+        "ConfiguredClockMHz": "6000",
+        "SpeedMHz": "6000",
+        "CapacityGB": 48
       },
       "signals": [
         "Windows inventory cannot prove RAM cells are healthy without a memory test."
@@ -97,10 +134,10 @@
       "evidence": {
         "SerialNumber": "00000000",
         "Manufacturer": "CORSAIR",
-        "CapacityGB": 48,
-        "SpeedMHz": 6000,
-        "ConfiguredClockMHz": 6000,
-        "PartNumber": "CMH96GX5M2B6000Z30"
+        "PartNumber": "CMH96GX5M2B6000Z30",
+        "ConfiguredClockMHz": "6000",
+        "SpeedMHz": "6000",
+        "CapacityGB": 48
       },
       "signals": [
         "Windows inventory cannot prove RAM cells are healthy without a memory test."
@@ -191,11 +228,11 @@
         "Errors": [
           {
             "Name": "physicaldisks",
-            "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+            "Error": "Skipped Get-PhysicalDisk because this host's Windows Storage provider returns invalid-property errors/hangs; using Win32_DiskDrive and event evidence instead."
           },
           {
             "Name": "storage counters",
-            "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+            "Error": "Skipped Get-StorageReliabilityCounter because it depends on the same unstable Windows Storage provider on this host."
           }
         ],
         "FallbackUsed": "Win32_DiskDrive status and recent disk/NTFS/storage event scan"
@@ -205,6 +242,133 @@
       ],
       "recommendations": [
         "Install or run vendor storage diagnostics such as Samsung Magician, the SSD vendor tool, or smartctl to prove SMART attribute health beyond Windows generic disk status."
+      ]
+    },
+    {
+      "id": "volume-c",
+      "category": "Volume",
+      "name": "C:",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "FileSystem": "NTFS",
+        "FreeGB": 1701.72,
+        "DriveType": "3",
+        "SizeGB": 1860.68,
+        "VolumeName": "",
+        "DeviceID": "C:"
+      },
+      "signals": [],
+      "recommendations": [
+        "Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume."
+      ]
+    },
+    {
+      "id": "volume-d-new-volume",
+      "category": "Volume",
+      "name": "D: New Volume",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "FileSystem": "NTFS",
+        "FreeGB": 0.7,
+        "DriveType": "3",
+        "SizeGB": 0.73,
+        "VolumeName": "New Volume",
+        "DeviceID": "D:"
+      },
+      "signals": [],
+      "recommendations": [
+        "Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume."
+      ]
+    },
+    {
+      "id": "volume-e-ventoy",
+      "category": "Volume",
+      "name": "E: Ventoy",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "FileSystem": "exFAT",
+        "FreeGB": 795.63,
+        "DriveType": "3",
+        "SizeGB": 1907.64,
+        "VolumeName": "Ventoy",
+        "DeviceID": "E:"
+      },
+      "signals": [],
+      "recommendations": [
+        "Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume."
+      ]
+    },
+    {
+      "id": "volume-f-ventoy",
+      "category": "Volume",
+      "name": "F: Ventoy",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "FileSystem": "exFAT",
+        "FreeGB": 444.07,
+        "DriveType": "3",
+        "SizeGB": 953.81,
+        "VolumeName": "Ventoy",
+        "DeviceID": "F:"
+      },
+      "signals": [],
+      "recommendations": [
+        "Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume."
+      ]
+    },
+    {
+      "id": "volume-g-bios",
+      "category": "Volume",
+      "name": "G: BIOS",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "FileSystem": "FAT32",
+        "FreeGB": 29.21,
+        "DriveType": "2",
+        "SizeGB": 29.28,
+        "VolumeName": "BIOS",
+        "DeviceID": "G:"
+      },
+      "signals": [],
+      "recommendations": [
+        "Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume."
+      ]
+    },
+    {
+      "id": "thermal-sensor-acpi-thermal-telemetry",
+      "category": "Thermal Sensor",
+      "name": "ACPI thermal telemetry",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "SensorCount": 0
+      },
+      "signals": [
+        "Windows did not expose ACPI thermal zones to this scanner."
+      ],
+      "recommendations": [
+        "Use motherboard/GPU vendor tools for sensor-grade thermal validation."
+      ]
+    },
+    {
+      "id": "cooling-fan-sensor-wmi-fan-telemetry",
+      "category": "Cooling Fan Sensor",
+      "name": "WMI fan telemetry",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "SensorCount": 0
+      },
+      "signals": [
+        "Windows did not expose fan sensors through WMI."
+      ],
+      "recommendations": [
+        "Use BIOS, motherboard software, or physical inspection to verify fans and pump behavior."
       ]
     },
     {
@@ -240,21 +404,36 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "37",
+          "TemperatureC": "70",
           "FanPercent": "0",
-          "PState": "P8",
-          "PowerDrawW": "25.69",
+          "PState": "P0",
+          "PowerDrawW": "359.96",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "180",
-          "MemoryClockMhz": "405",
-          "PcieGen": "1",
+          "GraphicsClockMhz": "2715",
+          "MemoryClockMhz": "15001",
+          "PcieGen": "5",
           "PcieWidth": "16",
-          "UtilizationPercent": "0"
+          "UtilizationPercent": "99"
         }
       },
       "signals": [],
       "recommendations": [
         "No GPU fault signal was found at scan time. Use a load test if crashes occur only under gaming/rendering load."
+      ]
+    },
+    {
+      "id": "directx-diagnostic-dxdiag-display-audio-input",
+      "category": "DirectX Diagnostic",
+      "name": "dxdiag display/audio/input",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "NoProblemsFoundLines": 6,
+        "ProblemLines": []
+      },
+      "signals": [],
+      "recommendations": [
+        "dxdiag did not report display/audio/input problems in its generated report."
       ]
     },
     {
@@ -278,14 +457,14 @@
       "status": "info",
       "confidence": "medium",
       "evidence": {
-        "Speed": 1201000000,
-        "NetConnectionStatus": 7,
-        "ConfigManagerErrorCode": 0,
+        "MacAddress": "4C:23:38:D0:30:A1",
+        "Speed": "9223372036854775807",
+        "NetConnectionStatus": "7",
         "AdapterType": "Ethernet 802.3",
-        "NetEnabled": false,
-        "MacAddress": "4C:23:38:D0:30:A1"
+        "ConfigManagerErrorCode": "0",
+        "NetEnabled": false
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No adapter hardware fault was reported."
       ]
@@ -297,14 +476,14 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "Speed": 1000000000,
-        "NetConnectionStatus": 2,
-        "ConfigManagerErrorCode": 0,
+        "MacAddress": "30:56:0F:40:D2:4C",
+        "Speed": "1000000000",
+        "NetConnectionStatus": "2",
         "AdapterType": "Ethernet 802.3",
-        "NetEnabled": true,
-        "MacAddress": "30:56:0F:40:D2:4C"
+        "ConfigManagerErrorCode": "0",
+        "NetEnabled": true
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No adapter hardware fault was reported."
       ]
@@ -316,16 +495,385 @@
       "status": "info",
       "confidence": "medium",
       "evidence": {
-        "Speed": 3000000,
-        "NetConnectionStatus": 7,
-        "ConfigManagerErrorCode": 0,
+        "MacAddress": "4C:23:38:D0:30:A2",
+        "Speed": "3000000",
+        "NetConnectionStatus": "7",
         "AdapterType": "Ethernet 802.3",
-        "NetEnabled": false,
-        "MacAddress": "4C:23:38:D0:30:A2"
+        "ConfigManagerErrorCode": "0",
+        "NetEnabled": false
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No adapter hardware fault was reported."
+      ]
+    },
+    {
+      "id": "monitor-generic-pnp-monitor",
+      "category": "Monitor",
+      "name": "Generic PnP Monitor",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "PixelsPerXLogicalInch": "144",
+        "Status": "OK",
+        "ScreenHeight": null,
+        "PixelsPerYLogicalInch": "144",
+        "ScreenWidth": null
+      },
+      "signals": [],
+      "recommendations": [
+        "Monitor detection has no Windows status fault. Dead pixels, flicker, and cable intermittence require visual testing."
+      ]
+    },
+    {
+      "id": "monitor-generic-pnp-monitor",
+      "category": "Monitor",
+      "name": "Generic PnP Monitor",
+      "status": "ok",
+      "confidence": "low",
+      "evidence": {
+        "PixelsPerXLogicalInch": "144",
+        "Status": "OK",
+        "ScreenHeight": "2160",
+        "PixelsPerYLogicalInch": "144",
+        "ScreenWidth": "3840"
+      },
+      "signals": [],
+      "recommendations": [
+        "Monitor detection has no Windows status fault. Dead pixels, flicker, and cable intermittence require visual testing."
+      ]
+    },
+    {
+      "id": "input-device-enhanced-101-or-102-key",
+      "category": "Input Device",
+      "name": "Enhanced (101- or 102-key)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Layout": "0002040D",
+        "FunctionKeys": "12"
+      },
+      "signals": [],
+      "recommendations": [
+        "Keyboard is detected without Windows status faults. Individual key failures require physical key testing."
+      ]
+    },
+    {
+      "id": "input-device-enhanced-101-or-102-key",
+      "category": "Input Device",
+      "name": "Enhanced (101- or 102-key)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Layout": "0002040D",
+        "FunctionKeys": "12"
+      },
+      "signals": [],
+      "recommendations": [
+        "Keyboard is detected without Windows status faults. Individual key failures require physical key testing."
+      ]
+    },
+    {
+      "id": "input-device-enhanced-101-or-102-key",
+      "category": "Input Device",
+      "name": "Enhanced (101- or 102-key)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Layout": "0002040D",
+        "FunctionKeys": "12"
+      },
+      "signals": [],
+      "recommendations": [
+        "Keyboard is detected without Windows status faults. Individual key failures require physical key testing."
+      ]
+    },
+    {
+      "id": "input-device-usb-input-device",
+      "category": "Input Device",
+      "name": "USB Input Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "HardwareType": "USB Input Device",
+        "Status": "OK",
+        "PointingType": "2",
+        "Buttons": "0"
+      },
+      "signals": [],
+      "recommendations": [
+        "Pointing device is detected without Windows status faults. Button/sensor issues require physical testing."
+      ]
+    },
+    {
+      "id": "input-device-hid-compliant-mouse",
+      "category": "Input Device",
+      "name": "HID-compliant mouse",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "HardwareType": "HID-compliant mouse",
+        "Status": "OK",
+        "PointingType": "2",
+        "Buttons": "0"
+      },
+      "signals": [],
+      "recommendations": [
+        "Pointing device is detected without Windows status faults. Button/sensor issues require physical testing."
+      ]
+    },
+    {
+      "id": "usb-controller-usb4-tm-host-router-microsoft",
+      "category": "USB Controller",
+      "name": "USB4(TM) Host Router (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB4 Host Router",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-asmedia-usb-3-20-extensible-host-controller-1-20-microsoft",
+      "category": "USB Controller",
+      "name": "ASMedia USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-intel-r-usb-3-1-extensible-host-controller-1-10-microsoft",
+      "category": "USB Controller",
+      "name": "Intel(R) USB 3.1 eXtensible Host Controller - 1.10 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-ite-usb-connector-client-device",
+      "category": "USB Controller",
+      "name": "ITE USB Connector Client Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "ITE",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-ite-usb-connector-client-device",
+      "category": "USB Controller",
+      "name": "ITE USB Connector Client Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "ITE",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-amd-usb-3-10-extensible-host-controller-1-20-microsoft",
+      "category": "USB Controller",
+      "name": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-amd-usb-3-20-extensible-host-controller-1-10-microsoft",
+      "category": "USB Controller",
+      "name": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-amd-usb-2-0-extensible-host-controller-1-20-microsoft",
+      "category": "USB Controller",
+      "name": "AMD USB 2.0 eXtensible Host Controller - 1.20 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-amd-usb-3-10-extensible-host-controller-1-10-microsoft",
+      "category": "USB Controller",
+      "name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-controller-amd-usb-3-10-extensible-host-controller-1-20-microsoft",
+      "category": "USB Controller",
+      "name": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Generic USB xHCI Host Controller",
+        "ProtocolSupported": "16"
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device."
+      ]
+    },
+    {
+      "id": "usb-inventory-usb-hubs-detected",
+      "category": "USB Inventory",
+      "name": "USB hubs detected",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "HubCount": 15,
+        "Hubs": [
+          {
+            "Name": "USB Composite Device",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_1B1C&PID_1B07\\8&1FB63BB6&0&9"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\5&18297C0C&0&0"
+          },
+          {
+            "Name": "USB4 Root Router (1.0)",
+            "Status": "OK",
+            "DeviceID": "USB4\\ROOT_DEVICE_ROUTER&VID_1B21&PID_2425\\7&2434227F&0&0"
+          },
+          {
+            "Name": "USB Mass Storage Device",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_048D&PID_1234\\1142151091563008469"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\5&B188857&0&0"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\7&2F44DE9B&0&0"
+          },
+          {
+            "Name": "Thunderbolt 3(TM) Router, Intel - USB4.0 SSD",
+            "Status": "OK",
+            "DeviceID": "USB4\\VID_8086&PID_15EF\\8&E894DE1&0&1"
+          },
+          {
+            "Name": "Generic USB Hub",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_1A86&PID_8091\\A&AB935FC&0&14"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\9&1C63C548&0&0"
+          },
+          {
+            "Name": "USB Composite Device",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_048D&PID_5711\\8&1FB63BB6&0&13"
+          },
+          {
+            "Name": "USB Composite Device",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_046D&PID_C548\\8&1FB63BB6&0&7"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\7&397AFAA3&0&0"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\5&2DE1419A&0&0"
+          },
+          {
+            "Name": "USB Root Hub (USB 3.0)",
+            "Status": "OK",
+            "DeviceID": "USB\\ROOT_HUB30\\9&1191AA4&0&0"
+          },
+          {
+            "Name": "USB Composite Device",
+            "Status": "OK",
+            "DeviceID": "USB\\VID_08BB&PID_2902\\8&1FB63BB6&0&15"
+          }
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "USB hub inventory is captured. Intermittent ports/cables require physical testing with known-good devices."
       ]
     },
     {
@@ -339,7 +887,7 @@
         "Manufacturer": "Realtek",
         "ProductName": "Realtek High Definition Audio"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
       ]
@@ -355,7 +903,7 @@
         "Manufacturer": "AMD",
         "ProductName": "AMD Streaming Audio Device"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
       ]
@@ -371,7 +919,7 @@
         "Manufacturer": "(Generic USB Audio)",
         "ProductName": "USB Audio Device"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
       ]
@@ -387,7 +935,7 @@
         "Manufacturer": "NVIDIA",
         "ProductName": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
       ]
@@ -403,7 +951,7 @@
         "Manufacturer": "NVIDIA",
         "ProductName": "NVIDIA High Definition Audio"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
       ]
@@ -419,9 +967,124 @@
         "Manufacturer": "Advanced Micro Devices",
         "ProductName": "AMD High Definition Audio Device"
       },
-      "signals": null,
+      "signals": [],
       "recommendations": [
         "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "driver-integrity-pnp-signed-driver-inventory",
+      "category": "Driver Integrity",
+      "name": "PnP signed driver inventory",
+      "status": "warning",
+      "confidence": "medium",
+      "evidence": {
+        "UnsignedDrivers": [
+          {
+            "DeviceName": "AMD Special Tools Driver",
+            "DriverProviderName": "Advanced Micro Devices",
+            "DriverVersion": "1.7.16.219"
+          },
+          {
+            "DeviceName": "AMD Crash Defender",
+            "DriverProviderName": "Advanced Micro Devices, Inc.",
+            "DriverVersion": "25.10.0.7"
+          },
+          {
+            "DeviceName": "ITE USB Connector Client Device",
+            "DriverProviderName": "ITE",
+            "DriverVersion": "1.3.8.21"
+          },
+          {
+            "DeviceName": "ITE USB Connector Client Device",
+            "DriverProviderName": "ITE",
+            "DriverVersion": "1.3.8.21"
+          },
+          {
+            "DeviceName": "AMD SMBUS",
+            "DriverProviderName": "Advanced Micro Devices, Inc",
+            "DriverVersion": "2.0.0.26"
+          },
+          {
+            "DeviceName": "Realtek Audio Universal Service",
+            "DriverProviderName": "Realtek",
+            "DriverVersion": "1.0.937.0"
+          },
+          {
+            "DeviceName": "Realtek Hardware Support Application",
+            "DriverProviderName": "Realtek",
+            "DriverVersion": "11.0.6000.385"
+          },
+          {
+            "DeviceName": "Realtek Asio Component",
+            "DriverProviderName": "Realtek",
+            "DriverVersion": "1.0.13.1"
+          },
+          {
+            "DeviceName": "Realtek Audio Effects Component",
+            "DriverProviderName": "Realtek",
+            "DriverVersion": "13.0.6000.1905"
+          },
+          {
+            "DeviceName": "High Definition Audio Bus",
+            "DriverProviderName": "AMD",
+            "DriverVersion": "25.30.0.1"
+          },
+          {
+            "DeviceName": "AMD-Dynamic Audio Noise Supression",
+            "DriverProviderName": "Advanced Micro Devices, Inc.",
+            "DriverVersion": "1.4.40.0"
+          },
+          {
+            "DeviceName": "AMD Controller Emulation",
+            "DriverProviderName": "AMD",
+            "DriverVersion": "25.10.0.1"
+          }
+        ],
+        "DriverCount": 299,
+        "UnsignedDriverCount": 12
+      },
+      "signals": [
+        "12 unsigned PnP driver(s) found."
+      ],
+      "recommendations": [
+        "Review unsigned drivers; driver integrity issues can mimic hardware failures."
+      ]
+    },
+    {
+      "id": "power-capabilities-powercfg-a",
+      "category": "Power Capabilities",
+      "name": "powercfg /a",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "Lines": [
+          "The following sleep states are available on this system:",
+          "    Standby (S3)",
+          "",
+          "The following sleep states are not available on this system:",
+          "    Standby (S1)",
+          "\tThe system firmware does not support this standby state.",
+          "",
+          "    Standby (S2)",
+          "\tThe system firmware does not support this standby state.",
+          "",
+          "    Hibernate",
+          "\tHibernation has not been enabled.",
+          "",
+          "    Standby (S0 Low Power Idle)",
+          "\tThe system firmware does not support this standby state.",
+          "",
+          "    Hybrid Sleep",
+          "\tHibernation is not available.",
+          "\tThe hypervisor does not support this standby state.",
+          "",
+          "... truncated 1 more item(s)"
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "Power capability data was collected. PSU quality, wall power, and power-cable problems still require physical/load testing."
       ]
     },
     {
@@ -439,7 +1102,67 @@
       ]
     }
   ],
-  "findings": [],
+  "findings": [
+    {
+      "severity": "warning",
+      "component": "Power stability",
+      "title": "Recent power-loss or crash-path events",
+      "detail": "Kernel-Power or volmgr events can indicate forced shutdowns, PSU instability, crashes, or power loss.",
+      "evidence": "4 event(s) since 06/09/2026 16:11:41",
+      "recommendation": "If unexpected shutdowns are happening, inspect PSU, wall power, GPU power cables, and crash dumps.",
+      "confidence": "medium"
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "Device Manager problem-code sweep",
+      "status": "passed",
+      "evidence": "0 problem device(s) from 297 enumerated PnP device(s).",
+      "nextStep": "No Device Manager problem codes found."
+    },
+    {
+      "name": "DirectX display/audio/input diagnostic",
+      "status": "passed",
+      "evidence": "6 'No problems found' line(s), 0 problem/error line(s).",
+      "nextStep": "No dxdiag problem lines found."
+    },
+    {
+      "name": "Storage SMART and reliability telemetry",
+      "status": "limited",
+      "evidence": "Windows advanced storage providers were unavailable; generic disk status and event logs were used.",
+      "nextStep": "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
+    },
+    {
+      "name": "WHEA and recent hardware event sweep",
+      "status": "passed",
+      "evidence": "0 WHEA event(s) in the last 14 day(s).",
+      "nextStep": "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
+    },
+    {
+      "name": "NVIDIA GPU live telemetry",
+      "status": "passed",
+      "evidence": "NVIDIA GeForce RTX 5080: 70C, PState P0, driver 610.62",
+      "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
+    },
+    {
+      "name": "Thermal and fan telemetry",
+      "status": "limited",
+      "evidence": "0 ACPI thermal zone(s), 0 WMI fan sensor(s).",
+      "nextStep": "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+    },
+    {
+      "name": "RAM live evidence",
+      "status": "limited",
+      "evidence": "2 DIMM(s) inventoried; Windows live inventory cannot test memory cells.",
+      "nextStep": "Run Windows Memory Diagnostic or MemTest86 from boot for real RAM fault testing."
+    },
+    {
+      "name": "Physical inspection boundary",
+      "status": "not_run",
+      "evidence": "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults.",
+      "nextStep": "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
+    }
+  ],
   "coverageLimits": [
     "Software telemetry cannot guarantee detection of loose internal cables, dust buildup, bad ports that were not exercised, swollen capacitors, bent pins, cracked solder joints, fan bearing noise, weak PSU ripple, or intermittent faults that did not occur during the scan window.",
     "RAM health cannot be proven from inventory alone. A boot-level memory diagnostic or MemTest86 pass is required for physical RAM certainty.",
@@ -448,89 +1171,120 @@
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   ],
   "raw": {
-    "RecentEvents": [],
+    "RecentEventCount": 4,
+    "RecentEvents": [
+      "06/23/2026 15:48:08 | Id=508 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has been constrained to a periodic tick Reason: BCD override.",
+      "06/23/2026 15:48:08 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
+      "06/23/2026 15:47:41 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
+      "06/23/2026 15:47:38 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API"
+    ],
     "NvidiaDetail": [
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp                                              : Tue Jun 23 14:39:19 2026",
-      "Driver Version                                         : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
-      "CUDA Version                                           : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
-      "KMD Version                                            : 610.62",
-      "CUDA UMD Version                                       : 13.3",
+      "Timestamp : Tue Jun 23 16:12:08 2026",
+      "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
+      "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
+      "KMD Version : 610.62",
+      "CUDA UMD Version : 13.3",
       "",
-      "Attached GPUs                                          : 1",
+      "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      "    Performance State                                  : P8",
-      "    Clocks Event Reasons",
-      "        Idle                                           : Not Active",
-      "        Applications Clocks Setting                    : Not Active",
-      "        SW Power Cap                                   : Not Active",
-      "        HW Slowdown                                    : Not Active",
-      "            HW Thermal Slowdown                        : Not Active",
-      "            HW Power Brake Slowdown                    : Not Active",
-      "        Sync Boost                                     : Not Active",
-      "        SW Thermal Slowdown                            : Not Active",
-      "        Display Clock Setting                          : Not Active",
-      "    Clocks Event Reasons Counters",
-      "        SW Power Capping                               : 260264 us",
-      "        Sync Boost                                     : 0 us",
-      "        SW Thermal Slowdown                            : 0 us",
-      "        HW Thermal Slowdown                            : 0 us",
-      "        HW Power Braking                               : 0 us",
-      "    Sparse Operation Mode                              : N/A",
-      "    Temperature",
-      "        GPU Current Temp                               : 37 C",
-      "        GPU Current T.Limit Temp                       : 51 C",
-      "        GPU Shutdown T.Limit Temp Specification        : -5 C",
-      "        GPU Slowdown T.Limit Temp Specification        : -2 C",
-      "        GPU Max Operating T.Limit Temp Specification   : 0 C",
-      "        GPU Target Temperature Specification           : N/A",
-      "        Memory Current Temp                            : N/A",
-      "        Memory Max Operating T.Limit Temp Specification: N/A",
-      "    GPU Power Readings",
-      "        Average Power Draw                             : 25.69 W",
-      "        Instantaneous Power Draw                       : 23.92 W",
-      "        GPU Ceiling Power Limit",
-      "            Current Power Limit                        : 360.00 W",
-      "            Requested Power Limit                      : 360.00 W",
-      "            Default Power Limit                        : 360.00 W",
-      "        GPU Base Power",
-      "            Current Base Power                         : N/A",
-      "            Requested Base Power                       : N/A",
-      "            Default Base Power                         : N/A",
-      "        Min Power Limit                                : 250.00 W",
-      "        Max Power Limit                                : 400.00 W",
-      "    Power Samples",
-      "        Duration                                       : 2.36 sec",
-      "        Number of Samples                              : 119",
-      "        Max                                            : 54.01 W",
-      "        Min                                            : 23.42 W",
-      "        Avg                                            : 25.58 W",
-      "    GPU Memory Power Readings ",
-      "        Average Power Draw                             : N/A",
-      "        Instantaneous Power Draw                       : N/A",
-      "    Module Power Readings",
-      "        Average Power Draw                             : N/A",
-      "        Instantaneous Power Draw                       : N/A",
-      "        Current Power Limit                            : N/A",
-      "        Requested Power Limit                          : N/A",
-      "        Default Power Limit                            : N/A",
-      "        Min Power Limit                                : N/A",
-      "        Max Power Limit                                : N/A",
-      "    EDPp Multiplier                                    : N/A",
+      " Performance State : P0",
+      " Clocks Event Reasons",
+      " Idle : Not Active",
+      " Applications Clocks Setting : Not Active",
+      " SW Power Cap : Active",
+      " HW Slowdown : Not Active",
+      " HW Thermal Slowdown : Not Active",
+      " HW Power Brake Slowdown : Not Active",
+      " Sync Boost : Not Active",
+      " SW Thermal Slowdown : Not Active",
+      " Display Clock Setting : Not Active",
+      " Clocks Event Reasons Counters",
+      " SW Power Capping : 239796355 us",
+      " Sync Boost : 0 us",
+      " SW Thermal Slowdown : 0 us",
+      " HW Thermal Slowdown : 0 us",
+      " HW Power Braking : 0 us",
+      " Sparse Operation Mode : N/A",
+      " Temperature",
+      " GPU Current Temp : 70 C",
+      " GPU Current T.Limit Temp : 18 C",
+      " GPU Shutdown T.Limit Temp Specification : -5 C",
+      " GPU Slowdown T.Limit Temp Specification : -2 C",
+      " GPU Max Operating T.Limit Temp Specification : 0 C",
+      " GPU Target Temperature Specification : N/A",
+      " Memory Current Temp : N/A",
+      " Memory Max Operating T.Limit Temp Specification: N/A",
+      " GPU Power Readings",
+      " Average Power Draw : 359.96 W",
+      " Instantaneous Power Draw : 359.84 W",
+      " GPU Ceiling Power Limit",
+      " Current Power Limit : 360.00 W",
+      " Requested Power Limit : 360.00 W",
+      " Default Power Limit : 360.00 W",
+      " GPU Base Power",
+      " Current Base Power : N/A",
+      " Requested Base Power : N/A",
+      " Default Base Power : N/A",
+      " Min Power Limit : 250.00 W",
+      " Max Power Limit : 400.00 W",
+      " Power Samples",
+      " Duration : 2.32 sec",
+      " Number of Samples : 119",
+      " Max : 366.27 W",
+      " Min : 352.60 W",
+      " Avg : 360.04 W",
+      " GPU Memory Power Readings ",
+      " Average Power Draw : N/A",
+      " Instantaneous Power Draw : N/A",
+      " Module Power Readings",
+      " Average Power Draw : N/A",
+      " Instantaneous Power Draw : N/A",
+      " Current Power Limit : N/A",
+      " Requested Power Limit : N/A",
+      " Default Power Limit : N/A",
+      " Min Power Limit : N/A",
+      " Max Power Limit : N/A",
+      " EDPp Multiplier : N/A",
       ""
+    ],
+    "DxDiagProblemLines": [],
+    "PowerCfgAvailableSleepStates": [
+      "The following sleep states are available on this system:",
+      " Standby (S3)",
+      "",
+      "The following sleep states are not available on this system:",
+      " Standby (S1)",
+      " The system firmware does not support this standby state.",
+      "",
+      " Standby (S2)",
+      " The system firmware does not support this standby state.",
+      "",
+      " Hibernate",
+      " Hibernation has not been enabled.",
+      "",
+      " Standby (S0 Low Power Idle)",
+      " The system firmware does not support this standby state.",
+      "",
+      " Hybrid Sleep",
+      " Hibernation is not available.",
+      " The hypervisor does not support this standby state.",
+      "",
+      " Fast Startup",
+      " Hibernation is not available.",
+      ""
+    ],
+    "PnPProblemDeviceText": [
+      "Microsoft PnP Utility",
+      "",
+      "No devices were found on the system."
     ],
     "ProbeErrors": [],
     "OptionalProbeErrors": [
-      {
-        "Name": "physicaldisks",
-        "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
-      },
-      {
-        "Name": "storage counters",
-        "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
-      }
+      "physicaldisks: Skipped Get-PhysicalDisk because this host's Windows Storage provider returns invalid-property errors/hangs; using Win32_DiskDrive and event evidence instead.",
+      "storage counters: Skipped Get-StorageReliabilityCounter because it depends on the same unstable Windows Storage provider on this host."
     ]
   }
 }

@@ -38,6 +38,130 @@ function Invoke-OptionalProbe {
   }
 }
 
+function Convert-ToSafeEvidenceValue {
+  param($Value)
+
+  if ($null -eq $Value) { return $null }
+  $baseObject = $Value.PSObject.BaseObject
+  if ($null -ne $baseObject -and -not [object]::ReferenceEquals($baseObject, $Value)) {
+    if ($baseObject -is [string]) { return [string]$baseObject }
+    if ($baseObject -is [bool]) { return [bool]$baseObject }
+    if ($baseObject -is [int] -or $baseObject -is [long]) { return [long]$baseObject }
+    if ($baseObject -is [double] -or $baseObject -is [decimal]) { return [double]$baseObject }
+    if ($baseObject -is [datetime]) { return $baseObject.ToString("o") }
+  }
+  if ($Value -is [string]) { return [string]$Value }
+  if ($Value -is [bool]) { return [bool]$Value }
+  if ($Value -is [int] -or $Value -is [long]) { return [long]$Value }
+  if ($Value -is [double] -or $Value -is [decimal]) { return [double]$Value }
+  if ($Value -is [datetime]) { return $Value.ToString("o") }
+  if ($Value -is [array]) {
+    $items = @($Value | Select-Object -First 20 | ForEach-Object { Convert-ToSafeEvidenceValue $_ })
+    if ($Value.Count -gt 20) { $items += "... truncated $($Value.Count - 20) more item(s)" }
+    return ,$items
+  }
+  if ($Value -is [hashtable]) {
+    $safeHash = [ordered]@{}
+    foreach ($key in @($Value.Keys | Select-Object -First 30)) {
+      $safeHash[[string]$key] = Convert-ToSafeEvidenceValue $Value[$key]
+    }
+    return [pscustomobject]$safeHash
+  }
+
+  $safeObject = [ordered]@{}
+  $properties = @($Value.PSObject.Properties | Where-Object { $_.MemberType -match "Property" } | Select-Object -First 20)
+  foreach ($property in $properties) {
+    $propertyValue = $property.Value
+    if ($null -eq $propertyValue) {
+      $safeObject[$property.Name] = $null
+    } elseif ($propertyValue -is [string] -or $propertyValue -is [bool] -or $propertyValue -is [int] -or $propertyValue -is [long] -or $propertyValue -is [double] -or $propertyValue -is [decimal]) {
+      $safeObject[$property.Name] = $propertyValue
+    } elseif ($propertyValue -is [datetime]) {
+      $safeObject[$property.Name] = $propertyValue.ToString("o")
+    } else {
+      $safeObject[$property.Name] = [string]$propertyValue
+    }
+  }
+  if ($safeObject.Count -gt 0) { return [pscustomobject]$safeObject }
+
+  $text = [string]$Value
+  if ($text.Length -gt 1000) { return ($text.Substring(0, 1000) + "... truncated") }
+  return $text
+}
+
+function Convert-ToBoundedText {
+  param(
+    $Value,
+    [int]$MaxLength = 1000
+  )
+
+  if ($null -eq $Value) { return "" }
+  $text = ([string]$Value) -replace "\s+", " "
+  if ($text.Length -gt $MaxLength) { return ($text.Substring(0, $MaxLength) + "... truncated") }
+  return $text
+}
+
+function Convert-ToJsonSafe {
+  param(
+    $Value,
+    [int]$Depth = 4,
+    [int]$MaxItems = 50
+  )
+
+  if ($null -eq $Value) { return $null }
+  $baseObject = $Value.PSObject.BaseObject
+  if ($null -ne $baseObject -and -not [object]::ReferenceEquals($baseObject, $Value)) {
+    if ($baseObject -is [string]) { return [string]$baseObject }
+    if ($baseObject -is [bool]) { return [bool]$baseObject }
+    if ($baseObject -is [int] -or $baseObject -is [long]) { return [long]$baseObject }
+    if ($baseObject -is [double] -or $baseObject -is [decimal]) { return [double]$baseObject }
+    if ($baseObject -is [datetime]) { return $baseObject.ToString("o") }
+  }
+  if ($Value -is [string]) { return [string]$Value }
+  if ($Value -is [bool]) { return [bool]$Value }
+  if ($Value -is [int] -or $Value -is [long]) { return [long]$Value }
+  if ($Value -is [double] -or $Value -is [decimal]) { return [double]$Value }
+  if ($Value -is [datetime]) { return $Value.ToString("o") }
+  if ($Depth -le 0) { return Convert-ToBoundedText $Value 300 }
+
+  if ($Value -is [hashtable]) {
+    $safeHash = [ordered]@{}
+    foreach ($key in @($Value.Keys | Select-Object -First $MaxItems)) {
+      $safeHash[[string]$key] = Convert-ToJsonSafe -Value $Value[$key] -Depth ($Depth - 1) -MaxItems 20
+    }
+    if ($Value.Keys.Count -gt $MaxItems) { $safeHash["_truncated"] = "$($Value.Keys.Count - $MaxItems) more field(s)" }
+    return [pscustomobject]$safeHash
+  }
+
+  if ($Value -is [System.Collections.IEnumerable] -and -not ($Value -is [string])) {
+    $items = @()
+    $count = 0
+    foreach ($item in $Value) {
+      if ($count -ge $MaxItems) { break }
+      $items += Convert-ToJsonSafe -Value $item -Depth ($Depth - 1) -MaxItems 20
+      $count += 1
+    }
+    $totalCount = @($Value).Count
+    if ($totalCount -gt $MaxItems) { $items += "... truncated $($totalCount - $MaxItems) more item(s)" }
+    return ,$items
+  }
+
+  $safeObject = [ordered]@{}
+  $properties = @($Value.PSObject.Properties | Where-Object { $_.MemberType -match "Property" } | Select-Object -First $MaxItems)
+  foreach ($property in $properties) {
+    $propertyValue = $property.Value
+    $converted = Convert-ToJsonSafe -Value $propertyValue -Depth ($Depth - 1) -MaxItems 20
+    if ($null -eq $converted -and $null -ne $propertyValue -and $propertyValue -is [System.Collections.IEnumerable] -and -not ($propertyValue -is [string])) {
+      $safeObject[$property.Name] = @()
+    } else {
+      $safeObject[$property.Name] = $converted
+    }
+  }
+  if ($safeObject.Count -gt 0) { return [pscustomobject]$safeObject }
+
+  return Convert-ToBoundedText $Value 500
+}
+
 function New-Component {
   param(
     [string]$Category,
@@ -49,15 +173,28 @@ function New-Component {
     [string[]]$Recommendations
   )
 
+  $safeEvidence = @{}
+  foreach ($key in $Evidence.Keys) {
+    $safeEvidence[$key] = Convert-ToSafeEvidenceValue $Evidence[$key]
+  }
+  $safeSignals = @()
+  if ($null -ne $Signals) {
+    $safeSignals = @($Signals | Where-Object { $null -ne $_ } | ForEach-Object { [string]$_ })
+  }
+  $safeRecommendations = @()
+  if ($null -ne $Recommendations) {
+    $safeRecommendations = @($Recommendations | Where-Object { $null -ne $_ } | ForEach-Object { [string]$_ })
+  }
+
   $script:components += [pscustomobject]@{
     id = (($Category + "-" + $Name).ToLowerInvariant() -replace "[^a-z0-9]+", "-").Trim("-")
     category = $Category
     name = $Name
     status = $Status
     confidence = $Confidence
-    evidence = $Evidence
-    signals = @($Signals)
-    recommendations = @($Recommendations)
+    evidence = $safeEvidence
+    signals = $safeSignals
+    recommendations = $safeRecommendations
   }
 }
 
@@ -83,6 +220,22 @@ function New-Finding {
   }
 }
 
+function New-Diagnostic {
+  param(
+    [string]$Name,
+    [string]$Status,
+    [string]$Evidence,
+    [string]$NextStep
+  )
+
+  $script:diagnostics += [pscustomobject]@{
+    name = $Name
+    status = $Status
+    evidence = $Evidence
+    nextStep = $NextStep
+  }
+}
+
 function As-Text {
   param($Value)
   if ($null -eq $Value) { return "" }
@@ -90,10 +243,30 @@ function As-Text {
   return [string]$Value
 }
 
+function Invoke-TextCommand {
+  param(
+    [string]$Name,
+    [string]$FilePath,
+    [string[]]$Arguments
+  )
+
+  try {
+    $output = & $FilePath @Arguments 2>&1
+    return @($output | ForEach-Object { [string]$_ })
+  } catch {
+    $script:optionalProbeErrors += [pscustomobject]@{
+      Name = $Name
+      Error = $_.Exception.Message
+    }
+    return @()
+  }
+}
+
 $probeErrors = @()
 $optionalProbeErrors = @()
 $components = @()
 $findings = @()
+$diagnostics = @()
 $startTime = (Get-Date).AddDays(-1 * $RecentDays)
 $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME } else { (Invoke-Probe "hostname" { hostname.exe }) -join "" }
 
@@ -104,15 +277,47 @@ $baseBoard = Invoke-Probe "baseboard" { Get-CimInstance Win32_BaseBoard }
 $processors = @(Invoke-Probe "cpu" { Get-CimInstance Win32_Processor })
 $memoryModules = @(Invoke-Probe "memory" { Get-CimInstance Win32_PhysicalMemory })
 $diskDrives = @(Invoke-Probe "diskdrives" { Get-CimInstance Win32_DiskDrive })
-$physicalDisks = @(Invoke-OptionalProbe "physicaldisks" { Get-PhysicalDisk })
-$storageCounters = @(Invoke-OptionalProbe "storage counters" { Get-PhysicalDisk | Get-StorageReliabilityCounter })
+$physicalDisks = @()
+$storageCounters = @()
+$optionalProbeErrors += [pscustomobject]@{ Name = "physicaldisks"; Error = "Skipped Get-PhysicalDisk because this host's Windows Storage provider returns invalid-property errors/hangs; using Win32_DiskDrive and event evidence instead." }
+$optionalProbeErrors += [pscustomobject]@{ Name = "storage counters"; Error = "Skipped Get-StorageReliabilityCounter because it depends on the same unstable Windows Storage provider on this host." }
 $smartStatus = @(Invoke-OptionalProbe "smart predict" { Get-CimInstance -Namespace root\wmi -ClassName MSStorageDriver_FailurePredictStatus })
-$volumes = @(Invoke-Probe "volumes" { Get-Volume })
+$volumes = @(Invoke-Probe "logical volumes" { Get-CimInstance Win32_LogicalDisk })
 $videoControllers = @(Invoke-Probe "video" { Get-CimInstance Win32_VideoController })
 $soundDevices = @(Invoke-Probe "audio" { Get-CimInstance Win32_SoundDevice })
 $networkAdapters = @(Invoke-Probe "network" { Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true } })
 $batteries = @(Invoke-Probe "battery" { Get-CimInstance Win32_Battery })
 $pnpProblems = @(Invoke-Probe "pnp problems" { Get-CimInstance Win32_PnPEntity | Where-Object { $_.ConfigManagerErrorCode -ne 0 } })
+$pnpAll = @(Invoke-Probe "pnp all" { Get-CimInstance Win32_PnPEntity })
+$signedDrivers = @(Invoke-Probe "signed drivers" { Get-CimInstance Win32_PnPSignedDriver })
+$monitors = @(Invoke-Probe "monitors" { Get-CimInstance Win32_DesktopMonitor })
+$keyboards = @(Invoke-Probe "keyboards" { Get-CimInstance Win32_Keyboard })
+$pointingDevices = @(Invoke-Probe "pointing devices" { Get-CimInstance Win32_PointingDevice })
+$usbControllers = @(Invoke-Probe "usb controllers" { Get-CimInstance Win32_USBController })
+$usbHubs = @(Invoke-Probe "usb hubs" { Get-CimInstance Win32_USBHub })
+$fans = @(Invoke-Probe "fans" { Get-CimInstance Win32_Fan })
+$thermalZones = @(Invoke-OptionalProbe "thermal zones" { Get-CimInstance -Namespace root\wmi -ClassName MSAcpi_ThermalZoneTemperature })
+$enclosures = @(Invoke-Probe "enclosure" { Get-CimInstance Win32_SystemEnclosure })
+$tpm = @(Invoke-OptionalProbe "tpm" { Get-CimInstance -Namespace root\cimv2\Security\MicrosoftTpm -ClassName Win32_Tpm })
+
+$powerCfgA = Invoke-TextCommand -Name "powercfg available sleep states" -FilePath "powercfg.exe" -Arguments @("/a")
+$problemDevicesText = Invoke-TextCommand -Name "pnputil problem devices" -FilePath "pnputil.exe" -Arguments @("/enum-devices", "/problem")
+
+$dxdiagText = @()
+$dxdiagPath = Join-Path $env:TEMP ("hardware-truth-dxdiag-" + [guid]::NewGuid().ToString("N") + ".txt")
+try {
+  $dx = Start-Process -FilePath "dxdiag.exe" -ArgumentList @("/dontskip", "/whql:off", "/t", $dxdiagPath) -WindowStyle Hidden -PassThru
+  if ($dx.WaitForExit(45000) -and (Test-Path $dxdiagPath)) {
+    $dxdiagText = @(Get-Content -Path $dxdiagPath -ErrorAction SilentlyContinue)
+  } else {
+    try { if (-not $dx.HasExited) { $dx.Kill() } } catch {}
+    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 45 seconds or did not write output." }
+  }
+} catch {
+  $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = $_.Exception.Message }
+} finally {
+  Remove-Item -LiteralPath $dxdiagPath -Force -ErrorAction SilentlyContinue
+}
 
 $eventProviders = @(
   "Microsoft-Windows-WHEA-Logger",
@@ -180,6 +385,26 @@ New-Component -Category "Motherboard and BIOS" -Name ($baseBoard.Product) -Statu
   BiosVersion = (As-Text $bios.SMBIOSBIOSVersion)
   BiosDate = $bios.ReleaseDate
 } -Signals @() -Recommendations @("No motherboard-specific Windows hardware fault signal was found. Inspect physically only if symptoms persist.")
+
+foreach ($enclosure in $enclosures) {
+  New-Component -Category "Chassis" -Name (($enclosure.Manufacturer, $enclosure.SMBIOSAssetTag | Where-Object { $_ }) -join " ") -Status "ok" -Confidence "low" -Evidence @{
+    Manufacturer = $enclosure.Manufacturer
+    ChassisTypes = $enclosure.ChassisTypes
+    SerialNumber = $enclosure.SerialNumber
+    AssetTag = $enclosure.SMBIOSAssetTag
+  } -Signals @() -Recommendations @("Windows can identify the chassis, but only visual inspection can prove case damage, dust, loose cables, fan noise, or bent pins.")
+}
+
+foreach ($item in $tpm) {
+  $tpmStatus = if ($item.IsEnabled_InitialValue -and $item.IsActivated_InitialValue) { "ok" } else { "info" }
+  New-Component -Category "Firmware Security Hardware" -Name "TPM" -Status $tpmStatus -Confidence "medium" -Evidence @{
+    ManufacturerId = $item.ManufacturerIdTxt
+    SpecVersion = $item.SpecVersion
+    IsEnabled = $item.IsEnabled_InitialValue
+    IsActivated = $item.IsActivated_InitialValue
+    IsOwned = $item.IsOwned_InitialValue
+  } -Signals $(if ($tpmStatus -eq "ok") { @() } else { @("TPM is present but not fully enabled/activated according to Windows.") }) -Recommendations $(if ($tpmStatus -eq "ok") { @("TPM hardware is present and enabled according to Windows.") } else { @("Review BIOS/UEFI TPM settings only if you need TPM-backed security features.") })
+}
 
 foreach ($cpu in $processors) {
   $cpuEvents = @($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" -and $_.Message -match "processor|cache|bus|interconnect|APIC" })
@@ -275,18 +500,45 @@ if ($diskEvents.Count -gt 0) {
 }
 
 foreach ($volume in $volumes) {
-  $sizeRemaining = if ($volume.SizeRemaining) { [math]::Round(($volume.SizeRemaining / 1GB), 2) } else { $null }
+  $sizeRemaining = if ($volume.FreeSpace) { [math]::Round(($volume.FreeSpace / 1GB), 2) } else { $null }
   $size = if ($volume.Size) { [math]::Round(($volume.Size / 1GB), 2) } else { $null }
-  $status = if ($volume.HealthStatus -and $volume.HealthStatus -ne "Healthy") { "warning" } else { "ok" }
+  $status = "ok"
   $signals = @()
-  if ($volume.HealthStatus -and $volume.HealthStatus -ne "Healthy") { $signals += "Volume HealthStatus is $($volume.HealthStatus)." }
-  New-Component -Category "Volume" -Name (($volume.DriveLetter, $volume.FileSystemLabel | Where-Object { $_ }) -join ": ") -Status $status -Confidence "medium" -Evidence @{
-    DriveLetter = $volume.DriveLetter
+  New-Component -Category "Volume" -Name (($volume.DeviceID, $volume.VolumeName | Where-Object { $_ }) -join " ") -Status $status -Confidence "low" -Evidence @{
+    DeviceID = $volume.DeviceID
+    DriveType = $volume.DriveType
     FileSystem = $volume.FileSystem
-    HealthStatus = $volume.HealthStatus
+    VolumeName = $volume.VolumeName
     SizeGB = $size
     FreeGB = $sizeRemaining
-  } -Signals $signals -Recommendations $(if ($status -eq "ok") { @("No volume health fault was reported.") } else { @("Back up data and run filesystem repair only after confirming the target volume.") })
+  } -Signals $signals -Recommendations @("Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume.")
+}
+
+foreach ($thermal in $thermalZones) {
+  $tempC = if ($thermal.CurrentTemperature) { [math]::Round((($thermal.CurrentTemperature / 10) - 273.15), 1) } else { $null }
+  $status = if ($tempC -and ($tempC -lt -20 -or $tempC -gt 100)) { "unknown" } elseif ($tempC -and $tempC -ge 85) { "warning" } else { "ok" }
+  New-Component -Category "Thermal Sensor" -Name ($thermal.InstanceName) -Status $status -Confidence "low" -Evidence @{
+    CurrentTemperatureC = $tempC
+    RawTenthsKelvin = $thermal.CurrentTemperature
+    CriticalTripPoint = $thermal.CriticalTripPoint
+  } -Signals $(if ($status -eq "warning") { @("Thermal zone reports $tempC C.") } elseif ($status -eq "unknown") { @("Thermal zone value appears invalid or vendor-abstracted.") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Inspect cooling, airflow, dust, fans, and thermal paste; verify with vendor sensors under controlled load.") } else { @("No thermal warning was visible from ACPI thermal telemetry, but motherboard/vendor sensors are more reliable.") })
+}
+
+if ($thermalZones.Count -eq 0) {
+  New-Component -Category "Thermal Sensor" -Name "ACPI thermal telemetry" -Status "unknown" -Confidence "low" -Evidence @{ SensorCount = 0 } -Signals @("Windows did not expose ACPI thermal zones to this scanner.") -Recommendations @("Use motherboard/GPU vendor tools for sensor-grade thermal validation.")
+}
+
+foreach ($fan in $fans) {
+  $status = if ($fan.Status -and $fan.Status -ne "OK") { "warning" } else { "ok" }
+  New-Component -Category "Cooling Fan Sensor" -Name ($fan.Name) -Status $status -Confidence "low" -Evidence @{
+    Status = $fan.Status
+    ActiveCooling = $fan.ActiveCooling
+    DesiredSpeed = $fan.DesiredSpeed
+  } -Signals $(if ($status -eq "warning") { @("Fan WMI status is $($fan.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Inspect the fan physically and verify RPM in motherboard/vendor monitoring software.") } else { @("No fan fault was visible through WMI. Fan noise/bearing issues still require physical inspection.") })
+}
+
+if ($fans.Count -eq 0) {
+  New-Component -Category "Cooling Fan Sensor" -Name "WMI fan telemetry" -Status "unknown" -Confidence "low" -Evidence @{ SensorCount = 0 } -Signals @("Windows did not expose fan sensors through WMI.") -Recommendations @("Use BIOS, motherboard software, or physical inspection to verify fans and pump behavior.")
 }
 
 foreach ($gpu in $videoControllers) {
@@ -305,6 +557,22 @@ foreach ($gpu in $videoControllers) {
     NvidiaTelemetry = if ($nvidia.Count -gt 0) { $nvidia[0] } else { $null }
     RecentGpuEvents = $gpuEvents.Count
   } -Signals $signals -Recommendations $(if ($status -eq "ok") { @("No GPU fault signal was found at scan time. Use a load test if crashes occur only under gaming/rendering load.") } else { @("Check GPU temperature, power cabling, PCIe seating, and driver stability; run a vendor GPU diagnostic.") })
+}
+
+$dxProblemLines = @($dxdiagText | Where-Object {
+  $line = [string]$_
+  $line -match "problem|error|not working|failed" -and
+  $line -notmatch "No problems found|No Problem|Problem Code:\s*(No Problem|Unknown)|Device Problem Code:\s*(No Problem|Unknown)|Windows Error Reporting:\s*$|GPU Mux Support: Development, Uninitialized - Query driver runtime status failed"
+})
+$dxOkCount = @($dxdiagText | Where-Object { $_ -match "No problems found" }).Count
+if ($dxdiagText.Count -gt 0) {
+  $dxStatus = if ($dxProblemLines.Count -gt 0) { "warning" } else { "ok" }
+  New-Component -Category "DirectX Diagnostic" -Name "dxdiag display/audio/input" -Status $dxStatus -Confidence "medium" -Evidence @{
+    NoProblemsFoundLines = $dxOkCount
+    ProblemLines = @($dxProblemLines | Select-Object -First 12)
+  } -Signals $(if ($dxStatus -eq "warning") { @("$($dxProblemLines.Count) dxdiag problem/error line(s) found.") } else { @() }) -Recommendations $(if ($dxStatus -eq "warning") { @("Review dxdiag problem lines, then check affected GPU/audio/input drivers or hardware.") } else { @("dxdiag did not report display/audio/input problems in its generated report.") })
+} else {
+  New-Component -Category "DirectX Diagnostic" -Name "dxdiag display/audio/input" -Status "unknown" -Confidence "low" -Evidence @{ OutputLines = 0 } -Signals @("dxdiag output was unavailable.") -Recommendations @("Run dxdiag manually if graphics/audio/input symptoms persist.")
 }
 
 $powerEvents = @($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-Kernel-Power" -or $_.ProviderName -eq "volmgr" })
@@ -338,6 +606,50 @@ foreach ($adapter in $networkAdapters) {
   } -Signals $(if ($adapter.ConfigManagerErrorCode -and $adapter.ConfigManagerErrorCode -ne 0) { @("Device Manager code $($adapter.ConfigManagerErrorCode).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check adapter seating/cable/antenna and reinstall or update the device driver.") } else { @("No adapter hardware fault was reported.") })
 }
 
+foreach ($monitor in $monitors) {
+  $status = if ($monitor.Status -and $monitor.Status -ne "OK") { "warning" } else { "ok" }
+  New-Component -Category "Monitor" -Name ($monitor.Name) -Status $status -Confidence "low" -Evidence @{
+    ScreenWidth = $monitor.ScreenWidth
+    ScreenHeight = $monitor.ScreenHeight
+    PixelsPerXLogicalInch = $monitor.PixelsPerXLogicalInch
+    PixelsPerYLogicalInch = $monitor.PixelsPerYLogicalInch
+    Status = $monitor.Status
+  } -Signals $(if ($status -eq "warning") { @("Monitor status is $($monitor.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check display cable/port/monitor power and driver detection.") } else { @("Monitor detection has no Windows status fault. Dead pixels, flicker, and cable intermittence require visual testing.") })
+}
+
+foreach ($keyboard in $keyboards) {
+  $status = if ($keyboard.Status -and $keyboard.Status -ne "OK") { "warning" } else { "ok" }
+  New-Component -Category "Input Device" -Name ($keyboard.Name) -Status $status -Confidence "medium" -Evidence @{
+    Status = $keyboard.Status
+    Layout = $keyboard.Layout
+    FunctionKeys = $keyboard.NumberOfFunctionKeys
+  } -Signals $(if ($status -eq "warning") { @("Keyboard status is $($keyboard.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check USB/Bluetooth path or replace the keyboard if the status persists.") } else { @("Keyboard is detected without Windows status faults. Individual key failures require physical key testing.") })
+}
+
+foreach ($pointing in $pointingDevices) {
+  $status = if ($pointing.Status -and $pointing.Status -ne "OK") { "warning" } else { "ok" }
+  New-Component -Category "Input Device" -Name ($pointing.Name) -Status $status -Confidence "medium" -Evidence @{
+    Status = $pointing.Status
+    HardwareType = $pointing.HardwareType
+    PointingType = $pointing.PointingType
+    Buttons = $pointing.NumberOfButtons
+  } -Signals $(if ($status -eq "warning") { @("Pointing device status is $($pointing.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check USB/Bluetooth path or replace the pointing device if the status persists.") } else { @("Pointing device is detected without Windows status faults. Button/sensor issues require physical testing.") })
+}
+
+foreach ($usb in $usbControllers) {
+  $status = if ($usb.Status -and $usb.Status -ne "OK") { "warning" } else { "ok" }
+  New-Component -Category "USB Controller" -Name ($usb.Name) -Status $status -Confidence "medium" -Evidence @{
+    Manufacturer = $usb.Manufacturer
+    Status = $usb.Status
+    ProtocolSupported = $usb.ProtocolSupported
+  } -Signals $(if ($status -eq "warning") { @("USB controller status is $($usb.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check chipset/USB drivers and test affected ports with known-good devices.") } else { @("USB controller reports no Windows status fault. Individual ports still need physical test with a known-good device.") })
+}
+
+New-Component -Category "USB Inventory" -Name "USB hubs detected" -Status "info" -Confidence "medium" -Evidence @{
+  HubCount = $usbHubs.Count
+  Hubs = @($usbHubs | Select-Object -First 20 Name, Status, DeviceID)
+} -Signals @() -Recommendations @("USB hub inventory is captured. Intermittent ports/cables require physical testing with known-good devices.")
+
 foreach ($sound in $soundDevices) {
   $status = if ($sound.Status -and $sound.Status -ne "OK") { "warning" } else { "ok" }
   New-Component -Category "Audio" -Name ($sound.Name) -Status $status -Confidence "medium" -Evidence @{
@@ -346,6 +658,17 @@ foreach ($sound in $soundDevices) {
     ProductName = $sound.ProductName
   } -Signals $(if ($status -eq "warning") { @("Audio device status is $($sound.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check the device path, cabling, and driver package.") } else { @("No audio hardware fault was reported.") })
 }
+
+$unsignedDrivers = @($signedDrivers | Where-Object { $_.IsSigned -eq $false })
+New-Component -Category "Driver Integrity" -Name "PnP signed driver inventory" -Status $(if ($unsignedDrivers.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+  DriverCount = $signedDrivers.Count
+  UnsignedDriverCount = $unsignedDrivers.Count
+  UnsignedDrivers = @($unsignedDrivers | Select-Object -First 20 DeviceName, DriverProviderName, DriverVersion)
+} -Signals $(if ($unsignedDrivers.Count -gt 0) { @("$($unsignedDrivers.Count) unsigned PnP driver(s) found.") } else { @() }) -Recommendations $(if ($unsignedDrivers.Count -gt 0) { @("Review unsigned drivers; driver integrity issues can mimic hardware failures.") } else { @("All enumerated PnP drivers report signed status.") })
+
+New-Component -Category "Power Capabilities" -Name "powercfg /a" -Status "info" -Confidence "medium" -Evidence @{
+  Lines = @($powerCfgA | Select-Object -First 40)
+} -Signals @() -Recommendations @("Power capability data was collected. PSU quality, wall power, and power-cable problems still require physical/load testing.")
 
 if ($pnpProblems.Count -gt 0) {
   foreach ($problem in $pnpProblems) {
@@ -359,6 +682,15 @@ if ($pnpProblems.Count -gt 0) {
   New-Component -Category "Device Manager" -Name "Problem devices" -Status "ok" -Confidence "high" -Evidence @{ Count = 0 } -Signals @() -Recommendations @("No Device Manager problem devices were found.")
 }
 
+New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
+New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "unavailable" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag did not return output." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } else { "No dxdiag problem lines found." })
+New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
+New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
+New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
+New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($thermalZones.Count -eq 0 -and $fans.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+New-Diagnostic -Name "RAM live evidence" -Status "limited" -Evidence "$($memoryModules.Count) DIMM(s) inventoried; Windows live inventory cannot test memory cells." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for real RAM fault testing."
+New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
+
 if ($probeErrors.Count -gt 0) {
   New-Component -Category "Scanner Coverage" -Name "Probe errors" -Status "unknown" -Confidence "medium" -Evidence @{ Errors = $probeErrors } -Signals @("$($probeErrors.Count) probe(s) returned errors or no access.") -Recommendations @("Review probe errors before treating missing telemetry as healthy.")
 }
@@ -366,8 +698,8 @@ if ($probeErrors.Count -gt 0) {
 $report = [pscustomobject]@{
   scanner = "hardware-truth-scanner"
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
-  host = $hostName
-  os = "$($os.Caption) $($os.Version)"
+  host = Convert-ToBoundedText $hostName 200
+  os = Convert-ToBoundedText "$($os.Caption) $($os.Version)" 300
   scanWindowDays = $RecentDays
   summary = [pscustomobject]@{
     overallStatus = "unknown"
@@ -377,8 +709,9 @@ $report = [pscustomobject]@{
     warningCount = 0
     unknownCount = 0
   }
-  components = @($components)
-  findings = @($findings)
+  components = Convert-ToJsonSafe -Value @($components) -Depth 5 -MaxItems 500
+  findings = Convert-ToJsonSafe -Value @($findings) -Depth 4 -MaxItems 500
+  diagnostics = Convert-ToJsonSafe -Value @($diagnostics) -Depth 3 -MaxItems 100
   coverageLimits = @(
     "Software telemetry cannot guarantee detection of loose internal cables, dust buildup, bad ports that were not exercised, swollen capacitors, bent pins, cracked solder joints, fan bearing noise, weak PSU ripple, or intermittent faults that did not occur during the scan window.",
     "RAM health cannot be proven from inventory alone. A boot-level memory diagnostic or MemTest86 pass is required for physical RAM certainty.",
@@ -387,11 +720,17 @@ $report = [pscustomobject]@{
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   )
   raw = [pscustomobject]@{
-    RecentEvents = @($events | Select-Object -First 200)
-    NvidiaDetail = $nvidiaDetails
-    ProbeErrors = $probeErrors
-    OptionalProbeErrors = $optionalProbeErrors
+    RecentEventCount = @($events).Count
+    RecentEvents = @($events | Select-Object -First 40 | ForEach-Object {
+      "$(Convert-ToBoundedText $_.TimeCreated 40) | Id=$($_.Id) | Provider=$(Convert-ToBoundedText $_.ProviderName 120) | Level=$(Convert-ToBoundedText $_.LevelDisplayName 80) | $(Convert-ToBoundedText $_.Message 500)"
+    })
+    NvidiaDetail = @($nvidiaDetails | Select-Object -First 120 | ForEach-Object { Convert-ToBoundedText $_ 500 })
+    DxDiagProblemLines = @($dxProblemLines | Select-Object -First 40 | ForEach-Object { Convert-ToBoundedText $_ 500 })
+    PowerCfgAvailableSleepStates = @($powerCfgA | Select-Object -First 60 | ForEach-Object { Convert-ToBoundedText $_ 500 })
+    PnPProblemDeviceText = @($problemDevicesText | Select-Object -First 80 | ForEach-Object { Convert-ToBoundedText $_ 500 })
+    ProbeErrors = @($probeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
+    OptionalProbeErrors = @($optionalProbeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
   }
 }
 
-$report | ConvertTo-Json -Depth 12
+$report | ConvertTo-Json -Depth 8 -Compress:$false

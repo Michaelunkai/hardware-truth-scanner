@@ -21,6 +21,13 @@ export type Finding = {
   confidence: "high" | "medium" | "low";
 };
 
+export type DiagnosticCheck = {
+  name: string;
+  status: "passed" | "warning" | "critical" | "limited" | "not_run" | "unavailable";
+  evidence: string;
+  nextStep: string;
+};
+
 export type ScanReport = {
   scanner: string;
   generatedAt: string;
@@ -37,6 +44,7 @@ export type ScanReport = {
   };
   components: ComponentReport[];
   findings: Finding[];
+  diagnostics: DiagnosticCheck[];
   coverageLimits: string[];
   raw?: Record<string, unknown>;
 };

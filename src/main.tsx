@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import type { ComponentReport, ScanReport, Severity } from "./types";
+import type { ComponentReport, DiagnosticCheck, ScanReport, Severity } from "./types";
 import "./styles.css";
 
 const severityRank: Record<Severity, number> = {
@@ -24,6 +24,10 @@ function asStringArray(value: string[] | null | undefined) {
 
 function Badge({ value }: { value: Severity }) {
   return <span className={`badge badge-${value}`}>{value.toUpperCase()}</span>;
+}
+
+function DiagnosticBadge({ value }: { value: DiagnosticCheck["status"] }) {
+  return <span className={`badge diagnostic-${value}`}>{value.replace("_", " ").toUpperCase()}</span>;
 }
 
 function EvidenceList({ data }: { data: Record<string, unknown> }) {
@@ -99,6 +103,52 @@ function ReportMeta({ report }: { report: ScanReport }) {
   );
 }
 
+function Verdict({ report }: { report: ScanReport }) {
+  const verdict =
+    report.summary.criticalCount > 0
+      ? "Critical hardware or reliability evidence was found. Fix the listed items first."
+      : report.summary.warningCount > 0
+        ? "Warning-level evidence was found. Review the listed parts and recommended actions."
+        : report.summary.unknownCount > 0
+          ? "No critical or warning fault was found, but some hardware angles cannot be proven from safe live telemetry."
+          : "Every safe live software check passed. No hardware fault signal was found in the tested categories.";
+
+  return (
+    <section className="verdict-card">
+      <p className="eyebrow">Human-readable verdict</p>
+      <h2>{verdict}</h2>
+      <p>
+        “Perfect” means perfect within the checks that can safely run while Windows is live. Anything that needs reboot
+        diagnostics, sustained load, vendor firmware tools, or physical inspection is listed separately instead of being
+        falsely marked clean.
+      </p>
+    </section>
+  );
+}
+
+function Diagnostics({ diagnostics }: { diagnostics: DiagnosticCheck[] }) {
+  return (
+    <section className="diagnostics">
+      <div className="section-title">
+        <p className="eyebrow">Proof coverage</p>
+        <h2>What was actually tested</h2>
+      </div>
+      <div className="diagnostic-grid">
+        {diagnostics.map((item) => (
+          <article className="diagnostic-card" key={item.name}>
+            <div className="component-head">
+              <h3>{item.name}</h3>
+              <DiagnosticBadge value={item.status} />
+            </div>
+            <p>{item.evidence}</p>
+            <p className="recommendation">Next: {item.nextStep}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [report, setReport] = useState<ScanReport | null>(null);
   const [status, setStatus] = useState("Ready to run hardware scan.");
@@ -127,6 +177,7 @@ function App() {
 
   const components = report ? sortComponents(report.components) : [];
   const findings = report?.findings ?? [];
+  const diagnostics = report?.diagnostics ?? [];
   const coverageLimits = report?.coverageLimits ?? [];
 
   return (
@@ -153,6 +204,7 @@ function App() {
       {report ? (
         <>
           <ReportMeta report={report} />
+          <Verdict report={report} />
 
           <section className="summary-grid">
             <div className="summary-card main-status">
@@ -176,6 +228,8 @@ function App() {
               <strong>{report.summary.unknownCount}</strong>
             </div>
           </section>
+
+          <Diagnostics diagnostics={diagnostics} />
 
           <section className="findings">
             <div className="section-title">

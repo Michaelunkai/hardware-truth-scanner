@@ -44,6 +44,62 @@ function wait(ms) {
   return new Promise((resolveWait) => setTimeout(resolveWait, ms));
 }
 
+async function readHealth() {
+  try {
+    const response = await fetch("http://127.0.0.1:4999/api/health");
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+async function ensureAppServer() {
+  const currentHealth = await readHealth();
+  if (currentHealth?.scanner === "hardware-truth-scanner" && currentHealth?.root === root) return;
+
+  const launcher = spawn("powershell.exe", [
+    "-NoProfile",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    join(root, "Run-HardwareTruthScanner.ps1"),
+    "-NoOpen"
+  ], {
+    cwd: root,
+    windowsHide: true,
+    stdio: ["ignore", "pipe", "pipe"]
+  });
+
+  let stdout = "";
+  let stderr = "";
+  launcher.stdout.on("data", (chunk) => { stdout += chunk.toString(); });
+  launcher.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
+
+  const exitCode = await new Promise((resolveExit) => {
+    const timeout = setTimeout(() => {
+      launcher.kill();
+      resolveExit("timeout");
+    }, 60_000);
+    launcher.on("exit", (code) => {
+      clearTimeout(timeout);
+      resolveExit(code);
+    });
+  });
+
+  if (exitCode !== 0) {
+    throw new Error(`Launcher failed during GUI smoke. exit=${exitCode}; stdout=${stdout}; stderr=${stderr}`);
+  }
+
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const health = await readHealth();
+    if (health?.scanner === "hardware-truth-scanner" && health?.root === root) return;
+    await wait(500);
+  }
+
+  throw new Error(`Hardware Truth Scanner did not become healthy during GUI smoke. stdout=${stdout}; stderr=${stderr}`);
+}
+
 async function fetchJson(url, attempts = 50) {
   let lastError;
   for (let attempt = 0; attempt < attempts; attempt += 1) {
@@ -68,6 +124,7 @@ function send(method, params = {}, sessionId = undefined) {
 }
 
 try {
+  await ensureAppServer();
   await fetchJson(`http://127.0.0.1:${debugPort}/json/version`);
   const pageTargetResponse = await fetch(`http://127.0.0.1:${debugPort}/json/new?about:blank`, {
     method: "PUT"
@@ -124,6 +181,8 @@ try {
     if (
       bodyText.includes("Hardware Truth Scanner") &&
       bodyText.includes("Scan completed") &&
+      bodyText.includes("Human-readable verdict") &&
+      bodyText.includes("What was actually tested") &&
       bodyText.includes("Component evidence") &&
       bodyText.includes("Confidence:") &&
       bodyText.includes("Recommended action") &&
@@ -137,6 +196,8 @@ try {
   const requiredText = [
     "Hardware Truth Scanner",
     "Scan completed",
+    "Human-readable verdict",
+    "What was actually tested",
     "Component evidence",
     "Findings that may need action",
     "Confidence:",

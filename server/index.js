@@ -34,6 +34,13 @@ function runPowerShellScanner() {
 
     let stdout = "";
     let stderr = "";
+    let finished = false;
+    const timeout = setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      child.kill("SIGKILL");
+      reject(new Error("Scanner timed out after 240 seconds. Slow hardware probes were stopped to keep the app responsive."));
+    }, 240000);
 
     child.stdout.on("data", (chunk) => {
       stdout += chunk.toString();
@@ -45,6 +52,9 @@ function runPowerShellScanner() {
 
     child.on("error", reject);
     child.on("close", (code) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
       if (code !== 0) {
         reject(new Error(`Scanner exited with code ${code}: ${stderr || stdout}`));
         return;
@@ -67,7 +77,7 @@ function runPowerShellScanner() {
 }
 
 app.get("/api/health", (_request, response) => {
-  response.json({ ok: true, scanner: "hardware-truth-scanner" });
+  response.json({ ok: true, scanner: "hardware-truth-scanner", root });
 });
 
 app.get("/api/report", (_request, response) => {

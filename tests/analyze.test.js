@@ -41,6 +41,7 @@ describe("validateReportShape", () => {
       "host",
       "os",
       "findings",
+      "diagnostics",
       "coverageLimits"
     ]);
   });

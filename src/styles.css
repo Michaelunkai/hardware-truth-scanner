@@ -91,12 +91,39 @@ p {
 
 .status-strip,
 .empty,
-.clean {
+.clean,
+.verdict-card {
   margin: 1rem 0;
   padding: 1rem 1.25rem;
   border-radius: 20px;
   background: rgba(255, 250, 240, 0.72);
   border: 1px solid var(--line);
+}
+
+.verdict-card {
+  padding: 1.4rem;
+  background: rgba(33, 74, 54, 0.92);
+  color: white;
+}
+
+.verdict-card .eyebrow {
+  color: #f4c36a;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.verdict-card h2 {
+  max-width: 980px;
+  margin-bottom: 0.8rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.verdict-card p:last-child {
+  max-width: 920px;
+  margin-bottom: 0;
+  line-height: 1.6;
 }
 
 .meta-strip {
@@ -179,13 +206,15 @@ p {
 }
 
 .finding-list,
-.component-grid {
+.component-grid,
+.diagnostic-grid {
   display: grid;
   gap: 1rem;
 }
 
 .finding,
-.component-card {
+.component-card,
+.diagnostic-card {
   padding: 1.2rem;
   border-radius: 24px;
   background: rgba(255, 250, 240, 0.9);
@@ -204,6 +233,10 @@ p {
 
 .component-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.diagnostic-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .component-head {
@@ -260,6 +293,28 @@ p {
   color: #5f5342;
 }
 
+.diagnostic-passed {
+  background: #dcefd8;
+  color: #1d542c;
+}
+
+.diagnostic-warning,
+.diagnostic-limited {
+  background: #ffe8ad;
+  color: #6b4700;
+}
+
+.diagnostic-critical {
+  background: #ffd6cf;
+  color: #8a1f18;
+}
+
+.diagnostic-not_run,
+.diagnostic-unavailable {
+  background: #e8e1d6;
+  color: #5f5342;
+}
+
 .evidence {
   display: grid;
   grid-template-columns: 10rem minmax(0, 1fr);
@@ -306,6 +361,7 @@ li {
   .hero,
   .summary-grid,
   .component-grid,
+  .diagnostic-grid,
   .meta-strip {
     grid-template-columns: 1fr;
   }

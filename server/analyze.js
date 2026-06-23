@@ -30,7 +30,7 @@ export function summarizeReport(report) {
 
 export function validateReportShape(report) {
   const missing = [];
-  for (const key of ["scanner", "generatedAt", "host", "os", "components", "findings", "coverageLimits"]) {
+  for (const key of ["scanner", "generatedAt", "host", "os", "components", "findings", "diagnostics", "coverageLimits"]) {
     if (!(key in report)) {
       missing.push(key);
     }
