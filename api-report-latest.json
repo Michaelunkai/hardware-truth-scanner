@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T14:22:42.9234836Z",
+  "generatedAt": "2026-06-23T14:32:15.4825839Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 63,
+    "componentCount": 68,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 2,
@@ -301,7 +301,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1690.52,
+        "FreeGB": 1714.63,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -520,16 +520,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "73",
+          "TemperatureC": "37",
           "FanPercent": "0",
-          "PState": "P0",
-          "PowerDrawW": "359.87",
+          "PState": "P8",
+          "PowerDrawW": "24.96",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "2715",
-          "MemoryClockMhz": "15001",
-          "PcieGen": "5",
+          "GraphicsClockMhz": "262",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
           "PcieWidth": "16",
-          "UtilizationPercent": "100"
+          "UtilizationPercent": "1"
         }
       },
       "signals": [],
@@ -995,6 +995,397 @@
       ]
     },
     {
+      "id": "peripheral-inventory-hid-class-controls-and-human-interface-devices",
+      "category": "Peripheral Inventory",
+      "name": "HID-class controls and human interface devices",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [
+          {
+            "Name": "HID-compliant device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_048D&PID_5711&MI_00\\A&88DB3E9&0&0000"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_08BB&PID_2902&MI_02\\9&38ED8508&0&0002"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_413C&PID_3016\\6&16D50F4A&0&2"
+          },
+          {
+            "Name": "HID-compliant consumer control device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_046D&PID_C548&MI_01&COL02\\A&351DE9BA&0&0001"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_1B1C&PID_1B07&MI_01\\9&198A58C7&0&0001"
+          },
+          {
+            "Name": "Bluetooth XINPUT-compatible input device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002045E_PID&0B05\\C&B181178&0&14CB658953BD_C00000000"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_046D&PID_C548&MI_02\\9&19CF8520&0&0002"
+          },
+          {
+            "Name": "HID Keyboard Device",
+            "PNPClass": "Keyboard",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_046D&PID_C548&MI_00\\A&1D5A5D75&0&0000"
+          },
+          {
+            "Name": "HID-compliant consumer control device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_08BB&PID_2902&MI_02\\A&12444FBB&0&0000"
+          },
+          {
+            "Name": "HID-compliant vendor-defined device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_048D&PID_5711&MI_01&COL02\\A&30F861B2&0&0001"
+          },
+          {
+            "Name": "HID-compliant system controller",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_046D&PID_C548&MI_01&COL03\\A&351DE9BA&0&0002"
+          },
+          {
+            "Name": "HID-compliant mouse",
+            "PNPClass": "Mouse",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_413C&PID_3016\\7&16FCF135&0&0000"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_1B1C&PID_1B07&MI_02\\9&198A58C7&0&0002"
+          },
+          {
+            "Name": "USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_046D&PID_C548&MI_03\\9&19CF8520&0&0003"
+          },
+          {
+            "Name": "HID-compliant device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_046D&PID_C548&MI_01&COL04\\A&351DE9BA&0&0003"
+          },
+          {
+            "Name": "HID Keyboard Device",
+            "PNPClass": "Keyboard",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_1B1C&PID_1B07&MI_00\\A&A9F0811&0&0000"
+          },
+          {
+            "Name": "HID-compliant consumer control device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_1B1C&PID_1B07&MI_01\\A&193835B1&0&0000"
+          },
+          {
+            "Name": "Bluetooth HID Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&00023537_PID&1022\\C&B181178&0&D62040BEFDE1_C00000000"
+          },
+          {
+            "Name": "Logitech USB Input Device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000"
+          },
+          {
+            "Name": "HID-compliant vendor-defined device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HID\\VID_046D&PID_C548&MI_02&COL01\\A&1146ABF8&0&0000"
+          },
+          "... truncated 1 more item(s)"
+        ],
+        "DeviceCount": 30,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "HID-class devices are detected without Device Manager problem codes. Button, stick, key, touch, and sensor accuracy still require physical testing."
+      ]
+    },
+    {
+      "id": "peripheral-inventory-bluetooth-radios-and-paired-hardware",
+      "category": "Peripheral Inventory",
+      "name": "Bluetooth radios and paired hardware",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [
+          {
+            "Name": "Standard Serial over Bluetooth link (COM3)",
+            "PNPClass": "Ports",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\\C&2B7ACB7D&0&000000000000_00000000"
+          },
+          {
+            "Name": "Personal Area Network Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001115-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Device Identification Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001200-0000-1000-8000-00805F9B34FB}_VID&0002045E_PID&0B05\\C&B181178&0&14CB658953BD_C00000000"
+          },
+          {
+            "Name": "Michael's S25 Ultra Hands-Free HF Audio",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHHFENUM\\BTHHFPAUDIO\\D&38430CF5&0&97"
+          },
+          {
+            "Name": "GameSir-G7 Pro",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\DEV_D62040BEFDE1\\C&B181178&0&BLUETOOTHDEVICE_D62040BEFDE1"
+          },
+          {
+            "Name": "Bluetooth XINPUT-compatible input device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002045E_PID&0B05\\C&B181178&0&14CB658953BD_C00000000"
+          },
+          {
+            "Name": "Bluetooth Peripheral Device",
+            "PNPClass": null,
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001800-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Microsoft Bluetooth LE Enumerator",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTH\\MS_BTHLE\\B&1FD3DE35&0&3"
+          },
+          {
+            "Name": "MX Anywhere 3S",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLE\\DEV_DCEAAAECE9CE\\C&2FFD9217&0&DCEAAAECE9CE"
+          },
+          {
+            "Name": "Generic Attribute Profile",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00001801-0000-1000-8000-00805F9B34FB}_45E6C79F4CAE\\D&DF8C832&0&0001"
+          },
+          {
+            "Name": "Bluetooth Peripheral Device",
+            "PNPClass": null,
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{0000FD7E-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Michael's S25 Ultra Hands-Free HF",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{0000111F-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Qualcomm FastConnect 7800 Dual Bluetooth Adapter",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_0489&PID_E10D\\A&AB935FC&0&11"
+          },
+          {
+            "Name": "Bluetooth Peripheral Device",
+            "PNPClass": null,
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{594A34FC-31DB-11EA-978F-2E728CE88125}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Bluetooth LE Generic Attribute Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{E73E0001-EF1B-4E74-8291-2E4F3164F3B5}_45E6C79F4CAE\\D&DF8C832&0&0090"
+          },
+          {
+            "Name": "Bluetooth LE Generic Attribute Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{0000180F-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B037_REV&0003_DCEAAAECE9CE\\D&52BACA5&0&001B"
+          },
+          {
+            "Name": "Michael's S25 Ultra Avrcp Transport",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{0000110C-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Bluetooth LE Generic Attribute Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{0000184C-0000-1000-8000-00805F9B34FB}_45E6C79F4CAE\\D&DF8C832&0&005A"
+          },
+          {
+            "Name": "Object Push Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001105-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "Microsoft Bluetooth Enumerator",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTH\\MS_BTHBRB\\B&1FD3DE35&0&1"
+          },
+          "... truncated 1 more item(s)"
+        ],
+        "DeviceCount": 50,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "Bluetooth-class devices are detected without Device Manager problem codes. Range, antenna, battery, and interference still require physical testing."
+      ]
+    },
+    {
+      "id": "peripheral-inventory-camera-and-imaging-devices",
+      "category": "Peripheral Inventory",
+      "name": "Camera and imaging devices",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [],
+        "DeviceCount": 0,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "No camera or imaging hardware was exposed by Windows in this scan."
+      ]
+    },
+    {
+      "id": "peripheral-inventory-sensor-class-devices",
+      "category": "Peripheral Inventory",
+      "name": "Sensor-class devices",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [],
+        "DeviceCount": 0,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "No sensor-class hardware was exposed by Windows in this scan."
+      ]
+    },
+    {
+      "id": "peripheral-inventory-printer-and-print-path-devices",
+      "category": "Peripheral Inventory",
+      "name": "Printer and print-path devices",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [
+          {
+            "Name": "Root Print Queue",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\PRINTQUEUES"
+          },
+          {
+            "Name": "Microsoft Print to PDF",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\{E1FCA9E2-B78E-4010-9482-582293E6D2CF}"
+          },
+          {
+            "Name": "Microsoft XPS Document Writer",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\{A8354A02-8B75-4A3A-A581-9B3673DD0FFA}"
+          }
+        ],
+        "DeviceCount": 3,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "Printer-class devices are detected without Device Manager problem codes. Paper path, ink/toner, and mechanical feed issues require printer self-test pages."
+      ]
+    },
+    {
       "id": "pci-and-expansion-bus-pci-pcie-device-inventory",
       "category": "PCI and Expansion Bus",
       "name": "PCI/PCIe device inventory",
@@ -1347,7 +1738,7 @@
           "\tThe system firmware does not support this standby state.",
           "",
           "    Hibernate",
-          "\tThe hiberfile type does not support hibernation.",
+          "\tHibernation has not been enabled.",
           "",
           "    Standby (S0 Low Power Idle)",
           "\tThe system firmware does not support this standby state.",
@@ -1470,6 +1861,12 @@
       "nextStep": "No Device Manager problem codes found."
     },
     {
+      "name": "Peripheral inventory problem-code sweep",
+      "status": "passed",
+      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
+      "nextStep": "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep."
+    },
+    {
       "name": "DirectX display/audio/input diagnostic",
       "status": "limited",
       "evidence": "dxdiag skipped in the default safe scan path.",
@@ -1490,7 +1887,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 73C, PState P0, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 37C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -1550,7 +1947,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 17:22:42 2026",
+      "Timestamp : Tue Jun 23 17:32:15 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -1558,11 +1955,11 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P0",
+      " Performance State : P8",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
-      " SW Power Cap : Active",
+      " SW Power Cap : Not Active",
       " HW Slowdown : Not Active",
       " HW Thermal Slowdown : Not Active",
       " HW Power Brake Slowdown : Not Active",
@@ -1570,15 +1967,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 413685414 us",
+      " SW Power Capping : 434822133 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 73 C",
-      " GPU Current T.Limit Temp : 16 C",
+      " GPU Current Temp : 37 C",
+      " GPU Current T.Limit Temp : 51 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -1586,8 +1983,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 359.87 W",
-      " Instantaneous Power Draw : 362.43 W",
+      " Average Power Draw : 24.96 W",
+      " Instantaneous Power Draw : 25.70 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -1599,11 +1996,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.35 sec",
+      " Duration : 2.41 sec",
       " Number of Samples : 119",
-      " Max : 376.08 W",
-      " Min : 306.88 W",
-      " Avg : 359.73 W",
+      " Max : 34.54 W",
+      " Min : 23.93 W",
+      " Avg : 25.07 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -1631,7 +2028,7 @@
       " The system firmware does not support this standby state.",
       "",
       " Hibernate",
-      " The hiberfile type does not support hibernation.",
+      " Hibernation has not been enabled.",
       "",
       " Standby (S0 Low Power Idle)",
       " The system firmware does not support this standby state.",
@@ -1641,7 +2038,7 @@
       " The hypervisor does not support this standby state.",
       "",
       " Fast Startup",
-      " This action is disabled in the current system policy.",
+      " Hibernation is not available.",
       ""
     ],
     "PnPProblemDeviceText": [

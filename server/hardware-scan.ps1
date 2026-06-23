@@ -295,6 +295,37 @@ function New-Diagnostic {
   }
 }
 
+function New-PnpInventoryComponent {
+  param(
+    [string]$Name,
+    [array]$Devices,
+    [string]$AbsentRecommendation,
+    [string]$HealthyRecommendation,
+    [string]$ProblemRecommendation
+  )
+
+  $problemDevices = @($Devices | Where-Object { $_.ConfigManagerErrorCode -and $_.ConfigManagerErrorCode -ne 0 })
+  $status = if ($problemDevices.Count -gt 0) { "warning" } elseif ($Devices.Count -eq 0) { "info" } else { "ok" }
+  $signals = @()
+  if ($problemDevices.Count -gt 0) {
+    $signals = @("$($problemDevices.Count) device(s) in this peripheral group have Device Manager problem codes.")
+  }
+  $recommendations = if ($problemDevices.Count -gt 0) {
+    @($ProblemRecommendation)
+  } elseif ($Devices.Count -eq 0) {
+    @($AbsentRecommendation)
+  } else {
+    @($HealthyRecommendation)
+  }
+
+  New-Component -Category "Peripheral Inventory" -Name $Name -Status $status -Confidence "medium" -Evidence @{
+    DeviceCount = $Devices.Count
+    ProblemDeviceCount = $problemDevices.Count
+    ProblemDevices = @($problemDevices | Select-Object -First 20 Name, PNPClass, Status, ConfigManagerErrorCode, DeviceID)
+    SampleDevices = @($Devices | Select-Object -First 30 Name, PNPClass, Status, ConfigManagerErrorCode, DeviceID)
+  } -Signals $signals -Recommendations $recommendations
+}
+
 function As-Text {
   param($Value)
   if ($null -eq $Value) { return "" }
@@ -352,6 +383,13 @@ $pnpProblems = @(Invoke-Probe "pnp problems" { Get-CimInstance Win32_PnPEntity |
 $pnpAll = @(Invoke-Probe "pnp all" { Get-CimInstance Win32_PnPEntity })
 $pciDevices = @($pnpAll | Where-Object { $_.PNPDeviceID -like "PCI\*" })
 $firmwareDevices = @($pnpAll | Where-Object { $_.PNPClass -eq "Firmware" -or $_.Name -match "firmware|BIOS|UEFI" })
+$hidPeripheralDevices = @($pnpAll | Where-Object { $_.PNPClass -eq "HIDClass" -or $_.Name -match "HID|Human Interface|game controller|gamepad|joystick|XINPUT|touchscreen|touchpad|\bpen\b|digitizer" })
+$bluetoothPeripheralDevices = @($pnpAll | Where-Object { $_.PNPClass -eq "Bluetooth" -or $_.Name -match "Bluetooth" -or $_.DeviceID -match "^BTH" })
+$cameraPeripheralDevices = @($pnpAll | Where-Object { $_.PNPClass -in @("Camera", "Image", "Imaging") -or $_.Name -match "camera|webcam|imaging" })
+$sensorPeripheralDevices = @($pnpAll | Where-Object { $_.PNPClass -eq "Sensor" -or $_.Name -match "sensor|accelerometer|gyroscope|ambient light|lid switch" })
+$printerPeripheralDevices = @($pnpAll | Where-Object { $_.PNPClass -in @("Printer", "PrintQueue", "WSDPrintDevice") -or $_.Name -match "printer|print queue|fax" })
+$peripheralInventoryDevices = @($hidPeripheralDevices + $bluetoothPeripheralDevices + $cameraPeripheralDevices + $sensorPeripheralDevices + $printerPeripheralDevices | Where-Object { $_ })
+$peripheralProblemDevices = @($peripheralInventoryDevices | Where-Object { $_.ConfigManagerErrorCode -and $_.ConfigManagerErrorCode -ne 0 } | Sort-Object DeviceID -Unique)
 $signedDrivers = @(Invoke-Probe "signed drivers" { Get-CimInstance Win32_PnPSignedDriver })
 $monitors = @(Invoke-Probe "monitors" { Get-CimInstance Win32_DesktopMonitor })
 $keyboards = @(Invoke-Probe "keyboards" { Get-CimInstance Win32_Keyboard })
@@ -846,6 +884,12 @@ New-Component -Category "USB Inventory" -Name "USB hubs detected" -Status "info"
   Hubs = @($usbHubs | Select-Object -First 20 Name, Status, DeviceID)
 } -Signals @() -Recommendations @("USB hub inventory is captured. Intermittent ports/cables require physical testing with known-good devices.")
 
+New-PnpInventoryComponent -Name "HID-class controls and human interface devices" -Devices $hidPeripheralDevices -AbsentRecommendation "No HID-class peripheral inventory was exposed by Windows in this scan." -HealthyRecommendation "HID-class devices are detected without Device Manager problem codes. Button, stick, key, touch, and sensor accuracy still require physical testing." -ProblemRecommendation "Fix the listed HID Device Manager problem codes first, then test the affected control path with a known-good cable, dongle, or port."
+New-PnpInventoryComponent -Name "Bluetooth radios and paired hardware" -Devices $bluetoothPeripheralDevices -AbsentRecommendation "No Bluetooth hardware was exposed by Windows in this scan." -HealthyRecommendation "Bluetooth-class devices are detected without Device Manager problem codes. Range, antenna, battery, and interference still require physical testing." -ProblemRecommendation "Fix the listed Bluetooth problem devices before replacing radios or paired hardware."
+New-PnpInventoryComponent -Name "Camera and imaging devices" -Devices $cameraPeripheralDevices -AbsentRecommendation "No camera or imaging hardware was exposed by Windows in this scan." -HealthyRecommendation "Camera/imaging devices are detected without Device Manager problem codes. Lens, focus, flicker, and microphone quality require live app testing." -ProblemRecommendation "Fix the listed camera/imaging problem devices, then test with the Windows Camera app or vendor diagnostics."
+New-PnpInventoryComponent -Name "Sensor-class devices" -Devices $sensorPeripheralDevices -AbsentRecommendation "No sensor-class hardware was exposed by Windows in this scan." -HealthyRecommendation "Sensor-class devices are detected without Device Manager problem codes. Calibration and intermittent behavior still require device-specific validation." -ProblemRecommendation "Fix the listed sensor problem devices and verify calibration with vendor or Windows sensor tools."
+New-PnpInventoryComponent -Name "Printer and print-path devices" -Devices $printerPeripheralDevices -AbsentRecommendation "No printer-class hardware was exposed by Windows in this scan." -HealthyRecommendation "Printer-class devices are detected without Device Manager problem codes. Paper path, ink/toner, and mechanical feed issues require printer self-test pages." -ProblemRecommendation "Fix the listed printer problem devices before assuming printer hardware failure."
+
 $pciProblems = @($pciDevices | Where-Object { $_.ConfigManagerErrorCode -ne 0 })
 New-Component -Category "PCI and Expansion Bus" -Name "PCI/PCIe device inventory" -Status $(if ($pciProblems.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
   DeviceCount = $pciDevices.Count
@@ -957,6 +1001,7 @@ if ($pnpProblems.Count -gt 0) {
 }
 
 New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
+New-Diagnostic -Name "Peripheral inventory problem-code sweep" -Status $(if ($peripheralProblemDevices.Count -gt 0) { "warning" } else { "passed" }) -Evidence "HID=$($hidPeripheralDevices.Count), Bluetooth=$($bluetoothPeripheralDevices.Count), Camera/Imaging=$($cameraPeripheralDevices.Count), Sensors=$($sensorPeripheralDevices.Count), Printers=$($printerPeripheralDevices.Count); $($peripheralProblemDevices.Count) unique peripheral problem device(s)." -NextStep $(if ($peripheralProblemDevices.Count -gt 0) { "Fix listed peripheral Device Manager problem codes, then retest the physical device path with known-good cables, ports, dongles, or vendor tools." } else { "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep." })
 New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "limited" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag skipped in the default safe scan path." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } elseif ($dxdiagText.Count -eq 0) { "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing." } else { "No dxdiag problem lines found." })
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
