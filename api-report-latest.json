@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T15:15:58.3877516Z",
+  "generatedAt": "2026-06-23T15:23:04.4517363Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 74,
+    "componentCount": 75,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -368,7 +368,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1695.47,
+        "FreeGB": 1689.4,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -528,7 +528,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1695.47,
+            "VolumeFreeGB": 1689.4,
             "DirtyBit": false
           },
           {
@@ -790,16 +790,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "45",
+          "TemperatureC": "39",
           "FanPercent": "0",
-          "PState": "P8",
-          "PowerDrawW": "27.18",
+          "PState": "P5",
+          "PowerDrawW": "24.85",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "180",
-          "MemoryClockMhz": "405",
-          "PcieGen": "1",
+          "GraphicsClockMhz": "202",
+          "MemoryClockMhz": "810",
+          "PcieGen": "2",
           "PcieWidth": "16",
-          "UtilizationPercent": "4"
+          "UtilizationPercent": "0"
         }
       },
       "signals": [],
@@ -927,8 +927,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 29428,
-            "BytesSentPerSec": 35071,
+            "BytesReceivedPerSec": 474612,
+            "BytesSentPerSec": 30977,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2500,6 +2500,25 @@
       ]
     },
     {
+      "id": "power-stability-psu-ac-battery-and-unexpected-shutdown-evidence",
+      "category": "Power Stability",
+      "name": "PSU, AC, battery, and unexpected shutdown evidence",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "KernelPowerProblemEventCount": 0,
+        "UnexpectedShutdownEventCount": 0,
+        "PowerSupplyRows": [],
+        "ProblemEvents": [],
+        "UpsRows": [],
+        "BatteryRows": []
+      },
+      "signals": [],
+      "recommendations": [
+        "No recent Kernel-Power 41 or EventLog 6008 unexpected-shutdown evidence was found in the scan window. PSU ripple, weak cables, wall power, and load-only failures still require controlled physical/load testing."
+      ]
+    },
+    {
       "id": "device-reliability-events-recent-pnp-device-setup-history",
       "category": "Device Reliability Events",
       "name": "Recent PnP/device setup history",
@@ -2641,6 +2660,12 @@
       "nextStep": "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing."
     },
     {
+      "name": "Power source and unexpected shutdown sweep",
+      "status": "passed",
+      "evidence": "0 power supply row(s), 0 UPS row(s), 0 battery row(s), 0 Kernel-Power problem event(s), 0 EventLog 6008 unexpected shutdown event(s).",
+      "nextStep": "No recent Windows power-loss event evidence was found; PSU and wall-power quality still require physical/load testing if symptoms exist."
+    },
+    {
       "name": "Storage SMART and reliability telemetry",
       "status": "limited",
       "evidence": "Windows advanced storage providers were unavailable; generic disk status and event logs were used.",
@@ -2667,7 +2692,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 45C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 39C, PState P5, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -2727,7 +2752,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 18:15:57 2026",
+      "Timestamp : Tue Jun 23 18:23:03 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -2735,7 +2760,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P8",
+      " Performance State : P5",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -2747,15 +2772,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 734720992 us",
+      " SW Power Capping : 769833871 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 45 C",
-      " GPU Current T.Limit Temp : 43 C",
+      " GPU Current Temp : 39 C",
+      " GPU Current T.Limit Temp : 49 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -2763,8 +2788,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 27.80 W",
-      " Instantaneous Power Draw : 30.95 W",
+      " Average Power Draw : 24.97 W",
+      " Instantaneous Power Draw : 25.09 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -2776,11 +2801,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.41 sec",
+      " Duration : 2.30 sec",
       " Number of Samples : 119",
-      " Max : 40.78 W",
-      " Min : 25.49 W",
-      " Avg : 27.50 W",
+      " Max : 29.90 W",
+      " Min : 24.05 W",
+      " Avg : 25.11 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
