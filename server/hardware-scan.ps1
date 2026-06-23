@@ -587,25 +587,35 @@ $nvidiaRows = @()
 $nvidiaDetails = @()
 $nvidiaCommand = Get-Command nvidia-smi.exe -ErrorAction SilentlyContinue
 if ($nvidiaCommand) {
-  $query = "name,driver_version,vbios_version,temperature.gpu,fan.speed,pstate,power.draw,power.limit,clocks.current.graphics,clocks.current.memory,pcie.link.gen.current,pcie.link.width.current,utilization.gpu"
+  $query = "name,driver_version,vbios_version,memory.total,memory.used,memory.free,temperature.gpu,fan.speed,pstate,power.draw,power.limit,clocks.current.graphics,clocks.current.memory,pcie.link.gen.current,pcie.link.gen.max,pcie.link.width.current,pcie.link.width.max,display_active,display_mode,utilization.gpu"
   $csv = @(Invoke-Probe "nvidia query" { & $nvidiaCommand.Source "--query-gpu=$query" "--format=csv,noheader,nounits" })
   foreach ($line in $csv) {
     $parts = $line -split "\s*,\s*"
-    if ($parts.Count -ge 13) {
+    if ($parts.Count -ge 20) {
       $nvidiaRows += [pscustomobject]@{
         Name = $parts[0]
         DriverVersion = $parts[1]
         VbiosVersion = $parts[2]
-        TemperatureC = $parts[3]
-        FanPercent = $parts[4]
-        PState = $parts[5]
-        PowerDrawW = $parts[6]
-        PowerLimitW = $parts[7]
-        GraphicsClockMhz = $parts[8]
-        MemoryClockMhz = $parts[9]
-        PcieGen = $parts[10]
-        PcieWidth = $parts[11]
-        UtilizationPercent = $parts[12]
+        MemoryTotalMiB = $parts[3]
+        MemoryUsedMiB = $parts[4]
+        MemoryFreeMiB = $parts[5]
+        MemoryTotalGB = if ($parts[3] -match "^\d+(\.\d+)?$") { [math]::Round(([double]$parts[3] / 1024), 2) } else { $null }
+        MemoryUsedGB = if ($parts[4] -match "^\d+(\.\d+)?$") { [math]::Round(([double]$parts[4] / 1024), 2) } else { $null }
+        MemoryFreeGB = if ($parts[5] -match "^\d+(\.\d+)?$") { [math]::Round(([double]$parts[5] / 1024), 2) } else { $null }
+        TemperatureC = $parts[6]
+        FanPercent = $parts[7]
+        PState = $parts[8]
+        PowerDrawW = $parts[9]
+        PowerLimitW = $parts[10]
+        GraphicsClockMhz = $parts[11]
+        MemoryClockMhz = $parts[12]
+        PcieGen = $parts[13]
+        PcieGenMax = $parts[14]
+        PcieWidth = $parts[15]
+        PcieWidthMax = $parts[16]
+        DisplayActive = $parts[17]
+        DisplayMode = $parts[18]
+        UtilizationPercent = $parts[19]
       }
     }
   }
@@ -1003,6 +1013,38 @@ foreach ($gpu in $videoControllers) {
   } -Signals $signals -Recommendations $(if ($status -eq "ok") { @("No GPU fault signal was found at scan time. Use a load test if crashes occur only under gaming/rendering load.") } else { @("Check GPU temperature, power cabling, PCIe seating, and driver stability; run a vendor GPU diagnostic.") })
 }
 
+$gpuDisplayRows = @()
+foreach ($gpu in $videoControllers) {
+  $nvidia = @($nvidiaRows | Where-Object { $gpu.Name -like "*$($_.Name)*" -or $_.Name -like "*$($gpu.Name)*" } | Select-Object -First 1)
+  $gpuDisplayRows += [pscustomobject]@{
+    Name = $gpu.Name
+    Status = $gpu.Status
+    PNPDeviceID = $gpu.PNPDeviceID
+    AdapterCompatibility = $gpu.AdapterCompatibility
+    VideoProcessor = $gpu.VideoProcessor
+    DriverVersion = $gpu.DriverVersion
+    DriverDate = $gpu.DriverDate
+    InfFilename = $gpu.InfFilename
+    CurrentResolution = if ($gpu.CurrentHorizontalResolution -and $gpu.CurrentVerticalResolution) { "$($gpu.CurrentHorizontalResolution)x$($gpu.CurrentVerticalResolution)" } else { $null }
+    CurrentRefreshRateHz = $gpu.CurrentRefreshRate
+    CurrentBitsPerPixel = $gpu.CurrentBitsPerPixel
+    VideoModeDescription = $gpu.VideoModeDescription
+    WmiAdapterRamGB = if ($gpu.AdapterRAM) { [math]::Round(($gpu.AdapterRAM / 1GB), 2) } else { $null }
+    NvidiaMemoryTotalGB = if ($nvidia.Count -gt 0) { $nvidia[0].MemoryTotalGB } else { $null }
+    NvidiaMemoryUsedGB = if ($nvidia.Count -gt 0) { $nvidia[0].MemoryUsedGB } else { $null }
+    NvidiaMemoryFreeGB = if ($nvidia.Count -gt 0) { $nvidia[0].MemoryFreeGB } else { $null }
+    NvidiaDisplayActive = if ($nvidia.Count -gt 0) { $nvidia[0].DisplayActive } else { $null }
+    NvidiaPcieLink = if ($nvidia.Count -gt 0) { "Gen $($nvidia[0].PcieGen)/$($nvidia[0].PcieGenMax), x$($nvidia[0].PcieWidth)/x$($nvidia[0].PcieWidthMax)" } else { $null }
+  }
+}
+$gpuDisplayProblemRows = @($gpuDisplayRows | Where-Object { $_.Status -and $_.Status -ne "OK" })
+New-Component -Category "GPU Display Pipeline" -Name "Video modes, VRAM, driver, and link evidence" -Status $(if ($gpuDisplayProblemRows.Count -gt 0) { "warning" } elseif ($gpuDisplayRows.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  VideoControllerCount = $videoControllers.Count
+  NvidiaTelemetryCount = $nvidiaRows.Count
+  ProblemControllerCount = $gpuDisplayProblemRows.Count
+  Rows = @($gpuDisplayRows)
+} -Signals $(if ($gpuDisplayProblemRows.Count -gt 0) { @("$($gpuDisplayProblemRows.Count) video controller display pipeline row(s) have non-OK Windows status.") } elseif ($gpuDisplayRows.Count -eq 0) { @("Windows did not expose video-controller display pipeline rows to this scanner.") } else { @() }) -Recommendations $(if ($gpuDisplayProblemRows.Count -gt 0) { @("Fix the listed display adapter status before replacing GPU, cable, monitor, or slot hardware.") } elseif ($gpuDisplayRows.Count -eq 0) { @("Use Device Manager, GPU vendor tools, and monitor OSD diagnostics if display symptoms exist because video-controller rows were unavailable.") } else { @("Display modes, driver rows, and NVIDIA VRAM/link telemetry were captured without Windows video-controller status faults. Flicker, HDR/VRR, cable quality, dead pixels, and load-only GPU faults still require symptom-time visual/load testing.") })
+
 $dxProblemLines = @($dxdiagText | Where-Object {
   $line = [string]$_
   $line -match "problem|error|not working|failed" -and
@@ -1354,6 +1396,7 @@ New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyS
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "CPU topology and live counter sweep" -Status $(if ($processors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($processors.Count) processor package row(s), $totalLogicalProcessors logical processor(s), $($processorTotalCounters.Count) total counter row(s), $($logicalProcessorCounters.Count) logical processor counter row(s), processor queue length=$cpuQueueLength." -NextStep "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
+New-Diagnostic -Name "GPU display mode, VRAM, and link telemetry" -Status $(if ($gpuDisplayProblemRows.Count -gt 0) { "warning" } elseif ($gpuDisplayRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($gpuDisplayRows.Count) video controller row(s), $($nvidiaRows.Count) NVIDIA telemetry row(s), $($gpuDisplayProblemRows.Count) problem display pipeline row(s)." -NextStep $(if ($gpuDisplayProblemRows.Count -gt 0) { "Fix video-controller status before replacing GPU, cable, monitor, or PCIe slot hardware." } elseif ($gpuDisplayRows.Count -eq 0) { "Use Device Manager and GPU vendor tools if display symptoms exist because video-controller rows were unavailable." } else { "Use display mode, VRAM, driver, and PCIe link rows to correlate symptoms; visually retest flicker/HDR/VRR/cable issues during symptoms." })
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
 New-Diagnostic -Name "Memory slot topology and error-correction sweep" -Status $(if ($memoryArrays.Count -eq 0 -and $memoryModules.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($memoryArrays.Count) memory-array row(s), $populatedMemorySlotCount populated DIMM row(s), $declaredMemorySlotCount declared slot(s), $emptyMemorySlotCount empty slot(s)." -NextStep "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
