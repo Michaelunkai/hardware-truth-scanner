@@ -105,6 +105,49 @@ function Convert-ToBoundedText {
   return $text
 }
 
+function Convert-EdidText {
+  param($Values)
+
+  if ($null -eq $Values) { return $null }
+  $chars = @()
+  foreach ($value in @($Values)) {
+    $number = 0
+    if ([int]::TryParse(([string]$value), [ref]$number) -and $number -gt 0 -and $number -lt 127) {
+      $chars += [char]$number
+    }
+  }
+  $text = (-join $chars).Trim()
+  if ([string]::IsNullOrWhiteSpace($text)) { return $null }
+  return $text
+}
+
+function Get-VideoOutputTechnologyName {
+  param($Value)
+
+  switch ([int64]$Value) {
+    -2 { return "Uninitialized" }
+    -1 { return "Other" }
+    0 { return "HD15/VGA" }
+    1 { return "S-Video" }
+    2 { return "Composite video" }
+    3 { return "Component video" }
+    4 { return "DVI" }
+    5 { return "HDMI" }
+    6 { return "LVDS/internal panel" }
+    8 { return "D-JPN" }
+    9 { return "SDI" }
+    10 { return "DisplayPort external" }
+    11 { return "DisplayPort embedded" }
+    12 { return "UDI external" }
+    13 { return "UDI embedded" }
+    14 { return "SDTVDongle" }
+    15 { return "Miracast" }
+    16 { return "Indirect wired" }
+    2147483648 { return "Internal" }
+    default { return "Unknown ($Value)" }
+  }
+}
+
 function Get-DumpHint {
   param(
     [System.IO.FileInfo]$File,
@@ -392,6 +435,9 @@ $peripheralInventoryDevices = @($hidPeripheralDevices + $bluetoothPeripheralDevi
 $peripheralProblemDevices = @($peripheralInventoryDevices | Where-Object { $_.ConfigManagerErrorCode -and $_.ConfigManagerErrorCode -ne 0 } | Sort-Object DeviceID -Unique)
 $signedDrivers = @(Invoke-Probe "signed drivers" { Get-CimInstance Win32_PnPSignedDriver })
 $monitors = @(Invoke-Probe "monitors" { Get-CimInstance Win32_DesktopMonitor })
+$monitorIds = @(Invoke-OptionalProbe "monitor edid identity" { Get-CimInstance -Namespace root\wmi -ClassName WmiMonitorID })
+$monitorDisplayParams = @(Invoke-OptionalProbe "monitor display params" { Get-CimInstance -Namespace root\wmi -ClassName WmiMonitorBasicDisplayParams })
+$monitorConnectionParams = @(Invoke-OptionalProbe "monitor connection params" { Get-CimInstance -Namespace root\wmi -ClassName WmiMonitorConnectionParams })
 $keyboards = @(Invoke-Probe "keyboards" { Get-CimInstance Win32_Keyboard })
 $pointingDevices = @(Invoke-Probe "pointing devices" { Get-CimInstance Win32_PointingDevice })
 $usbControllers = @(Invoke-Probe "usb controllers" { Get-CimInstance Win32_USBController })
@@ -851,6 +897,37 @@ foreach ($monitor in $monitors) {
   } -Signals $(if ($status -eq "warning") { @("Monitor status is $($monitor.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check display cable/port/monitor power and driver detection.") } else { @("Monitor detection has no Windows status fault. Dead pixels, flicker, and cable intermittence require visual testing.") })
 }
 
+$activeMonitorIds = @($monitorIds | Where-Object { $_.Active -eq $true })
+$monitorIdentityRows = @()
+foreach ($monitorId in $activeMonitorIds) {
+  $instanceName = $monitorId.InstanceName
+  $displayParams = @($monitorDisplayParams | Where-Object { $_.InstanceName -eq $instanceName } | Select-Object -First 1)
+  $connectionParams = @($monitorConnectionParams | Where-Object { $_.InstanceName -eq $instanceName } | Select-Object -First 1)
+  $widthCm = if ($displayParams.Count -gt 0) { $displayParams[0].MaxHorizontalImageSize } else { $null }
+  $heightCm = if ($displayParams.Count -gt 0) { $displayParams[0].MaxVerticalImageSize } else { $null }
+  $diagonalInches = if ($widthCm -and $heightCm) { [math]::Round(([math]::Sqrt(([double]$widthCm * [double]$widthCm) + ([double]$heightCm * [double]$heightCm)) / 2.54), 1) } else { $null }
+  $outputTechnology = if ($connectionParams.Count -gt 0) { Get-VideoOutputTechnologyName $connectionParams[0].VideoOutputTechnology } else { $null }
+
+  $monitorIdentityRows += [pscustomobject]@{
+    FriendlyName = Convert-EdidText $monitorId.UserFriendlyName
+    Manufacturer = Convert-EdidText $monitorId.ManufacturerName
+    ProductCode = Convert-EdidText $monitorId.ProductCodeID
+    SerialNumber = Convert-EdidText $monitorId.SerialNumberID
+    ManufacturedWeek = $monitorId.WeekOfManufacture
+    ManufacturedYear = $monitorId.YearOfManufacture
+    WidthCm = $widthCm
+    HeightCm = $heightCm
+    DiagonalInches = $diagonalInches
+    VideoOutputTechnology = $outputTechnology
+    InstanceName = $instanceName
+  }
+}
+
+New-Component -Category "Display Identity" -Name "EDID monitor identity and connection metadata" -Status $(if ($monitorIdentityRows.Count -gt 0) { "ok" } else { "unknown" }) -Confidence "medium" -Evidence @{
+  ActiveEdidDisplayCount = $monitorIdentityRows.Count
+  Displays = @($monitorIdentityRows | Select-Object -First 12)
+} -Signals $(if ($monitorIdentityRows.Count -eq 0) { @("Windows did not expose active EDID monitor identity rows to this scanner.") } else { @() }) -Recommendations $(if ($monitorIdentityRows.Count -gt 0) { @("Display EDID identity was captured. Cable flicker, dead pixels, HDR/VRR behavior, and intermittent port faults still require live visual testing.") } else { @("Check GPU/display driver and physical monitor connection if display identity is missing or generic.") })
+
 foreach ($keyboard in $keyboards) {
   $status = if ($keyboard.Status -and $keyboard.Status -ne "OK") { "warning" } else { "ok" }
   New-Component -Category "Input Device" -Name ($keyboard.Name) -Status $status -Confidence "medium" -Evidence @{
@@ -1002,6 +1079,7 @@ if ($pnpProblems.Count -gt 0) {
 
 New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
 New-Diagnostic -Name "Peripheral inventory problem-code sweep" -Status $(if ($peripheralProblemDevices.Count -gt 0) { "warning" } else { "passed" }) -Evidence "HID=$($hidPeripheralDevices.Count), Bluetooth=$($bluetoothPeripheralDevices.Count), Camera/Imaging=$($cameraPeripheralDevices.Count), Sensors=$($sensorPeripheralDevices.Count), Printers=$($printerPeripheralDevices.Count); $($peripheralProblemDevices.Count) unique peripheral problem device(s)." -NextStep $(if ($peripheralProblemDevices.Count -gt 0) { "Fix listed peripheral Device Manager problem codes, then retest the physical device path with known-good cables, ports, dongles, or vendor tools." } else { "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep." })
+New-Diagnostic -Name "Display EDID identity sweep" -Status $(if ($monitorIdentityRows.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($monitorIdentityRows.Count) active EDID display identity row(s), $($monitorDisplayParams.Count) display parameter row(s), $($monitorConnectionParams.Count) connection parameter row(s)." -NextStep $(if ($monitorIdentityRows.Count -gt 0) { "Use the display identity rows to match physical monitors before testing cables, ports, dead pixels, HDR, VRR, or flicker." } else { "Run with current GPU/display drivers and active monitors attached; visually test displays because EDID was not exposed." })
 New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "limited" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag skipped in the default safe scan path." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } elseif ($dxdiagText.Count -eq 0) { "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing." } else { "No dxdiag problem lines found." })
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."

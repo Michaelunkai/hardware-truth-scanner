@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T14:32:15.4825839Z",
+  "generatedAt": "2026-06-23T14:40:12.3608607Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 68,
+    "componentCount": 69,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 2,
@@ -301,7 +301,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1714.63,
+        "FreeGB": 1716.12,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -358,7 +358,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 451.61,
+        "FreeGB": 451.63,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -520,14 +520,14 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "37",
+          "TemperatureC": "42",
           "FanPercent": "0",
-          "PState": "P8",
-          "PowerDrawW": "24.96",
+          "PState": "P5",
+          "PowerDrawW": "28.97",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "262",
-          "MemoryClockMhz": "405",
-          "PcieGen": "1",
+          "GraphicsClockMhz": "517",
+          "MemoryClockMhz": "810",
+          "PcieGen": "2",
           "PcieWidth": "16",
           "UtilizationPercent": "1"
         }
@@ -659,6 +659,48 @@
       "signals": [],
       "recommendations": [
         "Monitor detection has no Windows status fault. Dead pixels, flicker, and cable intermittence require visual testing."
+      ]
+    },
+    {
+      "id": "display-identity-edid-monitor-identity-and-connection-metadata",
+      "category": "Display Identity",
+      "name": "EDID monitor identity and connection metadata",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ActiveEdidDisplayCount": 2,
+        "Displays": [
+          {
+            "FriendlyName": "M27UP",
+            "Manufacturer": "GBT",
+            "ProductCode": "273E",
+            "SerialNumber": "16843009",
+            "ManufacturedWeek": "2",
+            "ManufacturedYear": "2025",
+            "WidthCm": "59",
+            "HeightCm": "33",
+            "DiagonalInches": 26.6,
+            "VideoOutputTechnology": "HDMI",
+            "InstanceName": "DISPLAY\\GBT273E\\5&1cf00e17&0&UID4352_0"
+          },
+          {
+            "FriendlyName": "M27UP",
+            "Manufacturer": "GBT",
+            "ProductCode": "273E",
+            "SerialNumber": "16843009",
+            "ManufacturedWeek": "2",
+            "ManufacturedYear": "2025",
+            "WidthCm": "59",
+            "HeightCm": "33",
+            "DiagonalInches": 26.6,
+            "VideoOutputTechnology": "HDMI",
+            "InstanceName": "DISPLAY\\GBT273E\\5&34128c9c&b&UID264_0"
+          }
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "Display EDID identity was captured. Cable flicker, dead pixels, HDR/VRR behavior, and intermittent port faults still require live visual testing."
       ]
     },
     {
@@ -1867,6 +1909,12 @@
       "nextStep": "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep."
     },
     {
+      "name": "Display EDID identity sweep",
+      "status": "passed",
+      "evidence": "2 active EDID display identity row(s), 2 display parameter row(s), 2 connection parameter row(s).",
+      "nextStep": "Use the display identity rows to match physical monitors before testing cables, ports, dead pixels, HDR, VRR, or flicker."
+    },
+    {
       "name": "DirectX display/audio/input diagnostic",
       "status": "limited",
       "evidence": "dxdiag skipped in the default safe scan path.",
@@ -1887,7 +1935,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 37C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 42C, PState P5, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -1947,7 +1995,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 17:32:15 2026",
+      "Timestamp : Tue Jun 23 17:40:11 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -1955,7 +2003,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P8",
+      " Performance State : P5",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -1967,15 +2015,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 434822133 us",
+      " SW Power Capping : 463726327 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 37 C",
-      " GPU Current T.Limit Temp : 51 C",
+      " GPU Current Temp : 42 C",
+      " GPU Current T.Limit Temp : 46 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -1983,8 +2031,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 24.96 W",
-      " Instantaneous Power Draw : 25.70 W",
+      " Average Power Draw : 28.97 W",
+      " Instantaneous Power Draw : 28.90 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -1996,11 +2044,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.41 sec",
+      " Duration : 2.31 sec",
       " Number of Samples : 119",
-      " Max : 34.54 W",
-      " Min : 23.93 W",
-      " Avg : 25.07 W",
+      " Max : 56.90 W",
+      " Min : 27.34 W",
+      " Avg : 32.88 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
