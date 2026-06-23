@@ -411,6 +411,7 @@ $bios = Invoke-Probe "bios" { Get-CimInstance Win32_BIOS }
 $baseBoard = Invoke-Probe "baseboard" { Get-CimInstance Win32_BaseBoard }
 $processors = @(Invoke-Probe "cpu" { Get-CimInstance Win32_Processor })
 $memoryModules = @(Invoke-Probe "memory" { Get-CimInstance Win32_PhysicalMemory })
+$memoryArrays = @(Invoke-OptionalProbe "memory arrays" { Get-CimInstance Win32_PhysicalMemoryArray })
 $diskDrives = @(Invoke-Probe "diskdrives" { Get-CimInstance Win32_DiskDrive })
 $diskPartitions = @(Invoke-Probe "disk partitions" { Get-CimInstance Win32_DiskPartition })
 $diskDriveToPartition = @(Invoke-Probe "disk drive partition map" { Get-CimInstance Win32_DiskDriveToDiskPartition })
@@ -674,6 +675,48 @@ foreach ($module in $memoryModules) {
     CapacityGB = [math]::Round(($module.Capacity / 1GB), 2)
   } -Signals @("Windows inventory cannot prove RAM cells are healthy without a memory test.") -Recommendations @("Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults.")
 }
+
+$memoryArrayRows = @($memoryArrays | ForEach-Object {
+  $maxCapacityKb = if ($_.MaxCapacityEx -and $_.MaxCapacityEx -gt 0) { [int64]$_.MaxCapacityEx } else { [int64]$_.MaxCapacity }
+  [pscustomobject]@{
+    Tag = $_.Tag
+    Location = switch ([int]$_.Location) { 3 { "System board or motherboard" } 10 { "PC Card" } 11 { "Proprietary add-on card" } default { $_.Location } }
+    Use = switch ([int]$_.Use) { 3 { "System memory" } 4 { "Video memory" } 5 { "Flash memory" } default { $_.Use } }
+    SlotCount = $_.MemoryDevices
+    MaxCapacityGB = if ($maxCapacityKb -gt 0) { [math]::Round(($maxCapacityKb / 1MB), 2) } else { $null }
+    ErrorCorrection = switch ([int]$_.MemoryErrorCorrection) { 3 { "None" } 4 { "Parity" } 5 { "Single-bit ECC" } 6 { "Multi-bit ECC" } 7 { "CRC" } default { $_.MemoryErrorCorrection } }
+  }
+})
+$memorySlotRows = @($memoryModules | ForEach-Object {
+  [pscustomobject]@{
+    BankLabel = $_.BankLabel
+    DeviceLocator = $_.DeviceLocator
+    CapacityGB = if ($_.Capacity) { [math]::Round(($_.Capacity / 1GB), 2) } else { $null }
+    ConfiguredClockMHz = $_.ConfiguredClockSpeed
+    RatedSpeedMHz = $_.Speed
+    ConfiguredVoltageMv = $_.ConfiguredVoltage
+    Manufacturer = $_.Manufacturer
+    PartNumber = ($_.PartNumber -as [string]).Trim()
+    SMBIOSMemoryType = switch ([int]$_.SMBIOSMemoryType) { 20 { "DDR" } 24 { "DDR3" } 26 { "DDR4" } 34 { "DDR5" } default { $_.SMBIOSMemoryType } }
+    FormFactor = switch ([int]$_.FormFactor) { 8 { "DIMM" } 12 { "SODIMM" } default { $_.FormFactor } }
+    SerialNumber = $_.SerialNumber
+  }
+})
+$declaredMemorySlotCount = @($memoryArrayRows | Measure-Object -Property SlotCount -Sum).Sum
+$populatedMemorySlotCount = $memoryModules.Count
+$emptyMemorySlotCount = if ($declaredMemorySlotCount -ne $null -and $declaredMemorySlotCount -ge $populatedMemorySlotCount) { $declaredMemorySlotCount - $populatedMemorySlotCount } else { $null }
+$memoryTopologySignals = @()
+if ($memoryArrays.Count -eq 0) { $memoryTopologySignals += "Windows did not expose SMBIOS physical memory-array rows." }
+if ($declaredMemorySlotCount -and $emptyMemorySlotCount -gt 0) { $memoryTopologySignals += "$emptyMemorySlotCount declared motherboard memory slot(s) are not populated." }
+New-Component -Category "Memory Slot Topology" -Name "DIMM slots and error-correction metadata" -Status $(if ($memoryArrays.Count -eq 0 -and $memoryModules.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  ArrayCount = $memoryArrays.Count
+  DeclaredSlotCount = $declaredMemorySlotCount
+  PopulatedSlotCount = $populatedMemorySlotCount
+  EmptySlotCount = $emptyMemorySlotCount
+  TotalInstalledGB = [math]::Round((($memoryModules | Measure-Object -Property Capacity -Sum).Sum / 1GB), 2)
+  Arrays = $memoryArrayRows
+  PopulatedSlots = $memorySlotRows
+} -Signals $memoryTopologySignals -Recommendations @("Use this topology to match physical DIMMs and slots before reseating, upgrading, or isolating RAM faults. Cell-level RAM certainty still requires Windows Memory Diagnostic, MemTest86, or another boot-time memory test.")
 
 $memoryEvents = @($events | Where-Object { $_.ProviderName -match "MemoryDiagnostics|WHEA" -and $_.Message -match "memory|RAM|cache hierarchy" })
 if ($memoryEvents.Count -gt 0) {
@@ -1274,6 +1317,7 @@ New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyS
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+New-Diagnostic -Name "Memory slot topology and error-correction sweep" -Status $(if ($memoryArrays.Count -eq 0 -and $memoryModules.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($memoryArrays.Count) memory-array row(s), $populatedMemorySlotCount populated DIMM row(s), $declaredMemorySlotCount declared slot(s), $emptyMemorySlotCount empty slot(s)." -NextStep "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
 New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."

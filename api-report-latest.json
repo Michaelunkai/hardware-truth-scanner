@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T15:23:04.4517363Z",
+  "generatedAt": "2026-06-23T15:29:27.7148538Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 75,
+    "componentCount": 76,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -159,6 +159,64 @@
       ],
       "recommendations": [
         "Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults."
+      ]
+    },
+    {
+      "id": "memory-slot-topology-dimm-slots-and-error-correction-metadata",
+      "category": "Memory Slot Topology",
+      "name": "DIMM slots and error-correction metadata",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "TotalInstalledGB": 96,
+        "EmptySlotCount": 2,
+        "DeclaredSlotCount": 4,
+        "PopulatedSlotCount": 2,
+        "Arrays": [
+          {
+            "Tag": "Physical Memory Array 0",
+            "Location": "System board or motherboard",
+            "Use": "System memory",
+            "SlotCount": "4",
+            "MaxCapacityGB": 128,
+            "ErrorCorrection": "None"
+          }
+        ],
+        "ArrayCount": 1,
+        "PopulatedSlots": [
+          {
+            "BankLabel": "P0 CHANNEL A",
+            "DeviceLocator": "DIMM 1",
+            "CapacityGB": 48,
+            "ConfiguredClockMHz": "6000",
+            "RatedSpeedMHz": "6000",
+            "ConfiguredVoltageMv": "1100",
+            "Manufacturer": "CORSAIR",
+            "PartNumber": "CMH96GX5M2B6000Z30",
+            "SMBIOSMemoryType": "DDR5",
+            "FormFactor": "DIMM",
+            "SerialNumber": "00000000"
+          },
+          {
+            "BankLabel": "P0 CHANNEL B",
+            "DeviceLocator": "DIMM 1",
+            "CapacityGB": 48,
+            "ConfiguredClockMHz": "6000",
+            "RatedSpeedMHz": "6000",
+            "ConfiguredVoltageMv": "1100",
+            "Manufacturer": "CORSAIR",
+            "PartNumber": "CMH96GX5M2B6000Z30",
+            "SMBIOSMemoryType": "DDR5",
+            "FormFactor": "DIMM",
+            "SerialNumber": "00000000"
+          }
+        ]
+      },
+      "signals": [
+        "2 declared motherboard memory slot(s) are not populated."
+      ],
+      "recommendations": [
+        "Use this topology to match physical DIMMs and slots before reseating, upgrading, or isolating RAM faults. Cell-level RAM certainty still requires Windows Memory Diagnostic, MemTest86, or another boot-time memory test."
       ]
     },
     {
@@ -368,7 +426,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1689.4,
+        "FreeGB": 1685.13,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -528,7 +586,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1689.4,
+            "VolumeFreeGB": 1685.13,
             "DirtyBit": false
           },
           {
@@ -790,16 +848,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "39",
+          "TemperatureC": "36",
           "FanPercent": "0",
-          "PState": "P5",
-          "PowerDrawW": "24.85",
+          "PState": "P8",
+          "PowerDrawW": "26.34",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "202",
-          "MemoryClockMhz": "810",
-          "PcieGen": "2",
+          "GraphicsClockMhz": "487",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
           "PcieWidth": "16",
-          "UtilizationPercent": "0"
+          "UtilizationPercent": "2"
         }
       },
       "signals": [],
@@ -927,8 +985,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 474612,
-            "BytesSentPerSec": 30977,
+            "BytesReceivedPerSec": 41827,
+            "BytesSentPerSec": 23371,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2692,7 +2750,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 39C, PState P5, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 36C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -2700,6 +2758,12 @@
       "status": "limited",
       "evidence": "0 ACPI thermal zone(s), 0 WMI fan sensor(s), 0 third-party sensor row(s).",
       "nextStep": "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+    },
+    {
+      "name": "Memory slot topology and error-correction sweep",
+      "status": "passed",
+      "evidence": "1 memory-array row(s), 2 populated DIMM row(s), 4 declared slot(s), 2 empty slot(s).",
+      "nextStep": "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
     },
     {
       "name": "RAM live evidence and diagnostic history",
@@ -2752,7 +2816,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 18:23:03 2026",
+      "Timestamp : Tue Jun 23 18:29:27 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -2760,7 +2824,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P5",
+      " Performance State : P8",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -2779,8 +2843,8 @@
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 39 C",
-      " GPU Current T.Limit Temp : 49 C",
+      " GPU Current Temp : 36 C",
+      " GPU Current T.Limit Temp : 52 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -2788,8 +2852,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 24.97 W",
-      " Instantaneous Power Draw : 25.09 W",
+      " Average Power Draw : 26.34 W",
+      " Instantaneous Power Draw : 25.90 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -2801,11 +2865,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.30 sec",
+      " Duration : 2.35 sec",
       " Number of Samples : 119",
-      " Max : 29.90 W",
-      " Min : 24.05 W",
-      " Avg : 25.11 W",
+      " Max : 43.56 W",
+      " Min : 22.93 W",
+      " Avg : 25.62 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
