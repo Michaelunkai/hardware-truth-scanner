@@ -78,6 +78,10 @@ function Convert-ToSafeEvidenceValue {
       $safeObject[$property.Name] = $propertyValue
     } elseif ($propertyValue -is [datetime]) {
       $safeObject[$property.Name] = $propertyValue.ToString("o")
+    } elseif ($propertyValue -is [array]) {
+      $safeObject[$property.Name] = Convert-ToSafeEvidenceValue $propertyValue
+    } elseif ($propertyValue -is [hashtable]) {
+      $safeObject[$property.Name] = Convert-ToSafeEvidenceValue $propertyValue
     } else {
       $safeObject[$property.Name] = [string]$propertyValue
     }
@@ -99,6 +103,61 @@ function Convert-ToBoundedText {
   $text = ([string]$Value) -replace "\s+", " "
   if ($text.Length -gt $MaxLength) { return ($text.Substring(0, $MaxLength) + "... truncated") }
   return $text
+}
+
+function Get-DumpHint {
+  param(
+    [System.IO.FileInfo]$File,
+    [int]$MaxBytes = 8388608
+  )
+
+  $hintPatterns = "WATCHDOG[0-9]*|LiveKernelEvent|VIDEO_TDR_FAILURE|DPC_WATCHDOG_VIOLATION|VIDEO_ENGINE_TIMEOUT_DETECTED|VIDEO_SCHEDULER_INTERNAL_ERROR|nvlddmkm|amdkmdag|dxgkrnl|dxgmms2|WHEA|BugCheck|USBXHCI|USBHUB|storport|stornvme|storahci|disk|ntfs|memory_corruption|MEMORY_MANAGEMENT|DRIVER_POWER_STATE_FAILURE|PCI|HDAudBus|AUDIO"
+  $result = [ordered]@{
+    Path = $File.FullName
+    LastWriteTime = $File.LastWriteTime
+    SizeMB = [math]::Round($File.Length / 1MB, 2)
+    ScannedBytes = 0
+    ScanStatus = "not_scanned"
+    Hints = @()
+  }
+
+  try {
+    $bytesToRead = [math]::Min([int64]$MaxBytes, [int64]$File.Length)
+    if ($bytesToRead -le 0) {
+      $result["ScanStatus"] = "empty"
+      return [pscustomobject]$result
+    }
+
+    $buffer = New-Object byte[] $bytesToRead
+    $stream = [System.IO.File]::Open($File.FullName, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+    try {
+      $read = $stream.Read($buffer, 0, $buffer.Length)
+    } finally {
+      $stream.Dispose()
+    }
+
+    if ($read -lt $buffer.Length) {
+      $buffer = $buffer[0..([math]::Max(0, $read - 1))]
+    }
+
+    $result["ScannedBytes"] = $read
+    $folderName = Split-Path -Leaf (Split-Path -Parent $File.FullName)
+    $fileName = $File.Name
+    $ascii = [Text.Encoding]::ASCII.GetString($buffer)
+    $unicode = [Text.Encoding]::Unicode.GetString($buffer)
+    $text = "$folderName $fileName`n$ascii`n$unicode"
+    $hints = @([regex]::Matches($text, $hintPatterns, [Text.RegularExpressions.RegexOptions]::IgnoreCase) |
+      ForEach-Object { $_.Value } |
+      Where-Object { $_ } |
+      Select-Object -Unique -First 50)
+
+    $result["Hints"] = @($hints)
+    $result["ScanStatus"] = if ($hints.Count -gt 0) { "hints_found" } else { "no_keyword_hints" }
+    return [pscustomobject]$result
+  } catch {
+    $result["ScanStatus"] = "failed: $($_.Exception.Message)"
+    return [pscustomobject]$result
+  }
 }
 
 function Convert-ToJsonSafe {
@@ -269,6 +328,8 @@ $findings = @()
 $diagnostics = @()
 $startTime = (Get-Date).AddDays(-1 * $RecentDays)
 $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME } else { (Invoke-Probe "hostname" { hostname.exe }) -join "" }
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 $computer = Invoke-Probe "computer" { Get-CimInstance Win32_ComputerSystem }
 $os = Invoke-Probe "os" { Get-CimInstance Win32_OperatingSystem }
@@ -320,19 +381,24 @@ foreach ($volume in $volumes) {
 }
 
 $dxdiagText = @()
+$dxdiagSkippedReason = $null
 $dxdiagPath = Join-Path $env:TEMP ("hardware-truth-dxdiag-" + [guid]::NewGuid().ToString("N") + ".txt")
-try {
-  $dx = Start-Process -FilePath "dxdiag.exe" -ArgumentList @("/dontskip", "/whql:off", "/t", $dxdiagPath) -WindowStyle Hidden -PassThru
-  if ($dx.WaitForExit(35000) -and (Test-Path $dxdiagPath)) {
-    $dxdiagText = @(Get-Content -Path $dxdiagPath -ErrorAction SilentlyContinue)
-  } else {
-    try { if (-not $dx.HasExited) { $dx.Kill() } } catch {}
-    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 35 seconds or did not write output." }
+if ($env:HARDWARE_TRUTH_RUN_DXDIAG -eq "1") {
+  try {
+    $dx = Start-Process -FilePath "dxdiag.exe" -ArgumentList @("/dontskip", "/whql:off", "/t", $dxdiagPath) -WindowStyle Hidden -PassThru
+    if ($dx.WaitForExit(35000) -and (Test-Path $dxdiagPath)) {
+      $dxdiagText = @(Get-Content -Path $dxdiagPath -ErrorAction SilentlyContinue)
+    } else {
+      try { if (-not $dx.HasExited) { $dx.Kill() } } catch {}
+      $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 35 seconds or did not write output." }
+    }
+  } catch {
+    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = $_.Exception.Message }
+  } finally {
+    Remove-Item -LiteralPath $dxdiagPath -Force -ErrorAction SilentlyContinue
   }
-} catch {
-  $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = $_.Exception.Message }
-} finally {
-  Remove-Item -LiteralPath $dxdiagPath -Force -ErrorAction SilentlyContinue
+} else {
+  $dxdiagSkippedReason = "Skipped live dxdiag by default because it performs graphics-driver probing and this machine has recent LiveKernelReports WATCHDOG dumps. Set HARDWARE_TRUTH_RUN_DXDIAG=1 before launching to opt in."
 }
 
 $eventProviders = @(
@@ -375,15 +441,35 @@ $dumpRoots = @(
   (Join-Path $env:SystemRoot "MEMORY.DMP")
 )
 $crashDumpFiles = @()
+$dumpRootResults = @()
 foreach ($dumpRoot in $dumpRoots) {
+  $rootErrors = @()
+  $rootFiles = @()
   if (Test-Path -LiteralPath $dumpRoot) {
     $item = Get-Item -LiteralPath $dumpRoot -ErrorAction SilentlyContinue
     if ($item -and -not $item.PSIsContainer) {
       $crashDumpFiles += $item
+      $rootFiles += $item
     } else {
-      $crashDumpFiles += @(Get-ChildItem -LiteralPath $dumpRoot -Recurse -File -ErrorAction SilentlyContinue |
+      $accessErrors = @()
+      $rootFiles = @(Get-ChildItem -LiteralPath $dumpRoot -Recurse -File -ErrorAction SilentlyContinue -ErrorVariable accessErrors |
         Where-Object { $_.LastWriteTime -ge $startTime -and $_.Extension -match "\.dmp|\.mdmp|\.hdmp" } |
         Select-Object -First 80)
+      $crashDumpFiles += $rootFiles
+      $rootErrors = @($accessErrors | ForEach-Object { $_.Exception.Message } | Select-Object -Unique)
+    }
+    $dumpRootResults += [pscustomobject]@{
+      Root = $dumpRoot
+      Exists = $true
+      RecentDumpCount = @($rootFiles).Count
+      AccessErrors = $rootErrors
+    }
+  } else {
+    $dumpRootResults += [pscustomobject]@{
+      Root = $dumpRoot
+      Exists = $false
+      RecentDumpCount = 0
+      AccessErrors = @("Path not found or not accessible to this process.")
     }
   }
 }
@@ -424,6 +510,11 @@ New-Component -Category "System" -Name ($computer.Model) -Status "ok" -Confidenc
   OS = $os.Caption
   LastBoot = $os.LastBootUpTime
 } -Signals @() -Recommendations @("No chassis-level fault was visible to Windows telemetry.")
+
+New-Component -Category "Scanner Privilege" -Name "Windows access level" -Status $(if ($isElevated) { "ok" } else { "unknown" }) -Confidence "high" -Evidence @{
+  IsAdministrator = $isElevated
+  User = [Security.Principal.WindowsIdentity]::GetCurrent().Name
+} -Signals $(if ($isElevated) { @() } else { @("Scanner is not running elevated; protected dump, storage, event, and sensor locations may be incomplete.") }) -Recommendations $(if ($isElevated) { @("Scanner has administrator access for protected Windows telemetry paths.") } else { @("Run the launcher as administrator when you need maximum protected Windows dump/storage/event access.") })
 
 New-Component -Category "Motherboard and BIOS" -Name ($baseBoard.Product) -Status "ok" -Confidence "medium" -Evidence @{
   Manufacturer = $baseBoard.Manufacturer
@@ -674,7 +765,10 @@ if ($dxdiagText.Count -gt 0) {
     ProblemLines = @($dxProblemLines | Select-Object -First 12)
   } -Signals $(if ($dxStatus -eq "warning") { @("$($dxProblemLines.Count) dxdiag problem/error line(s) found.") } else { @() }) -Recommendations $(if ($dxStatus -eq "warning") { @("Review dxdiag problem lines, then check affected GPU/audio/input drivers or hardware.") } else { @("dxdiag did not report display/audio/input problems in its generated report.") })
 } else {
-  New-Component -Category "DirectX Diagnostic" -Name "dxdiag display/audio/input" -Status "unknown" -Confidence "low" -Evidence @{ OutputLines = 0 } -Signals @("dxdiag output was unavailable.") -Recommendations @("Run dxdiag manually if graphics/audio/input symptoms persist.")
+  New-Component -Category "DirectX Diagnostic" -Name "dxdiag display/audio/input" -Status "unknown" -Confidence "low" -Evidence @{
+    OutputLines = 0
+    SkippedReason = $dxdiagSkippedReason
+  } -Signals @("Live dxdiag did not run in the default safe scan path.") -Recommendations @("If graphics/audio/input symptoms persist and you accept the driver-probing risk, set HARDWARE_TRUTH_RUN_DXDIAG=1 before launching or run dxdiag manually.")
 }
 
 $powerEvents = @($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-Kernel-Power" -or $_.ProviderName -eq "volmgr" })
@@ -820,14 +914,34 @@ if ($crashSignalCount -gt 0) {
 
 $recentCrashDumps = @($crashDumpFiles | Where-Object { $_.LastWriteTime -ge $startTime })
 $liveKernelDumps = @($recentCrashDumps | Where-Object { $_.FullName -match "LiveKernelReports" })
-New-Component -Category "Crash Dump Artifacts" -Name "Recent Windows dump files" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+$inaccessibleDumpRoots = @($dumpRootResults | Where-Object {
+  $nonEmptyAccessErrors = @($_.AccessErrors | Where-Object { $_ })
+  $isOptionalMissingMemoryDump = (-not $_.Exists) -and $_.Root -match "MEMORY\.DMP$"
+  (-not $isOptionalMissingMemoryDump) -and ($nonEmptyAccessErrors.Count -gt 0 -or (-not $_.Exists))
+})
+$crashDumpHints = @($recentCrashDumps | Sort-Object LastWriteTime -Descending | Select-Object -First 12 | ForEach-Object { Get-DumpHint -File $_ })
+$crashDumpHintValues = @($crashDumpHints | ForEach-Object { $_.Hints } | Where-Object { $_ } | Select-Object -Unique)
+$crashDumpHintEvidence = @($crashDumpHints | ForEach-Object {
+  [pscustomobject]@{
+    Path = $_.Path
+    LastWriteTime = $_.LastWriteTime
+    SizeMB = $_.SizeMB
+    ScannedBytes = $_.ScannedBytes
+    ScanStatus = $_.ScanStatus
+    HintText = ((@($_.Hints) | Select-Object -First 50) -join ", ")
+  }
+})
+New-Component -Category "Crash Dump Artifacts" -Name "Recent Windows dump files" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } elseif ($inaccessibleDumpRoots.Count -gt 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
   RecentDumpCount = $recentCrashDumps.Count
   LiveKernelDumpCount = $liveKernelDumps.Count
+  DumpRoots = @($dumpRootResults)
   Dumps = @($recentCrashDumps | Sort-Object LastWriteTime -Descending | Select-Object -First 30 @{ Name = "Path"; Expression = { $_.FullName } }, LastWriteTime, @{ Name = "SizeMB"; Expression = { [math]::Round($_.Length / 1MB, 2) } })
-} -Signals $(if ($recentCrashDumps.Count -gt 0) { @("$($recentCrashDumps.Count) recent Windows crash dump artifact(s) were found.") } else { @() }) -Recommendations $(if ($recentCrashDumps.Count -gt 0) { @("Preserve these dumps before cleanup; analyze them to identify whether GPU, storage, USB, RAM, driver, or power instability is implicated.") } else { @("No recent Windows crash dump artifacts were found in the checked dump locations.") })
+  DumpHints = @($crashDumpHintEvidence)
+  UniqueHintKeywords = @($crashDumpHintValues)
+} -Signals $(if ($recentCrashDumps.Count -gt 0) { @("$($recentCrashDumps.Count) recent Windows crash dump artifact(s) were found.", "$($crashDumpHintValues.Count) unique bounded dump keyword hint(s) were extracted.") } elseif ($inaccessibleDumpRoots.Count -gt 0) { @("$($inaccessibleDumpRoots.Count) dump root(s) were not accessible or not present for this process.") } else { @() }) -Recommendations $(if ($recentCrashDumps.Count -gt 0) { @("Preserve these dumps before cleanup; analyze them with debugger tooling to confirm root cause. Bounded keyword hints are triage clues, not a full dump analysis.") } elseif ($inaccessibleDumpRoots.Count -gt 0) { @("Run the launcher as administrator to inspect protected Windows dump locations before concluding no dump evidence exists.") } else { @("No recent Windows crash dump artifacts were found in the checked dump locations.") })
 
 if ($recentCrashDumps.Count -gt 0) {
-  New-Finding -Severity "warning" -Component "Crash dump artifacts" -Title "Recent Windows crash dump files exist" -Detail "Crash dump files can contain the strongest evidence for intermittent hardware, driver, GPU, USB, RAM, storage, or power faults." -Evidence "$($recentCrashDumps.Count) dump file(s), including $($liveKernelDumps.Count) LiveKernelReports file(s), since $startTime" -Recommendation "Do not delete the dump files until they are analyzed; correlate timestamps with crashes or hardware symptoms." -Confidence "medium"
+  New-Finding -Severity "warning" -Component "Crash dump artifacts" -Title "Recent Windows crash dump files exist" -Detail "Crash dump files can contain the strongest evidence for intermittent hardware, driver, GPU, USB, RAM, storage, or power faults." -Evidence "$($recentCrashDumps.Count) dump file(s), including $($liveKernelDumps.Count) LiveKernelReports file(s), since $startTime. Hints: $((@($crashDumpHintValues | Select-Object -First 12) -join ', '))" -Recommendation "Do not delete the dump files until they are analyzed; correlate timestamps and hint keywords with crashes or hardware symptoms." -Confidence "medium"
 }
 
 if ($pnpProblems.Count -gt 0) {
@@ -843,7 +957,7 @@ if ($pnpProblems.Count -gt 0) {
 }
 
 New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
-New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "unavailable" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag did not return output." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } else { "No dxdiag problem lines found." })
+New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "limited" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag skipped in the default safe scan path." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } elseif ($dxdiagText.Count -eq 0) { "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing." } else { "No dxdiag problem lines found." })
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
@@ -851,7 +965,7 @@ New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySen
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
 New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
-New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($recentCrashDumps.Count) recent dump file(s), $($liveKernelDumps.Count) LiveKernelReports file(s), in checked Windows dump locations." -NextStep "If dump files exist, analyze them before cleanup to identify the implicated driver or hardware path."
+New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } elseif ($inaccessibleDumpRoots.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($recentCrashDumps.Count) recent dump file(s), $($liveKernelDumps.Count) LiveKernelReports file(s), $($crashDumpHintValues.Count) unique bounded keyword hint(s), $($inaccessibleDumpRoots.Count) inaccessible/missing dump root(s)." -NextStep "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
 New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($volumeDirtyResults.Count) volume(s) checked; $($dirtyVolumes.Count) dirty volume(s); $($unsupportedDirtyChecks.Count) unsupported/failed check(s)." -NextStep "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
@@ -900,6 +1014,12 @@ $report = [pscustomobject]@{
     })
     CrashDumpFiles = @($recentCrashDumps | Sort-Object LastWriteTime -Descending | Select-Object -First 40 | ForEach-Object {
       "$(Convert-ToBoundedText $_.LastWriteTime 40) | $([math]::Round($_.Length / 1MB, 2)) MB | $(Convert-ToBoundedText $_.FullName 500)"
+    })
+    CrashDumpRoots = @($dumpRootResults | ForEach-Object {
+      "$(Convert-ToBoundedText $_.Root 500) | Exists=$($_.Exists) | RecentDumpCount=$($_.RecentDumpCount) | Errors=$((@($_.AccessErrors) | Select-Object -First 5) -join '; ')"
+    })
+    CrashDumpHints = @($crashDumpHints | ForEach-Object {
+      "$(Convert-ToBoundedText $_.Path 500) | Status=$($_.ScanStatus) | Hints=$((@($_.Hints) | Select-Object -First 20) -join ', ')"
     })
     VolumeDirtyResults = @($volumeDirtyResults | ForEach-Object {
       "$($_.DeviceID) | Dirty=$($_.IsDirty) | Unsupported=$($_.IsUnsupported) | $(Convert-ToBoundedText (($_.Output) -join ' ') 500)"

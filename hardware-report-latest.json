@@ -1,16 +1,16 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T13:53:29.1934945Z",
+  "generatedAt": "2026-06-23T14:18:20.8354832Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 62,
-    "findingCount": 3,
+    "componentCount": 63,
+    "findingCount": 1,
     "criticalCount": 0,
-    "warningCount": 3,
-    "unknownCount": 8
+    "warningCount": 2,
+    "unknownCount": 9
   },
   "components": [
     {
@@ -29,6 +29,21 @@
       "signals": [],
       "recommendations": [
         "No chassis-level fault was visible to Windows telemetry."
+      ]
+    },
+    {
+      "id": "scanner-privilege-windows-access-level",
+      "category": "Scanner Privilege",
+      "name": "Windows access level",
+      "status": "ok",
+      "confidence": "high",
+      "evidence": {
+        "User": "user\\user",
+        "IsAdministrator": true
+      },
+      "signals": [],
+      "recommendations": [
+        "Scanner has administrator access for protected Windows telemetry paths."
       ]
     },
     {
@@ -286,7 +301,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1694.01,
+        "FreeGB": 1683.79,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -343,7 +358,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 451.42,
+        "FreeGB": 450.94,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -505,14 +520,14 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "38",
+          "TemperatureC": "37",
           "FanPercent": "0",
-          "PState": "P5",
-          "PowerDrawW": "28.51",
+          "PState": "P8",
+          "PowerDrawW": "25.30",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "187",
-          "MemoryClockMhz": "810",
-          "PcieGen": "2",
+          "GraphicsClockMhz": "217",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
           "PcieWidth": "16",
           "UtilizationPercent": "0"
         }
@@ -526,15 +541,17 @@
       "id": "directx-diagnostic-dxdiag-display-audio-input",
       "category": "DirectX Diagnostic",
       "name": "dxdiag display/audio/input",
-      "status": "ok",
-      "confidence": "medium",
+      "status": "unknown",
+      "confidence": "low",
       "evidence": {
-        "NoProblemsFoundLines": 6,
-        "ProblemLines": []
+        "OutputLines": 0,
+        "SkippedReason": "Skipped live dxdiag by default because it performs graphics-driver probing and this machine has recent LiveKernelReports WATCHDOG dumps. Set HARDWARE_TRUTH_RUN_DXDIAG=1 before launching to opt in."
       },
-      "signals": [],
+      "signals": [
+        "Live dxdiag did not run in the default safe scan path."
+      ],
       "recommendations": [
-        "dxdiag did not report display/audio/input problems in its generated report."
+        "If graphics/audio/input symptoms persist and you accept the driver-probing risk, set HARDWARE_TRUTH_RUN_DXDIAG=1 before launching or run dxdiag manually."
       ]
     },
     {
@@ -1330,7 +1347,7 @@
           "\tThe system firmware does not support this standby state.",
           "",
           "    Hibernate",
-          "\tHibernation has not been enabled.",
+          "\tThe hiberfile type does not support hibernation.",
           "",
           "    Standby (S0 Low Power Idle)",
           "\tThe system firmware does not support this standby state.",
@@ -1354,7 +1371,7 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "EventCount": 1,
+        "EventCount": 0,
         "ProblemEvents": [],
         "ProblemEventCount": 0
       },
@@ -1374,7 +1391,7 @@
         "HardwareReliabilityRecordCount": 0,
         "WindowsErrorReportingHardwareEventCount": 0,
         "ReliabilityRecords": [],
-        "ReliabilityRecordCount": 27
+        "ReliabilityRecordCount": 0
       },
       "signals": [],
       "recommendations": [
@@ -1385,34 +1402,38 @@
       "id": "crash-dump-artifacts-recent-windows-dump-files",
       "category": "Crash Dump Artifacts",
       "name": "Recent Windows dump files",
-      "status": "warning",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "Dumps": [
+        "Dumps": [],
+        "UniqueHintKeywords": [],
+        "DumpHints": [],
+        "LiveKernelDumpCount": 0,
+        "DumpRoots": [
           {
-            "Path": "C:\\Windows\\LiveKernelReports\\WATCHDOG4401\\WATCHDOG4401-20260623-1627.dmp",
-            "LastWriteTime": "2026-06-23T16:27:07.0244922+03:00",
-            "SizeMB": 0.88
+            "Root": "C:\\Windows\\LiveKernelReports",
+            "Exists": true,
+            "RecentDumpCount": 0,
+            "AccessErrors": ""
           },
           {
-            "Path": "C:\\Windows\\LiveKernelReports\\WATCHDOG4400\\WATCHDOG4400-20260623-1627.dmp",
-            "LastWriteTime": "2026-06-23T16:27:07.0204849+03:00",
-            "SizeMB": 0.47
+            "Root": "C:\\Windows\\Minidump",
+            "Exists": true,
+            "RecentDumpCount": 0,
+            "AccessErrors": ""
           },
           {
-            "Path": "C:\\Windows\\LiveKernelReports\\WATCHDOG\\WATCHDOG-20260623-1627.dmp",
-            "LastWriteTime": "2026-06-23T16:27:07.0174839+03:00",
-            "SizeMB": 0.31
+            "Root": "C:\\Windows\\MEMORY.DMP",
+            "Exists": false,
+            "RecentDumpCount": 0,
+            "AccessErrors": "Path not found or not accessible to this process."
           }
         ],
-        "LiveKernelDumpCount": 3,
-        "RecentDumpCount": 3
+        "RecentDumpCount": 0
       },
-      "signals": [
-        "3 recent Windows crash dump artifact(s) were found."
-      ],
+      "signals": [],
       "recommendations": [
-        "Preserve these dumps before cleanup; analyze them to identify whether GPU, storage, USB, RAM, driver, or power instability is implicated."
+        "No recent Windows crash dump artifacts were found in the checked dump locations."
       ]
     },
     {
@@ -1439,24 +1460,6 @@
       "evidence": "1 dirty volume(s): F:",
       "recommendation": "Back up first, then use read-only diagnostics or a planned repair window for the affected volume.",
       "confidence": "medium"
-    },
-    {
-      "severity": "warning",
-      "component": "Power stability",
-      "title": "Recent power-loss or crash-path events",
-      "detail": "Kernel-Power or volmgr events can indicate forced shutdowns, PSU instability, crashes, or power loss.",
-      "evidence": "4 event(s) since 06/09/2026 16:53:14",
-      "recommendation": "If unexpected shutdowns are happening, inspect PSU, wall power, GPU power cables, and crash dumps.",
-      "confidence": "medium"
-    },
-    {
-      "severity": "warning",
-      "component": "Crash dump artifacts",
-      "title": "Recent Windows crash dump files exist",
-      "detail": "Crash dump files can contain the strongest evidence for intermittent hardware, driver, GPU, USB, RAM, storage, or power faults.",
-      "evidence": "3 dump file(s), including 3 LiveKernelReports file(s), since 06/09/2026 16:53:14",
-      "recommendation": "Do not delete the dump files until they are analyzed; correlate timestamps with crashes or hardware symptoms.",
-      "confidence": "medium"
     }
   ],
   "diagnostics": [
@@ -1468,9 +1471,9 @@
     },
     {
       "name": "DirectX display/audio/input diagnostic",
-      "status": "passed",
-      "evidence": "6 'No problems found' line(s), 0 problem/error line(s).",
-      "nextStep": "No dxdiag problem lines found."
+      "status": "limited",
+      "evidence": "dxdiag skipped in the default safe scan path.",
+      "nextStep": "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing."
     },
     {
       "name": "Storage SMART and reliability telemetry",
@@ -1487,7 +1490,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 38C, PState P5, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 37C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -1510,15 +1513,15 @@
     },
     {
       "name": "Reliability Monitor and WER crash sweep",
-      "status": "passed",
+      "status": "limited",
       "evidence": "0 hardware-matching Reliability Monitor record(s), 0 hardware-matching Windows Error Reporting event(s).",
       "nextStep": "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
     },
     {
       "name": "Crash dump artifact sweep",
-      "status": "warning",
-      "evidence": "3 recent dump file(s), 3 LiveKernelReports file(s), in checked Windows dump locations.",
-      "nextStep": "If dump files exist, analyze them before cleanup to identify the implicated driver or hardware path."
+      "status": "passed",
+      "evidence": "0 recent dump file(s), 0 LiveKernelReports file(s), 0 unique bounded keyword hint(s), 0 inaccessible/missing dump root(s).",
+      "nextStep": "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
     },
     {
       "name": "Filesystem dirty-bit sweep",
@@ -1541,19 +1544,13 @@
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   ],
   "raw": {
-    "RecentEventCount": 5,
-    "RecentEvents": [
-      "06/23/2026 15:48:08 | Id=508 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has been constrained to a periodic tick Reason: BCD override.",
-      "06/23/2026 15:48:08 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
-      "06/23/2026 15:47:41 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
-      "06/23/2026 15:47:38 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API",
-      "06/23/2026 13:55:23 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service HidUsb for Device Instance ID USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000 with the following status: 0."
-    ],
+    "RecentEventCount": 0,
+    "RecentEvents": [],
     "NvidiaDetail": [
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 16:53:28 2026",
+      "Timestamp : Tue Jun 23 17:18:20 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -1561,7 +1558,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P5",
+      " Performance State : P8",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -1580,8 +1577,8 @@
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 38 C",
-      " GPU Current T.Limit Temp : 50 C",
+      " GPU Current Temp : 37 C",
+      " GPU Current T.Limit Temp : 51 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -1589,8 +1586,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 28.51 W",
-      " Instantaneous Power Draw : 26.45 W",
+      " Average Power Draw : 25.30 W",
+      " Instantaneous Power Draw : 24.50 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -1602,11 +1599,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.63 sec",
+      " Duration : 2.21 sec",
       " Number of Samples : 119",
-      " Max : 36.40 W",
-      " Min : 23.22 W",
-      " Avg : 29.55 W",
+      " Max : 36.75 W",
+      " Min : 23.83 W",
+      " Avg : 25.35 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -1634,7 +1631,7 @@
       " The system firmware does not support this standby state.",
       "",
       " Hibernate",
-      " Hibernation has not been enabled.",
+      " The hiberfile type does not support hibernation.",
       "",
       " Standby (S0 Low Power Idle)",
       " The system firmware does not support this standby state.",
@@ -1644,7 +1641,7 @@
       " The hypervisor does not support this standby state.",
       "",
       " Fast Startup",
-      " Hibernation is not available.",
+      " This action is disabled in the current system policy.",
       ""
     ],
     "PnPProblemDeviceText": [
@@ -1654,11 +1651,13 @@
     ],
     "ReliabilityRecords": [],
     "WindowsErrorReportingEvents": [],
-    "CrashDumpFiles": [
-      "06/23/2026 16:27:07 | 0.88 MB | C:\\Windows\\LiveKernelReports\\WATCHDOG4401\\WATCHDOG4401-20260623-1627.dmp",
-      "06/23/2026 16:27:07 | 0.47 MB | C:\\Windows\\LiveKernelReports\\WATCHDOG4400\\WATCHDOG4400-20260623-1627.dmp",
-      "06/23/2026 16:27:07 | 0.31 MB | C:\\Windows\\LiveKernelReports\\WATCHDOG\\WATCHDOG-20260623-1627.dmp"
+    "CrashDumpFiles": [],
+    "CrashDumpRoots": [
+      "C:\\Windows\\LiveKernelReports | Exists=True | RecentDumpCount=0 | Errors=",
+      "C:\\Windows\\Minidump | Exists=True | RecentDumpCount=0 | Errors=",
+      "C:\\Windows\\MEMORY.DMP | Exists=False | RecentDumpCount=0 | Errors=Path not found or not accessible to this process."
     ],
+    "CrashDumpHints": [],
     "VolumeDirtyResults": [
       "C: | Dirty=False | Unsupported=False | Volume - C: is NOT Dirty",
       "D: | Dirty=False | Unsupported=False | Volume - D: is NOT Dirty",
