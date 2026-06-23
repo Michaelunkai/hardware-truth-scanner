@@ -424,6 +424,7 @@ $volumes = @(Invoke-Probe "logical volumes" { Get-CimInstance Win32_LogicalDisk 
 $videoControllers = @(Invoke-Probe "video" { Get-CimInstance Win32_VideoController })
 $soundDevices = @(Invoke-Probe "audio" { Get-CimInstance Win32_SoundDevice })
 $networkAdapters = @(Invoke-Probe "network" { Get-CimInstance Win32_NetworkAdapter | Where-Object { $_.PhysicalAdapter -eq $true } })
+$networkInterfaceCounters = @(Invoke-OptionalProbe "network interface counters" { Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface })
 $batteries = @(Invoke-Probe "battery" { Get-CimInstance Win32_Battery })
 $pnpProblems = @(Invoke-Probe "pnp problems" { Get-CimInstance Win32_PnPEntity | Where-Object { $_.ConfigManagerErrorCode -ne 0 } })
 $pnpAll = @(Invoke-Probe "pnp all" { Get-CimInstance Win32_PnPEntity })
@@ -960,6 +961,56 @@ foreach ($adapter in $networkAdapters) {
   } -Signals $(if ($adapter.ConfigManagerErrorCode -and $adapter.ConfigManagerErrorCode -ne 0) { @("Device Manager code $($adapter.ConfigManagerErrorCode).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check adapter seating/cable/antenna and reinstall or update the device driver.") } else { @("No adapter hardware fault was reported.") })
 }
 
+$networkCounterRows = @()
+$networkCountersByKey = @{}
+foreach ($counter in $networkInterfaceCounters) {
+  $counterKey = ((($counter.Name -replace "_\d+$", "") -replace "\[[^\]]+\]|\([^\)]*\)", "") -replace "[^a-zA-Z0-9]", "").ToLowerInvariant()
+  if ($counterKey -and -not $networkCountersByKey.ContainsKey($counterKey)) {
+    $networkCountersByKey[$counterKey] = $counter
+  }
+}
+foreach ($adapter in $networkAdapters) {
+  $adapterKey = ((($adapter.Name -replace "_\d+$", "") -replace "\[[^\]]+\]|\([^\)]*\)", "") -replace "[^a-zA-Z0-9]", "").ToLowerInvariant()
+  $counter = @()
+  if ($adapterKey -and $networkCountersByKey.ContainsKey($adapterKey)) {
+    $counter = @($networkCountersByKey[$adapterKey])
+  }
+  $rxErrors = if ($counter.Count -gt 0) { [int64]$counter[0].PacketsReceivedErrors } else { $null }
+  $txErrors = if ($counter.Count -gt 0) { [int64]$counter[0].PacketsOutboundErrors } else { $null }
+  $rxDiscards = if ($counter.Count -gt 0) { [int64]$counter[0].PacketsReceivedDiscarded } else { $null }
+  $txDiscards = if ($counter.Count -gt 0) { [int64]$counter[0].PacketsOutboundDiscarded } else { $null }
+  $counterValues = @($rxErrors, $txErrors, $rxDiscards, $txDiscards) | Where-Object { $null -ne $_ }
+  $totalErrors = if ($counterValues.Count -gt 0) { ($counterValues | Measure-Object -Sum).Sum } else { $null }
+  $speedMbps = if ($adapter.Speed -and [double]$adapter.Speed -lt 1000000000000) { [math]::Round(([double]$adapter.Speed / 1000000), 1) } else { $null }
+
+  $networkCounterRows += [pscustomobject]@{
+    AdapterName = $adapter.Name
+    NetEnabled = $adapter.NetEnabled
+    NetConnectionStatus = $adapter.NetConnectionStatus
+    SpeedMbps = $speedMbps
+    CounterName = if ($counter.Count -gt 0) { $counter[0].Name } else { $null }
+    CurrentBandwidthMbps = if ($counter.Count -gt 0 -and $counter[0].CurrentBandwidth) { [math]::Round(([double]$counter[0].CurrentBandwidth / 1000000), 1) } else { $null }
+    BytesReceivedPerSec = if ($counter.Count -gt 0) { [int64]$counter[0].BytesReceivedPersec } else { $null }
+    BytesSentPerSec = if ($counter.Count -gt 0) { [int64]$counter[0].BytesSentPersec } else { $null }
+    ReceivedPacketErrors = $rxErrors
+    OutboundPacketErrors = $txErrors
+    ReceivedPacketDiscards = $rxDiscards
+    OutboundPacketDiscards = $txDiscards
+    ErrorOrDiscardTotal = if ($null -ne $totalErrors) { [int64]$totalErrors } else { $null }
+  }
+}
+
+$networkProblemCounters = @($networkCounterRows | Where-Object { $null -ne $_.ErrorOrDiscardTotal -and $_.ErrorOrDiscardTotal -gt 0 })
+$enabledNetworkRows = @($networkCounterRows | Where-Object { $_.NetEnabled -eq $true })
+New-Component -Category "Network Link Counters" -Name "Adapter link speed and packet error counters" -Status $(if ($networkProblemCounters.Count -gt 0) { "warning" } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  AdapterCount = $networkAdapters.Count
+  CounterRowCount = $networkInterfaceCounters.Count
+  EnabledAdapterCount = $enabledNetworkRows.Count
+  ProblemCounterCount = $networkProblemCounters.Count
+  ProblemCounters = @($networkProblemCounters | Select-Object -First 20)
+  Counters = @($networkCounterRows | Select-Object -First 30)
+} -Signals $(if ($networkProblemCounters.Count -gt 0) { @("$($networkProblemCounters.Count) network adapter counter row(s) report packet errors or discards.") } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { @("Windows did not expose network interface performance counters to this scanner.") } else { @() }) -Recommendations $(if ($networkProblemCounters.Count -gt 0) { @("Inspect the affected cable, port, antenna, switch/router, and NIC driver before replacing hardware.") } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { @("Use Device Manager, vendor tools, or router/switch counters to validate link errors if network symptoms exist.") } else { @("No live packet error/discard counters were reported for enumerated physical adapters. Intermittent cable, port, antenna, or router issues still require symptom-time testing.") })
+
 foreach ($monitor in $monitors) {
   $status = if ($monitor.Status -and $monitor.Status -ne "OK") { "warning" } else { "ok" }
   New-Component -Category "Monitor" -Name ($monitor.Name) -Status $status -Confidence "low" -Evidence @{
@@ -1154,6 +1205,7 @@ if ($pnpProblems.Count -gt 0) {
 New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
 New-Diagnostic -Name "Peripheral inventory problem-code sweep" -Status $(if ($peripheralProblemDevices.Count -gt 0) { "warning" } else { "passed" }) -Evidence "HID=$($hidPeripheralDevices.Count), Bluetooth=$($bluetoothPeripheralDevices.Count), Camera/Imaging=$($cameraPeripheralDevices.Count), Sensors=$($sensorPeripheralDevices.Count), Printers=$($printerPeripheralDevices.Count); $($peripheralProblemDevices.Count) unique peripheral problem device(s)." -NextStep $(if ($peripheralProblemDevices.Count -gt 0) { "Fix listed peripheral Device Manager problem codes, then retest the physical device path with known-good cables, ports, dongles, or vendor tools." } else { "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep." })
 New-Diagnostic -Name "Display EDID identity sweep" -Status $(if ($monitorIdentityRows.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($monitorIdentityRows.Count) active EDID display identity row(s), $($monitorDisplayParams.Count) display parameter row(s), $($monitorConnectionParams.Count) connection parameter row(s)." -NextStep $(if ($monitorIdentityRows.Count -gt 0) { "Use the display identity rows to match physical monitors before testing cables, ports, dead pixels, HDR, VRR, or flicker." } else { "Run with current GPU/display drivers and active monitors attached; visually test displays because EDID was not exposed." })
+New-Diagnostic -Name "Network link and packet error counters" -Status $(if ($networkProblemCounters.Count -gt 0) { "warning" } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($networkCounterRows.Count) physical adapter counter row(s), $($enabledNetworkRows.Count) enabled adapter(s), $($networkProblemCounters.Count) adapter row(s) with packet errors/discards." -NextStep $(if ($networkProblemCounters.Count -gt 0) { "Inspect cable, port, antenna, router/switch, and NIC driver for the listed adapter counters." } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { "Use vendor/router/switch counters if network symptoms exist because Windows counters were unavailable." } else { "No live packet error/discard counters were reported; retest during symptoms for intermittent link faults." })
 New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "limited" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag skipped in the default safe scan path." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } elseif ($dxdiagText.Count -eq 0) { "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing." } else { "No dxdiag problem lines found." })
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
 New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyStorageMapRows.Count -gt 0) { "warning" } elseif ($storageMapRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageMapRows.Count) disk/partition mapping row(s), $($mappedLogicalDisks.Count) mapped drive-letter volume(s), $($unmappedLogicalDisks.Count) unmapped drive-letter volume(s), $($dirtyStorageMapRows.Count) dirty mapped volume(s)." -NextStep $(if ($dirtyStorageMapRows.Count -gt 0) { "Use the mapped disk model/index before running repair or replacing storage: $((@($dirtyStorageTargets) | Select-Object -First 5) -join '; ')." } elseif ($storageMapRows.Count -eq 0) { "Use Disk Management or vendor tooling to map affected volumes to physical drives manually." } else { "Volume-to-physical-disk mapping is available for future storage warnings." })
