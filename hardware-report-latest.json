@@ -1,15 +1,15 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T13:30:47.8426394Z",
+  "generatedAt": "2026-06-23T13:44:44.7816897Z",
   "host": "user",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 59,
-    "findingCount": 1,
+    "componentCount": 60,
+    "findingCount": 2,
     "criticalCount": 0,
-    "warningCount": 1,
+    "warningCount": 2,
     "unknownCount": 8
   },
   "components": [
@@ -286,7 +286,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1694.38,
+        "FreeGB": 1694.03,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -343,7 +343,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 391.96,
+        "FreeGB": 451.42,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -455,14 +455,14 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "39",
+          "TemperatureC": "37",
           "FanPercent": "0",
-          "PState": "P5",
-          "PowerDrawW": "26.64",
+          "PState": "P8",
+          "PowerDrawW": "25.02",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "217",
-          "MemoryClockMhz": "810",
-          "PcieGen": "2",
+          "GraphicsClockMhz": "180",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
           "PcieWidth": "16",
           "UtilizationPercent": "0"
         }
@@ -1314,6 +1314,111 @@
       ]
     },
     {
+      "id": "reliability-monitor-hardware-related-crash-and-wer-history",
+      "category": "Reliability Monitor",
+      "name": "Hardware-related crash and WER history",
+      "status": "warning",
+      "confidence": "medium",
+      "evidence": {
+        "WindowsErrorReportingEvents": [],
+        "HardwareReliabilityRecordCount": 12,
+        "WindowsErrorReportingHardwareEventCount": 0,
+        "ReliabilityRecords": [
+          {
+            "TimeGenerated": "2026-06-23T16:42:13.4180000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.243.0) - Current Channel (Broad)",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.243.0) - Current Channel (Broad)"
+          },
+          {
+            "TimeGenerated": "2026-06-23T16:20:20.9660000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "2026-06 Security Update (KB5094126) (26200.8655)",
+            "EventIdentifier": "20",
+            "Message": "Installation Failure: Windows failed to install the following update with error 0x80070306: 2026-06 Security Update (KB5094126) (26200.8655)."
+          },
+          {
+            "TimeGenerated": "2026-06-23T15:50:04.8050000+03:00",
+            "SourceName": "Application Error",
+            "ProductName": "CrossDeviceService.exe",
+            "EventIdentifier": "1000",
+            "Message": "Faulting application name: CrossDeviceService.exe, version: 1.26042.110.0, time stamp: 0x6a0e0000 Faulting module name: KERNELBASE.dll, version: 10.0.26100.8246, time stamp: 0x208e0cb7 Exception code: 0xe0434352 Fault offset: 0x00000000000c79da Faulting process id: 0x3ECC Faulting application start time: 0x1DD030ECE1C1264 Faulting application path: C:\\Program Files\\WindowsApps\\MicrosoftWindows.CrossDevice_1.26042.110.0_x64__cw5n1h2txyewy\\CrossDeviceService.exe Faulting module path: C:\\Windows\\System32\\KERNELBASE.dll Report Id: 8fa3ed8b-e9a2-40ee-a244-d6737288bcf1 Faulting package full name: MicrosoftWindows.CrossDevice_1.26042.110.0_x64__cw5n1h2txyewy Faulting package-relative application ID... truncated"
+          },
+          {
+            "TimeGenerated": "2026-06-23T14:30:39.6660000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "2026-06 Security Update (KB5094126) (26200.8655)",
+            "EventIdentifier": "20",
+            "Message": "Installation Failure: Windows failed to install the following update with error 0x80028017: 2026-06 Security Update (KB5094126) (26200.8655)."
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:55:26.0000000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "Logitech - HIDClass - 1.10.80.0",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: Logitech - HIDClass - 1.10.80.0"
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:55:22.9510000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "2026-06 Security Update (KB5094126) (26200.8655)",
+            "EventIdentifier": "20",
+            "Message": "Installation Failure: Windows failed to install the following update with error 0x80070306: 2026-06 Security Update (KB5094126) (26200.8655)."
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:52:44.7380000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.242.0) - Current Channel (Broad)",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.242.0) - Current Channel (Broad)"
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:52:39.2850000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "Windows Malicious Software Removal Tool x64 - v5.142 (KB890830)",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: Windows Malicious Software Removal Tool x64 - v5.142 (KB890830)"
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:48:38.5300000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "2026-06 .NET 8.0.28 Security Update for x64 Client (KB5097149)",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: 2026-06 .NET 8.0.28 Security Update for x64 Client (KB5097149)"
+          },
+          {
+            "TimeGenerated": "2026-06-23T13:48:30.6730000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "2026-06 .NET 10.0.9 Security Update for x64 Client (KB5097148)",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: 2026-06 .NET 10.0.9 Security Update for x64 Client (KB5097148)"
+          },
+          {
+            "TimeGenerated": "2026-06-23T12:31:50.9800000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "9PLM9XGG6VKS-OpenAI.Codex",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: 9PLM9XGG6VKS-OpenAI.Codex"
+          },
+          {
+            "TimeGenerated": "2026-06-23T12:31:44.9690000+03:00",
+            "SourceName": "Microsoft-Windows-WindowsUpdateClient",
+            "ProductName": "9WZDNCRFJBMP-MICROSOFT.WINDOWSSTORE",
+            "EventIdentifier": "19",
+            "Message": "Installation Successful: Windows successfully installed the following update: 9WZDNCRFJBMP-MICROSOFT.WINDOWSSTORE"
+          }
+        ],
+        "ReliabilityRecordCount": 27
+      },
+      "signals": [
+        "12 hardware-related Reliability Monitor / Windows Error Reporting crash signal(s) were found."
+      ],
+      "recommendations": [
+        "Review the crash bucket names and correlate them with GPU, storage, RAM, device, or driver symptoms before replacing hardware."
+      ]
+    },
+    {
       "id": "device-manager-problem-devices",
       "category": "Device Manager",
       "name": "Problem devices",
@@ -1334,8 +1439,17 @@
       "component": "Power stability",
       "title": "Recent power-loss or crash-path events",
       "detail": "Kernel-Power or volmgr events can indicate forced shutdowns, PSU instability, crashes, or power loss.",
-      "evidence": "4 event(s) since 06/09/2026 16:30:22",
+      "evidence": "4 event(s) since 06/09/2026 16:44:21",
       "recommendation": "If unexpected shutdowns are happening, inspect PSU, wall power, GPU power cables, and crash dumps.",
+      "confidence": "medium"
+    },
+    {
+      "severity": "warning",
+      "component": "Reliability Monitor",
+      "title": "Recent hardware-related crash or WER evidence",
+      "detail": "Reliability Monitor or Windows Error Reporting contains crash records that match hardware, LiveKernelEvent, bugcheck, driver, disk, display, memory, or device patterns.",
+      "evidence": "12 record(s) since 06/09/2026 16:44:21",
+      "recommendation": "Inspect the listed bucket/message text, then test the implicated hardware path with vendor tools or controlled load only if the pattern repeats.",
       "confidence": "medium"
     }
   ],
@@ -1367,7 +1481,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 39C, PState P5, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 37C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -1387,6 +1501,12 @@
       "status": "passed",
       "evidence": "68 PCI/PCIe device(s), 0 PCI problem device(s), 0 recent PnP/device setup warning or error event(s).",
       "nextStep": "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
+    },
+    {
+      "name": "Reliability Monitor and WER crash sweep",
+      "status": "warning",
+      "evidence": "12 hardware-matching Reliability Monitor record(s), 0 hardware-matching Windows Error Reporting event(s).",
+      "nextStep": "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
     },
     {
       "name": "Physical inspection boundary",
@@ -1415,7 +1535,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 16:30:47 2026",
+      "Timestamp : Tue Jun 23 16:44:44 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -1423,7 +1543,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P5",
+      " Performance State : P8",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -1442,8 +1562,8 @@
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 39 C",
-      " GPU Current T.Limit Temp : 49 C",
+      " GPU Current Temp : 37 C",
+      " GPU Current T.Limit Temp : 51 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -1451,8 +1571,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 26.64 W",
-      " Instantaneous Power Draw : 27.45 W",
+      " Average Power Draw : 25.02 W",
+      " Instantaneous Power Draw : 24.89 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -1464,11 +1584,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.36 sec",
+      " Duration : 2.64 sec",
       " Number of Samples : 119",
-      " Max : 30.73 W",
-      " Min : 25.82 W",
-      " Avg : 26.59 W",
+      " Max : 30.17 W",
+      " Min : 24.14 W",
+      " Avg : 25.08 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -1514,6 +1634,21 @@
       "",
       "No devices were found on the system."
     ],
+    "ReliabilityRecords": [
+      "06/23/2026 16:42:13 | Source=Microsoft-Windows-WindowsUpdateClient | Product=Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.243.0) - Current Channel (Broad... truncated | Id=19 | Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.243.0) - Current Channel (Broad)",
+      "06/23/2026 16:20:20 | Source=Microsoft-Windows-WindowsUpdateClient | Product=2026-06 Security Update (KB5094126) (26200.8655) | Id=20 | Installation Failure: Windows failed to install the following update with error 0x80070306: 2026-06 Security Update (KB5094126) (26200.8655).",
+      "06/23/2026 15:50:04 | Source=Application Error | Product=CrossDeviceService.exe | Id=1000 | Faulting application name: CrossDeviceService.exe, version: 1.26042.110.0, time stamp: 0x6a0e0000 Faulting module name: KERNELBASE.dll, version: 10.0.26100.8246, time stamp: 0x208e0cb7 Exception code: 0xe0434352 Fault offset: 0x00000000000c79da Faulting process id: 0x3ECC Faulting application start time: 0x1DD030ECE1C1264 Faulting application path: C:\\Program Files\\WindowsApps\\MicrosoftWindows.CrossDevice_1.26042.110.0_x64__cw5n1h2txyewy\\CrossDeviceService.exe Faulting module path: C:\\Windows\\System32\\KERNELBASE.dll Report Id: 8fa3ed8b-e9a2-40ee-a244-d6737288bcf1 Faulting package full name: MicrosoftWindows.CrossDevice_1.26042.110.0_x64__cw5n1h2txyewy Faulting package-relative application ID... truncated",
+      "06/23/2026 14:30:39 | Source=Microsoft-Windows-WindowsUpdateClient | Product=2026-06 Security Update (KB5094126) (26200.8655) | Id=20 | Installation Failure: Windows failed to install the following update with error 0x80028017: 2026-06 Security Update (KB5094126) (26200.8655).",
+      "06/23/2026 13:55:26 | Source=Microsoft-Windows-WindowsUpdateClient | Product=Logitech - HIDClass - 1.10.80.0 | Id=19 | Installation Successful: Windows successfully installed the following update: Logitech - HIDClass - 1.10.80.0",
+      "06/23/2026 13:55:22 | Source=Microsoft-Windows-WindowsUpdateClient | Product=2026-06 Security Update (KB5094126) (26200.8655) | Id=20 | Installation Failure: Windows failed to install the following update with error 0x80070306: 2026-06 Security Update (KB5094126) (26200.8655).",
+      "06/23/2026 13:52:44 | Source=Microsoft-Windows-WindowsUpdateClient | Product=Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.242.0) - Current Channel (Broad... truncated | Id=19 | Installation Successful: Windows successfully installed the following update: Security Intelligence Update for Microsoft Defender Antivirus - KB2267602 (Version 1.453.242.0) - Current Channel (Broad)",
+      "06/23/2026 13:52:39 | Source=Microsoft-Windows-WindowsUpdateClient | Product=Windows Malicious Software Removal Tool x64 - v5.142 (KB890830) | Id=19 | Installation Successful: Windows successfully installed the following update: Windows Malicious Software Removal Tool x64 - v5.142 (KB890830)",
+      "06/23/2026 13:48:38 | Source=Microsoft-Windows-WindowsUpdateClient | Product=2026-06 .NET 8.0.28 Security Update for x64 Client (KB5097149) | Id=19 | Installation Successful: Windows successfully installed the following update: 2026-06 .NET 8.0.28 Security Update for x64 Client (KB5097149)",
+      "06/23/2026 13:48:30 | Source=Microsoft-Windows-WindowsUpdateClient | Product=2026-06 .NET 10.0.9 Security Update for x64 Client (KB5097148) | Id=19 | Installation Successful: Windows successfully installed the following update: 2026-06 .NET 10.0.9 Security Update for x64 Client (KB5097148)",
+      "06/23/2026 12:31:50 | Source=Microsoft-Windows-WindowsUpdateClient | Product=9PLM9XGG6VKS-OpenAI.Codex | Id=19 | Installation Successful: Windows successfully installed the following update: 9PLM9XGG6VKS-OpenAI.Codex",
+      "06/23/2026 12:31:44 | Source=Microsoft-Windows-WindowsUpdateClient | Product=9WZDNCRFJBMP-MICROSOFT.WINDOWSSTORE | Id=19 | Installation Successful: Windows successfully installed the following update: 9WZDNCRFJBMP-MICROSOFT.WINDOWSSTORE"
+    ],
+    "WindowsErrorReportingEvents": [],
     "ProbeErrors": [],
     "OptionalProbeErrors": [
       "physicaldisks: Skipped Get-PhysicalDisk because this host's Windows Storage provider returns invalid-property errors/hangs; using Win32_DiskDrive and event evidence instead.",

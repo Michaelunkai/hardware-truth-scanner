@@ -311,11 +311,11 @@ $dxdiagText = @()
 $dxdiagPath = Join-Path $env:TEMP ("hardware-truth-dxdiag-" + [guid]::NewGuid().ToString("N") + ".txt")
 try {
   $dx = Start-Process -FilePath "dxdiag.exe" -ArgumentList @("/dontskip", "/whql:off", "/t", $dxdiagPath) -WindowStyle Hidden -PassThru
-  if ($dx.WaitForExit(45000) -and (Test-Path $dxdiagPath)) {
+  if ($dx.WaitForExit(25000) -and (Test-Path $dxdiagPath)) {
     $dxdiagText = @(Get-Content -Path $dxdiagPath -ErrorAction SilentlyContinue)
   } else {
     try { if (-not $dx.HasExited) { $dx.Kill() } } catch {}
-    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 45 seconds or did not write output." }
+    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 25 seconds or did not write output." }
   }
 } catch {
   $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = $_.Exception.Message }
@@ -347,6 +347,16 @@ foreach ($provider in $eventProviders) {
       Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
   })
 }
+
+$reliabilityRecords = @(Invoke-OptionalProbe "reliability records" {
+  Get-CimInstance -Namespace root\cimv2 -ClassName Win32_ReliabilityRecords |
+    Where-Object { $_.TimeGenerated -ge $startTime } |
+    Select-Object -First 120 TimeGenerated, SourceName, ProductName, EventIdentifier, Message
+})
+$werEvents = @(Invoke-OptionalProbe "windows error reporting application events" {
+  Get-WinEvent -FilterHashtable @{ LogName = "Application"; ProviderName = "Windows Error Reporting"; StartTime = $startTime } -MaxEvents 80 |
+    Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
+})
 
 $nvidiaRows = @()
 $nvidiaDetails = @()
@@ -744,6 +754,27 @@ if ($deviceReliabilityProblemEvents.Count -gt 0) {
   New-Finding -Severity "warning" -Component "Device reliability" -Title "Recent PnP or device setup warning events" -Detail "Windows logged device setup, PnP, or driver-framework warning/error events in the scan window." -Evidence "$($deviceReliabilityProblemEvents.Count) event(s) since $startTime" -Recommendation "Inspect the listed device IDs/messages and correlate them with recently connected hardware or driver changes." -Confidence "medium"
 }
 
+$hardwareReliabilityRecords = @($reliabilityRecords | Where-Object {
+  $_.SourceName -match "Windows|Hardware|LiveKernel|BlueScreen|Display|Video|WHEA|Disk|Memory|Device" -or
+  $_.ProductName -match "Windows|Hardware|LiveKernel|BlueScreen|Display|Video|WHEA|Disk|Memory|Device" -or
+  $_.Message -match "LiveKernelEvent|hardware error|BlueScreen|WHEA|Display|Video|disk|memory|device|driver"
+})
+$werHardwareEvents = @($werEvents | Where-Object {
+  $_.Message -match "LiveKernelEvent|hardware error|BlueScreen|WHEA|Display|Video|disk|memory|device|driver|bugcheck"
+})
+$crashSignalCount = $hardwareReliabilityRecords.Count + $werHardwareEvents.Count
+New-Component -Category "Reliability Monitor" -Name "Hardware-related crash and WER history" -Status $(if ($crashSignalCount -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+  ReliabilityRecordCount = $reliabilityRecords.Count
+  HardwareReliabilityRecordCount = $hardwareReliabilityRecords.Count
+  WindowsErrorReportingHardwareEventCount = $werHardwareEvents.Count
+  ReliabilityRecords = @($hardwareReliabilityRecords | Select-Object -First 20 TimeGenerated, SourceName, ProductName, EventIdentifier, @{ Name = "Message"; Expression = { Convert-ToBoundedText $_.Message 700 } })
+  WindowsErrorReportingEvents = @($werHardwareEvents | Select-Object -First 20 TimeCreated, Id, @{ Name = "Message"; Expression = { Convert-ToBoundedText $_.Message 700 } })
+} -Signals $(if ($crashSignalCount -gt 0) { @("$crashSignalCount hardware-related Reliability Monitor / Windows Error Reporting crash signal(s) were found.") } else { @() }) -Recommendations $(if ($crashSignalCount -gt 0) { @("Review the crash bucket names and correlate them with GPU, storage, RAM, device, or driver symptoms before replacing hardware.") } else { @("No hardware-related Reliability Monitor or Windows Error Reporting crash signal was found in the scan window.") })
+
+if ($crashSignalCount -gt 0) {
+  New-Finding -Severity "warning" -Component "Reliability Monitor" -Title "Recent hardware-related crash or WER evidence" -Detail "Reliability Monitor or Windows Error Reporting contains crash records that match hardware, LiveKernelEvent, bugcheck, driver, disk, display, memory, or device patterns." -Evidence "$crashSignalCount record(s) since $startTime" -Recommendation "Inspect the listed bucket/message text, then test the implicated hardware path with vendor tools or controlled load only if the pattern repeats." -Confidence "medium"
+}
+
 if ($pnpProblems.Count -gt 0) {
   foreach ($problem in $pnpProblems) {
     New-Finding -Severity "warning" -Component ($problem.Name) -Title "Device Manager reports a problem device" -Detail "A detected hardware device has a non-zero ConfigManagerErrorCode." -Evidence "Code=$($problem.ConfigManagerErrorCode); Class=$($problem.PNPClass); DeviceID=$($problem.DeviceID)" -Recommendation "Inspect this specific device in Device Manager; reseat/replace hardware only if the code persists after driver and cable checks." -Confidence "high"
@@ -764,6 +795,7 @@ New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -a
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
+New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
 if ($probeErrors.Count -gt 0) {
@@ -803,6 +835,12 @@ $report = [pscustomobject]@{
     DxDiagProblemLines = @($dxProblemLines | Select-Object -First 40 | ForEach-Object { Convert-ToBoundedText $_ 500 })
     PowerCfgAvailableSleepStates = @($powerCfgA | Select-Object -First 60 | ForEach-Object { Convert-ToBoundedText $_ 500 })
     PnPProblemDeviceText = @($problemDevicesText | Select-Object -First 80 | ForEach-Object { Convert-ToBoundedText $_ 500 })
+    ReliabilityRecords = @($hardwareReliabilityRecords | Select-Object -First 40 | ForEach-Object {
+      "$(Convert-ToBoundedText $_.TimeGenerated 40) | Source=$(Convert-ToBoundedText $_.SourceName 120) | Product=$(Convert-ToBoundedText $_.ProductName 120) | Id=$($_.EventIdentifier) | $(Convert-ToBoundedText $_.Message 700)"
+    })
+    WindowsErrorReportingEvents = @($werHardwareEvents | Select-Object -First 40 | ForEach-Object {
+      "$(Convert-ToBoundedText $_.TimeCreated 40) | Id=$($_.Id) | $(Convert-ToBoundedText $_.Message 700)"
+    })
     ProbeErrors = @($probeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
     OptionalProbeErrors = @($optionalProbeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
   }
