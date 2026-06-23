@@ -412,6 +412,9 @@ $baseBoard = Invoke-Probe "baseboard" { Get-CimInstance Win32_BaseBoard }
 $processors = @(Invoke-Probe "cpu" { Get-CimInstance Win32_Processor })
 $memoryModules = @(Invoke-Probe "memory" { Get-CimInstance Win32_PhysicalMemory })
 $diskDrives = @(Invoke-Probe "diskdrives" { Get-CimInstance Win32_DiskDrive })
+$diskPartitions = @(Invoke-Probe "disk partitions" { Get-CimInstance Win32_DiskPartition })
+$diskDriveToPartition = @(Invoke-Probe "disk drive partition map" { Get-CimInstance Win32_DiskDriveToDiskPartition })
+$logicalDiskToPartition = @(Invoke-Probe "logical disk partition map" { Get-CimInstance Win32_LogicalDiskToPartition })
 $physicalDisks = @()
 $storageCounters = @()
 $optionalProbeErrors += [pscustomobject]@{ Name = "physicaldisks"; Error = "Skipped Get-PhysicalDisk because this host's Windows Storage provider returns invalid-property errors/hangs; using Win32_DiskDrive and event evidence instead." }
@@ -760,6 +763,76 @@ foreach ($volume in $volumes) {
 
 $dirtyVolumes = @($volumeDirtyResults | Where-Object { $_.IsDirty })
 $unsupportedDirtyChecks = @($volumeDirtyResults | Where-Object { $_.IsUnsupported })
+$diskByDeviceId = @{}
+foreach ($disk in $diskDrives) {
+  if ($disk.DeviceID) { $diskByDeviceId[[string]$disk.DeviceID] = $disk }
+}
+$partitionByDeviceId = @{}
+foreach ($partition in $diskPartitions) {
+  if ($partition.DeviceID) { $partitionByDeviceId[[string]$partition.DeviceID] = $partition }
+}
+$volumeByDeviceId = @{}
+foreach ($volume in $volumes) {
+  if ($volume.DeviceID) { $volumeByDeviceId[[string]$volume.DeviceID] = $volume }
+}
+$dirtyByDeviceId = @{}
+foreach ($dirtyResult in $volumeDirtyResults) {
+  if ($dirtyResult.DeviceID) { $dirtyByDeviceId[[string]$dirtyResult.DeviceID] = $dirtyResult }
+}
+$logicalDiskByPartition = @{}
+foreach ($association in $logicalDiskToPartition) {
+  $partitionDeviceId = [string]$association.Antecedent.DeviceID
+  $logicalDiskId = [string]$association.Dependent.DeviceID
+  if ($partitionDeviceId -and $logicalDiskId) {
+    $logicalDiskByPartition[$partitionDeviceId] = $logicalDiskId
+  }
+}
+
+$storageMapRows = @()
+foreach ($association in $diskDriveToPartition) {
+  $diskDeviceId = [string]$association.Antecedent.DeviceID
+  $partitionDeviceId = [string]$association.Dependent.DeviceID
+  if (-not $diskDeviceId -or -not $partitionDeviceId) { continue }
+
+  $disk = if ($diskByDeviceId.ContainsKey($diskDeviceId)) { $diskByDeviceId[$diskDeviceId] } else { $association.Antecedent }
+  $partition = if ($partitionByDeviceId.ContainsKey($partitionDeviceId)) { $partitionByDeviceId[$partitionDeviceId] } else { $association.Dependent }
+  $logicalDiskId = if ($logicalDiskByPartition.ContainsKey($partitionDeviceId)) { $logicalDiskByPartition[$partitionDeviceId] } else { $null }
+  $volume = if ($logicalDiskId -and $volumeByDeviceId.ContainsKey($logicalDiskId)) { $volumeByDeviceId[$logicalDiskId] } else { $null }
+  $dirtyResult = if ($logicalDiskId -and $dirtyByDeviceId.ContainsKey($logicalDiskId)) { $dirtyByDeviceId[$logicalDiskId] } else { $null }
+
+  $storageMapRows += [pscustomobject]@{
+    DiskIndex = $disk.Index
+    PhysicalDrive = $diskDeviceId
+    DiskModel = $disk.Model
+    InterfaceType = $disk.InterfaceType
+    DiskSizeGB = if ($disk.Size) { [math]::Round(($disk.Size / 1GB), 2) } else { $null }
+    DiskSerialNumber = (($disk.SerialNumber -as [string]).Trim())
+    Partition = $partitionDeviceId
+    PartitionType = $partition.Type
+    PartitionSizeGB = if ($partition.Size) { [math]::Round(($partition.Size / 1GB), 2) } else { $null }
+    LogicalDisk = $logicalDiskId
+    VolumeName = if ($volume) { $volume.VolumeName } else { $null }
+    FileSystem = if ($volume) { $volume.FileSystem } else { $null }
+    VolumeSizeGB = if ($volume -and $volume.Size) { [math]::Round(($volume.Size / 1GB), 2) } else { $null }
+    VolumeFreeGB = if ($volume -and $volume.FreeSpace) { [math]::Round(($volume.FreeSpace / 1GB), 2) } else { $null }
+    DirtyBit = if ($dirtyResult) { [bool]$dirtyResult.IsDirty } else { $null }
+  }
+}
+
+$mappedLogicalDisks = @($storageMapRows | Where-Object { $_.LogicalDisk } | ForEach-Object { $_.LogicalDisk } | Select-Object -Unique)
+$unmappedLogicalDisks = @($volumes | Where-Object { $_.DeviceID -match "^[A-Z]:$" -and $mappedLogicalDisks -notcontains $_.DeviceID } | Select-Object DeviceID, VolumeName, FileSystem, @{ Name = "SizeGB"; Expression = { if ($_.Size) { [math]::Round(($_.Size / 1GB), 2) } else { $null } } })
+$dirtyStorageMapRows = @($storageMapRows | Where-Object { $_.DirtyBit -eq $true })
+$dirtyStorageTargets = @($dirtyStorageMapRows | ForEach-Object { "$($_.LogicalDisk) on Disk $($_.DiskIndex) $($_.DiskModel) ($($_.PhysicalDrive))" })
+
+New-Component -Category "Storage Mapping" -Name "Physical disk to volume map" -Status $(if ($dirtyStorageMapRows.Count -gt 0) { "warning" } elseif ($storageMapRows.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  MappingCount = $storageMapRows.Count
+  MappedLogicalDiskCount = $mappedLogicalDisks.Count
+  UnmappedLogicalDisks = @($unmappedLogicalDisks)
+  DirtyMappedVolumeCount = $dirtyStorageMapRows.Count
+  DirtyMappedVolumes = @($dirtyStorageMapRows | Select-Object -First 20 LogicalDisk, DiskIndex, PhysicalDrive, DiskModel, InterfaceType, Partition, FileSystem, VolumeName)
+  Mappings = @($storageMapRows | Select-Object -First 50)
+} -Signals $(if ($dirtyStorageMapRows.Count -gt 0) { @("$($dirtyStorageMapRows.Count) dirty volume(s) are mapped to exact physical disk rows.") } elseif ($storageMapRows.Count -eq 0) { @("Windows did not expose disk-to-partition-to-volume mappings to this scanner.") } else { @() }) -Recommendations $(if ($dirtyStorageMapRows.Count -gt 0) { @("Back up and run read-only filesystem diagnostics for: $((@($dirtyStorageTargets) | Select-Object -First 8) -join '; '). Do not repair until the mapped physical disk is confirmed stable.") } elseif ($storageMapRows.Count -eq 0) { @("Use Disk Management or PowerShell storage cmdlets to manually map volumes to physical disks before replacing hardware.") } else { @("Disk-to-volume mapping is captured, so future volume warnings can be tied to the exact physical drive.") })
+
 New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair flag check" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
   CheckedVolumeCount = $volumeDirtyResults.Count
   DirtyVolumeCount = $dirtyVolumes.Count
@@ -768,7 +841,8 @@ New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair fl
 } -Signals $(if ($dirtyVolumes.Count -gt 0) { @("$($dirtyVolumes.Count) volume(s) have the filesystem dirty bit set.") } elseif ($volumeDirtyResults.Count -eq 0) { @("No drive-letter volumes were eligible for fsutil dirty query.") } else { @() }) -Recommendations $(if ($dirtyVolumes.Count -gt 0) { @("Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability.") } else { @("No filesystem dirty bit was reported by fsutil for checked volumes.") })
 
 if ($dirtyVolumes.Count -gt 0) {
-  New-Finding -Severity "warning" -Component "Volume dirty bit" -Title "Filesystem dirty bit is set" -Detail "Windows reports at least one volume may need filesystem checking." -Evidence "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyVolumes | ForEach-Object { $_.DeviceID }) -join ', '))" -Recommendation "Back up first, then use read-only diagnostics or a planned repair window for the affected volume." -Confidence "medium"
+  $dirtyEvidence = if ($dirtyStorageTargets.Count -gt 0) { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyStorageTargets) | Select-Object -First 8) -join '; ')" } else { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyVolumes | ForEach-Object { $_.DeviceID }) -join ', '))" }
+  New-Finding -Severity "warning" -Component "Volume dirty bit" -Title "Filesystem dirty bit is set" -Detail "Windows reports at least one volume may need filesystem checking." -Evidence $dirtyEvidence -Recommendation "Back up first, then use read-only diagnostics or a planned repair window for the affected mapped volume and physical disk." -Confidence "medium"
 }
 
 foreach ($thermal in $thermalZones) {
@@ -1082,6 +1156,7 @@ New-Diagnostic -Name "Peripheral inventory problem-code sweep" -Status $(if ($pe
 New-Diagnostic -Name "Display EDID identity sweep" -Status $(if ($monitorIdentityRows.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($monitorIdentityRows.Count) active EDID display identity row(s), $($monitorDisplayParams.Count) display parameter row(s), $($monitorConnectionParams.Count) connection parameter row(s)." -NextStep $(if ($monitorIdentityRows.Count -gt 0) { "Use the display identity rows to match physical monitors before testing cables, ports, dead pixels, HDR, VRR, or flicker." } else { "Run with current GPU/display drivers and active monitors attached; visually test displays because EDID was not exposed." })
 New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxdiagText.Count -eq 0) { "limited" } elseif ($dxProblemLines.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(if ($dxdiagText.Count -gt 0) { "$dxOkCount 'No problems found' line(s), $($dxProblemLines.Count) problem/error line(s)." } else { "dxdiag skipped in the default safe scan path." })" -NextStep $(if ($dxProblemLines.Count -gt 0) { "Review dxdiag problem lines in the raw report." } elseif ($dxdiagText.Count -eq 0) { "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing." } else { "No dxdiag problem lines found." })
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
+New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyStorageMapRows.Count -gt 0) { "warning" } elseif ($storageMapRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageMapRows.Count) disk/partition mapping row(s), $($mappedLogicalDisks.Count) mapped drive-letter volume(s), $($unmappedLogicalDisks.Count) unmapped drive-letter volume(s), $($dirtyStorageMapRows.Count) dirty mapped volume(s)." -NextStep $(if ($dirtyStorageMapRows.Count -gt 0) { "Use the mapped disk model/index before running repair or replacing storage: $((@($dirtyStorageTargets) | Select-Object -First 5) -join '; ')." } elseif ($storageMapRows.Count -eq 0) { "Use Disk Management or vendor tooling to map affected volumes to physical drives manually." } else { "Volume-to-physical-disk mapping is available for future storage warnings." })
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
