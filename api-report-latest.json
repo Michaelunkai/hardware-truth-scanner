@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T14:58:54.5747407Z",
+  "generatedAt": "2026-06-23T15:06:51.4735653Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 72,
+    "componentCount": 73,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -301,7 +301,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1711.64,
+        "FreeGB": 1705.34,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -461,7 +461,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1711.64,
+            "VolumeFreeGB": 1705.34,
             "DirtyBit": false
           },
           {
@@ -723,14 +723,14 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "39",
+          "TemperatureC": "38",
           "FanPercent": "0",
-          "PState": "P5",
-          "PowerDrawW": "26.06",
+          "PState": "P8",
+          "PowerDrawW": "26.89",
           "PowerLimitW": "360.00",
           "GraphicsClockMhz": "180",
-          "MemoryClockMhz": "810",
-          "PcieGen": "2",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
           "PcieWidth": "16",
           "UtilizationPercent": "0"
         }
@@ -860,8 +860,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 762024,
-            "BytesSentPerSec": 399275,
+            "BytesReceivedPerSec": 3070545,
+            "BytesSentPerSec": 669272,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2135,6 +2135,189 @@
       ]
     },
     {
+      "id": "audio-endpoint-inventory-speaker-microphone-and-media-endpoint-devices",
+      "category": "Audio Endpoint Inventory",
+      "name": "Speaker, microphone, and media endpoint devices",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "EndpointCount": 6,
+        "MediaDevices": [
+          {
+            "Name": "Michael's S25 Ultra Hands-Free HF Audio",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHHFENUM\\BTHHFPAUDIO\\D&38430CF5&0&97"
+          },
+          {
+            "Name": "Realtek Audio Universal Service",
+            "PNPClass": "SoftwareComponent",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKSRV&6&2B941894&0"
+          },
+          {
+            "Name": "High Definition Audio Controller",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_10DE&DEV_22E9&SUBSYS_000010DE&REV_A1\\4&D0BDF66&0&0109"
+          },
+          {
+            "Name": "High Definition Audio Bus",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_1002&DEV_1640&SUBSYS_16401002&REV_00\\4&16012499&0&0141"
+          },
+          {
+            "Name": "Realtek(R) Audio",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HDAUDIO\\FUNC_01&VEN_10EC&DEV_1220&SUBSYS_1458A0C3&REV_1001\\5&32442090&0&0001"
+          },
+          {
+            "Name": "AMD Streaming Audio Device",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "ROOT\\AMDSAFD&FUN_01&REV_01\\0000"
+          },
+          {
+            "Name": "Realtek Audio Effects Component",
+            "PNPClass": "AudioProcessingObject",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKAPO&6&2B941894&0"
+          },
+          {
+            "Name": "AMD-Dynamic Audio Noise Supression",
+            "PNPClass": "SoftwareComponent",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\DRIVERENUM\\AMDFDANS&5&34128C9C&B"
+          },
+          {
+            "Name": "Voice Clarity",
+            "PNPClass": "AudioProcessingObject",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\DRIVERENUM\\{96BEDF2C-18CB-4A15-B821-5E95ED0FEA61}#VOCAEFFECTPACK&1&2733BF2B&0"
+          },
+          {
+            "Name": "High Definition Audio Controller",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_1022&DEV_15E3&SUBSYS_A0C31458&REV_00\\4&16012499&0&0641"
+          },
+          {
+            "Name": "USB PnP Sound Device",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_08BB&PID_2902&MI_00\\9&38ED8508&0&0000"
+          },
+          {
+            "Name": "Headset Audio Gateway Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{00001112-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "System speaker",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "ACPI\\PNP0800\\4&711D042&0"
+          },
+          {
+            "Name": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "ROOT\\UNNAMED_DEVICE\\0000"
+          },
+          {
+            "Name": "NVIDIA High Definition Audio",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HDAUDIO\\FUNC_01&VEN_10DE&DEV_00AB&SUBSYS_10DE0000&REV_1001\\5&1985EFCD&0&0001"
+          },
+          {
+            "Name": "Michael's S25 Ultra A2DP SNK",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHENUM\\{0000110A-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
+          },
+          {
+            "Name": "AMD High Definition Audio Device",
+            "PNPClass": "MEDIA",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "HDAUDIO\\FUNC_01&VEN_1002&DEV_AA01&SUBSYS_00AA0100&REV_1008\\5&28A47E64&0&0001"
+          }
+        ],
+        "Endpoints": [
+          {
+            "Name": "Microphone (USB PnP Sound Device)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{B67C08D5-71F5-4126-9516-5E10E31B09B2}"
+          },
+          {
+            "Name": "Realtek Digital Output (Realtek(R) Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{083758FA-CFC1-415A-B29D-8913663D10DF}"
+          },
+          {
+            "Name": "M27UP (NVIDIA High Definition Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{83CB568B-4999-40C9-9044-CEC210B267E8}"
+          },
+          {
+            "Name": "Speakers (Michael's S25 Ultra Hands-Free HF Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{A26CEDFC-3882-4C4E-8412-8224EAF25526}"
+          },
+          {
+            "Name": "Microphone (Michael's S25 Ultra Hands-Free HF Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{E1DB7D5B-6481-4364-A4F5-47814D2CC544}"
+          },
+          {
+            "Name": "1 - M27UP (AMD High Definition Audio Device)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{ACF389C3-5804-4A27-8427-9629607D3B55}"
+          }
+        ],
+        "ProblemDeviceCount": 0,
+        "MediaDeviceCount": 17,
+        "ProblemDevices": [],
+        "InventoryDeviceCount": 23
+      },
+      "signals": [],
+      "recommendations": [
+        "Audio endpoints and media devices are enumerated without Device Manager problem codes. Crackle, low volume, mic quality, speaker damage, cable noise, and Bluetooth range still require live symptom-time testing."
+      ]
+    },
+    {
       "id": "driver-integrity-pnp-signed-driver-inventory",
       "category": "Driver Integrity",
       "name": "PnP signed driver inventory",
@@ -2379,6 +2562,12 @@
       "nextStep": "No live packet error/discard counters were reported; retest during symptoms for intermittent link faults."
     },
     {
+      "name": "Audio endpoint and media device sweep",
+      "status": "passed",
+      "evidence": "6 audio endpoint row(s), 17 media/audio device row(s), 0 audio problem device(s).",
+      "nextStep": "No audio endpoint/media Device Manager problem codes were found; live playback/recording symptoms still need symptom-time testing."
+    },
+    {
       "name": "DirectX display/audio/input diagnostic",
       "status": "limited",
       "evidence": "dxdiag skipped in the default safe scan path.",
@@ -2405,7 +2594,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 39C, PState P5, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 38C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -2465,7 +2654,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 17:58:53 2026",
+      "Timestamp : Tue Jun 23 18:06:50 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -2473,7 +2662,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P5",
+      " Performance State : P8",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -2485,15 +2674,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 589246690 us",
+      " SW Power Capping : 611305103 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 39 C",
-      " GPU Current T.Limit Temp : 49 C",
+      " GPU Current Temp : 38 C",
+      " GPU Current T.Limit Temp : 50 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -2501,8 +2690,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 26.06 W",
-      " Instantaneous Power Draw : 25.98 W",
+      " Average Power Draw : 26.89 W",
+      " Instantaneous Power Draw : 26.74 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -2514,11 +2703,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.30 sec",
+      " Duration : 2.29 sec",
       " Number of Samples : 119",
-      " Max : 31.26 W",
-      " Min : 25.32 W",
-      " Avg : 26.18 W",
+      " Max : 30.28 W",
+      " Min : 26.35 W",
+      " Avg : 26.94 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
