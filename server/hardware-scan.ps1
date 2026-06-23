@@ -289,6 +289,8 @@ $networkAdapters = @(Invoke-Probe "network" { Get-CimInstance Win32_NetworkAdapt
 $batteries = @(Invoke-Probe "battery" { Get-CimInstance Win32_Battery })
 $pnpProblems = @(Invoke-Probe "pnp problems" { Get-CimInstance Win32_PnPEntity | Where-Object { $_.ConfigManagerErrorCode -ne 0 } })
 $pnpAll = @(Invoke-Probe "pnp all" { Get-CimInstance Win32_PnPEntity })
+$pciDevices = @($pnpAll | Where-Object { $_.PNPDeviceID -like "PCI\*" })
+$firmwareDevices = @($pnpAll | Where-Object { $_.PNPClass -eq "Firmware" -or $_.Name -match "firmware|BIOS|UEFI" })
 $signedDrivers = @(Invoke-Probe "signed drivers" { Get-CimInstance Win32_PnPSignedDriver })
 $monitors = @(Invoke-Probe "monitors" { Get-CimInstance Win32_DesktopMonitor })
 $keyboards = @(Invoke-Probe "keyboards" { Get-CimInstance Win32_Keyboard })
@@ -297,6 +299,8 @@ $usbControllers = @(Invoke-Probe "usb controllers" { Get-CimInstance Win32_USBCo
 $usbHubs = @(Invoke-Probe "usb hubs" { Get-CimInstance Win32_USBHub })
 $fans = @(Invoke-Probe "fans" { Get-CimInstance Win32_Fan })
 $thermalZones = @(Invoke-OptionalProbe "thermal zones" { Get-CimInstance -Namespace root\wmi -ClassName MSAcpi_ThermalZoneTemperature })
+$openHardwareSensors = @(Invoke-OptionalProbe "openhardwaremonitor sensors" { Get-CimInstance -Namespace root\OpenHardwareMonitor -ClassName Sensor })
+$libreHardwareSensors = @(Invoke-OptionalProbe "librehardwaremonitor sensors" { Get-CimInstance -Namespace root\LibreHardwareMonitor -ClassName Sensor })
 $enclosures = @(Invoke-Probe "enclosure" { Get-CimInstance Win32_SystemEnclosure })
 $tpm = @(Invoke-OptionalProbe "tpm" { Get-CimInstance -Namespace root\cimv2\Security\MicrosoftTpm -ClassName Win32_Tpm })
 
@@ -330,7 +334,10 @@ $eventProviders = @(
   "nvlddmkm",
   "Microsoft-Windows-Kernel-Power",
   "volmgr",
-  "Microsoft-Windows-MemoryDiagnostics-Results"
+  "Microsoft-Windows-MemoryDiagnostics-Results",
+  "Microsoft-Windows-Kernel-PnP",
+  "Microsoft-Windows-UserPnp",
+  "Microsoft-Windows-DriverFrameworks-UserMode"
 )
 
 $events = @()
@@ -438,6 +445,16 @@ if ($memoryEvents.Count -gt 0) {
   New-Finding -Severity "warning" -Component "Memory" -Title "Recent memory-related event evidence exists" -Detail "Windows logged memory or cache related reliability events in the scan window." -Evidence "$($memoryEvents.Count) event(s) since $startTime" -Recommendation "Run an offline memory diagnostic and reseat/test DIMMs if errors are reproduced." -Confidence "medium"
 }
 
+$memoryDiagnosticResults = @($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-MemoryDiagnostics-Results" })
+$memoryDiagnosticProblemEvents = @($memoryDiagnosticResults | Where-Object { $_.Message -match "hardware problems|errors|problem|failed" -and $_.Message -notmatch "no memory errors|no errors|detected no errors" })
+$memoryDiagnosticOkEvents = @($memoryDiagnosticResults | Where-Object { $_.Message -match "no memory errors|no errors|detected no errors" })
+$memoryDiagnosticStatus = if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "ok" } else { "unknown" }
+New-Component -Category "Memory Diagnostic History" -Name "Windows Memory Diagnostic results" -Status $memoryDiagnosticStatus -Confidence "medium" -Evidence @{
+  RecentResultCount = $memoryDiagnosticResults.Count
+  ProblemResultCount = $memoryDiagnosticProblemEvents.Count
+  LatestResult = if ($memoryDiagnosticResults.Count -gt 0) { Convert-ToBoundedText $memoryDiagnosticResults[0].Message 700 } else { $null }
+} -Signals $(if ($memoryDiagnosticStatus -eq "warning") { @("$($memoryDiagnosticProblemEvents.Count) Windows Memory Diagnostic problem result(s) were found.") } elseif ($memoryDiagnosticStatus -eq "unknown") { @("No recent Windows Memory Diagnostic result was found in the scan window.") } else { @() }) -Recommendations $(if ($memoryDiagnosticStatus -eq "warning") { @("Run an offline memory test and isolate DIMMs/slots if errors reproduce.") } elseif ($memoryDiagnosticStatus -eq "unknown") { @("Run Windows Memory Diagnostic or MemTest86 from boot if RAM certainty is required.") } else { @("The latest Windows Memory Diagnostic result in the scan window did not report memory errors.") })
+
 foreach ($pd in $physicalDisks) {
   $operational = As-Text $pd.OperationalStatus
   $status = if ($pd.HealthStatus -ne "Healthy" -or $operational -match "Lost|Degraded|Stressed|Predictive Failure") { "critical" } else { "ok" }
@@ -487,9 +504,21 @@ foreach ($smart in $smartStatus) {
   }
 }
 
-if ($optionalProbeErrors.Count -gt 0) {
+$smartPredicting = @($smartStatus | Where-Object { $_.PredictFailure -eq $true })
+if ($smartStatus.Count -gt 0) {
+  New-Component -Category "Storage SMART Prediction" -Name "MSStorageDriver FailurePredictStatus" -Status $(if ($smartPredicting.Count -gt 0) { "critical" } else { "ok" }) -Confidence "medium" -Evidence @{
+    DeviceCount = $smartStatus.Count
+    PredictFailureCount = $smartPredicting.Count
+    Devices = @($smartStatus | Select-Object -First 20 InstanceName, PredictFailure, Reason)
+  } -Signals $(if ($smartPredicting.Count -gt 0) { @("$($smartPredicting.Count) drive(s) report SMART predicted failure.") } else { @() }) -Recommendations $(if ($smartPredicting.Count -gt 0) { @("Back up immediately and replace the affected drive after vendor confirmation.") } else { @("Windows SMART failure prediction did not report imminent failure. Attribute-level vendor diagnostics are still stronger.") })
+} else {
+  New-Component -Category "Storage SMART Prediction" -Name "MSStorageDriver FailurePredictStatus" -Status "unknown" -Confidence "low" -Evidence @{ DeviceCount = 0 } -Signals @("Windows did not expose SMART failure-prediction rows to this scanner.") -Recommendations @("Use the SSD/HDD vendor tool or smartctl for drive attribute verification.")
+}
+
+$storageOptionalProbeErrors = @($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" })
+if ($storageOptionalProbeErrors.Count -gt 0) {
   New-Component -Category "Storage Advanced Health" -Name "SMART and Storage module telemetry" -Status "unknown" -Confidence "medium" -Evidence @{
-    Errors = $optionalProbeErrors
+    Errors = $storageOptionalProbeErrors
     FallbackUsed = "Win32_DiskDrive status and recent disk/NTFS/storage event scan"
   } -Signals @("Advanced storage health providers were unavailable on this Windows installation.") -Recommendations @("Install or run vendor storage diagnostics such as Samsung Magician, the SSD vendor tool, or smartctl to prove SMART attribute health beyond Windows generic disk status.")
 }
@@ -539,6 +568,26 @@ foreach ($fan in $fans) {
 
 if ($fans.Count -eq 0) {
   New-Component -Category "Cooling Fan Sensor" -Name "WMI fan telemetry" -Status "unknown" -Confidence "low" -Evidence @{ SensorCount = 0 } -Signals @("Windows did not expose fan sensors through WMI.") -Recommendations @("Use BIOS, motherboard software, or physical inspection to verify fans and pump behavior.")
+}
+
+$thirdPartySensors = @($openHardwareSensors + $libreHardwareSensors)
+$thirdPartyTemperatures = @($thirdPartySensors | Where-Object { $_.SensorType -match "Temperature" })
+$thirdPartyFans = @($thirdPartySensors | Where-Object { $_.SensorType -match "Fan" })
+$hotThirdPartySensors = @($thirdPartyTemperatures | Where-Object { $null -ne $_.Value -and [double]$_.Value -ge 85 })
+if ($thirdPartySensors.Count -gt 0) {
+  New-Component -Category "Sensor Telemetry" -Name "OpenHardwareMonitor/LibreHardwareMonitor sensors" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+    SensorCount = $thirdPartySensors.Count
+    TemperatureSensorCount = $thirdPartyTemperatures.Count
+    FanSensorCount = $thirdPartyFans.Count
+    HotSensors = @($hotThirdPartySensors | Select-Object -First 20 Name, SensorType, Value, Identifier)
+    SampleSensors = @($thirdPartySensors | Select-Object -First 20 Name, SensorType, Value, Identifier)
+  } -Signals $(if ($hotThirdPartySensors.Count -gt 0) { @("$($hotThirdPartySensors.Count) third-party temperature sensor(s) read at or above 85 C.") } else { @() }) -Recommendations $(if ($hotThirdPartySensors.Count -gt 0) { @("Inspect cooling immediately and validate with BIOS/vendor sensor tools.") } else { @("Third-party sensor namespaces were available and did not show high temperature at scan time.") })
+} else {
+  $sensorProbeErrors = @($optionalProbeErrors | Where-Object { $_.Name -match "openhardwaremonitor|librehardwaremonitor" })
+  New-Component -Category "Sensor Telemetry" -Name "OpenHardwareMonitor/LibreHardwareMonitor sensors" -Status "unknown" -Confidence "low" -Evidence @{
+    SensorCount = 0
+    ProbeErrors = $sensorProbeErrors
+  } -Signals @("No OpenHardwareMonitor or LibreHardwareMonitor WMI sensor namespace was available.") -Recommendations @("Install or run a trusted sensor tool if CPU package temperature, fan RPM, pump RPM, VRM temperature, or motherboard sensor certainty is required.")
 }
 
 foreach ($gpu in $videoControllers) {
@@ -650,6 +699,19 @@ New-Component -Category "USB Inventory" -Name "USB hubs detected" -Status "info"
   Hubs = @($usbHubs | Select-Object -First 20 Name, Status, DeviceID)
 } -Signals @() -Recommendations @("USB hub inventory is captured. Intermittent ports/cables require physical testing with known-good devices.")
 
+$pciProblems = @($pciDevices | Where-Object { $_.ConfigManagerErrorCode -ne 0 })
+New-Component -Category "PCI and Expansion Bus" -Name "PCI/PCIe device inventory" -Status $(if ($pciProblems.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+  DeviceCount = $pciDevices.Count
+  ProblemDeviceCount = $pciProblems.Count
+  ProblemDevices = @($pciProblems | Select-Object -First 20 Name, PNPClass, ConfigManagerErrorCode, Status)
+  SampleDevices = @($pciDevices | Select-Object -First 25 Name, PNPClass, Status)
+} -Signals $(if ($pciProblems.Count -gt 0) { @("$($pciProblems.Count) PCI/PCIe device(s) have Device Manager problem codes.") } else { @() }) -Recommendations $(if ($pciProblems.Count -gt 0) { @("Fix PCI/PCIe problem devices before reseating cards or replacing hardware.") } else { @("No PCI/PCIe Device Manager problem code was found. Link stability under load still needs symptom-driven testing.") })
+
+New-Component -Category "Firmware Device Inventory" -Name "Firmware-class PnP devices" -Status "info" -Confidence "medium" -Evidence @{
+  DeviceCount = $firmwareDevices.Count
+  Devices = @($firmwareDevices | Select-Object -First 20 Name, PNPClass, Status, ConfigManagerErrorCode)
+} -Signals @() -Recommendations @("Firmware-class device inventory is captured. BIOS/firmware updates should only be considered for a specific fix or vendor recommendation.")
+
 foreach ($sound in $soundDevices) {
   $status = if ($sound.Status -and $sound.Status -ne "OK") { "warning" } else { "ok" }
   New-Component -Category "Audio" -Name ($sound.Name) -Status $status -Confidence "medium" -Evidence @{
@@ -670,6 +732,18 @@ New-Component -Category "Power Capabilities" -Name "powercfg /a" -Status "info" 
   Lines = @($powerCfgA | Select-Object -First 40)
 } -Signals @() -Recommendations @("Power capability data was collected. PSU quality, wall power, and power-cable problems still require physical/load testing.")
 
+$deviceReliabilityEvents = @($events | Where-Object { $_.ProviderName -match "Kernel-PnP|UserPnp|DeviceSetupManager|DriverFrameworks" })
+$deviceReliabilityProblemEvents = @($deviceReliabilityEvents | Where-Object { $_.LevelDisplayName -match "Warning|Error|Critical" })
+New-Component -Category "Device Reliability Events" -Name "Recent PnP/device setup history" -Status $(if ($deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+  EventCount = $deviceReliabilityEvents.Count
+  ProblemEventCount = $deviceReliabilityProblemEvents.Count
+  ProblemEvents = @($deviceReliabilityProblemEvents | Select-Object -First 20 TimeCreated, Id, ProviderName, LevelDisplayName, @{ Name = "Message"; Expression = { Convert-ToBoundedText $_.Message 500 } })
+} -Signals $(if ($deviceReliabilityProblemEvents.Count -gt 0) { @("$($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s).") } else { @() }) -Recommendations $(if ($deviceReliabilityProblemEvents.Count -gt 0) { @("Review the listed device setup/driver events; they can indicate failing devices, unstable USB paths, or driver install problems.") } else { @("No recent PnP/device setup warning or error event was found in the scan window.") })
+
+if ($deviceReliabilityProblemEvents.Count -gt 0) {
+  New-Finding -Severity "warning" -Component "Device reliability" -Title "Recent PnP or device setup warning events" -Detail "Windows logged device setup, PnP, or driver-framework warning/error events in the scan window." -Evidence "$($deviceReliabilityProblemEvents.Count) event(s) since $startTime" -Recommendation "Inspect the listed device IDs/messages and correlate them with recently connected hardware or driver changes." -Confidence "medium"
+}
+
 if ($pnpProblems.Count -gt 0) {
   foreach ($problem in $pnpProblems) {
     New-Finding -Severity "warning" -Component ($problem.Name) -Title "Device Manager reports a problem device" -Detail "A detected hardware device has a non-zero ConfigManagerErrorCode." -Evidence "Code=$($problem.ConfigManagerErrorCode); Class=$($problem.PNPClass); DeviceID=$($problem.DeviceID)" -Recommendation "Inspect this specific device in Device Manager; reseat/replace hardware only if the code persists after driver and cable checks." -Confidence "high"
@@ -687,8 +761,9 @@ New-Diagnostic -Name "DirectX display/audio/input diagnostic" -Status $(if ($dxd
 New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "limited" } elseif ($smartStatus | Where-Object { $_.PredictFailure -eq $true }) { "critical" } else { "passed" }) -Evidence "$(if ($optionalProbeErrors | Where-Object { $_.Name -match "physicaldisks|storage counters|smart" }) { "Windows advanced storage providers were unavailable; generic disk status and event logs were used." } else { "Windows advanced storage providers returned data." })" -NextStep "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."
-New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($thermalZones.Count -eq 0 -and $fans.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
-New-Diagnostic -Name "RAM live evidence" -Status "limited" -Evidence "$($memoryModules.Count) DIMM(s) inventoried; Windows live inventory cannot test memory cells." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for real RAM fault testing."
+New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
+New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
 if ($probeErrors.Count -gt 0) {

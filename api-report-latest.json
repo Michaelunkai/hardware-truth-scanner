@@ -1,16 +1,16 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T13:12:09.7670639Z",
+  "generatedAt": "2026-06-23T13:34:32.8425322Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 53,
+    "componentCount": 59,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 1,
-    "unknownCount": 5
+    "unknownCount": 8
   },
   "components": [
     {
@@ -147,6 +147,24 @@
       ]
     },
     {
+      "id": "memory-diagnostic-history-windows-memory-diagnostic-results",
+      "category": "Memory Diagnostic History",
+      "name": "Windows Memory Diagnostic results",
+      "status": "unknown",
+      "confidence": "medium",
+      "evidence": {
+        "LatestResult": null,
+        "ProblemResultCount": 0,
+        "RecentResultCount": 0
+      },
+      "signals": [
+        "No recent Windows Memory Diagnostic result was found in the scan window."
+      ],
+      "recommendations": [
+        "Run Windows Memory Diagnostic or MemTest86 from boot if RAM certainty is required."
+      ]
+    },
+    {
       "id": "disk-device-fanxiang-ff951-scsi-disk-device",
       "category": "Disk Device",
       "name": "Fanxiang FF951 SCSI Disk Device",
@@ -219,6 +237,22 @@
       ]
     },
     {
+      "id": "storage-smart-prediction-msstoragedriver-failurepredictstatus",
+      "category": "Storage SMART Prediction",
+      "name": "MSStorageDriver FailurePredictStatus",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "DeviceCount": 0
+      },
+      "signals": [
+        "Windows did not expose SMART failure-prediction rows to this scanner."
+      ],
+      "recommendations": [
+        "Use the SSD/HDD vendor tool or smartctl for drive attribute verification."
+      ]
+    },
+    {
       "id": "storage-advanced-health-smart-and-storage-module-telemetry",
       "category": "Storage Advanced Health",
       "name": "SMART and Storage module telemetry",
@@ -252,7 +286,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1701.72,
+        "FreeGB": 1694.3,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -309,7 +343,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 444.07,
+        "FreeGB": 390.64,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -372,6 +406,23 @@
       ]
     },
     {
+      "id": "sensor-telemetry-openhardwaremonitor-librehardwaremonitor-sensors",
+      "category": "Sensor Telemetry",
+      "name": "OpenHardwareMonitor/LibreHardwareMonitor sensors",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "SensorCount": 0,
+        "ProbeErrors": []
+      },
+      "signals": [
+        "No OpenHardwareMonitor or LibreHardwareMonitor WMI sensor namespace was available."
+      ],
+      "recommendations": [
+        "Install or run a trusted sensor tool if CPU package temperature, fan RPM, pump RPM, VRM temperature, or motherboard sensor certainty is required."
+      ]
+    },
+    {
       "id": "gpu-amd-radeon-tm-graphics",
       "category": "GPU",
       "name": "AMD Radeon(TM) Graphics",
@@ -404,16 +455,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "70",
+          "TemperatureC": "38",
           "FanPercent": "0",
-          "PState": "P0",
-          "PowerDrawW": "359.96",
+          "PState": "P5",
+          "PowerDrawW": "27.61",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "2715",
-          "MemoryClockMhz": "15001",
-          "PcieGen": "5",
+          "GraphicsClockMhz": "180",
+          "MemoryClockMhz": "810",
+          "PcieGen": "2",
           "PcieWidth": "16",
-          "UtilizationPercent": "99"
+          "UtilizationPercent": "0"
         }
       },
       "signals": [],
@@ -877,6 +928,165 @@
       ]
     },
     {
+      "id": "pci-and-expansion-bus-pci-pcie-device-inventory",
+      "category": "PCI and Expansion Bus",
+      "name": "PCI/PCIe device inventory",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDeviceCount": 0,
+        "SampleDevices": [
+          {
+            "Name": "PCI standard host CPU bridge",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Upstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "Qualcomm FastConnect 7800 Wi-Fi 7 High Band Simultaneous (HBS) Network Adapter",
+            "PNPClass": "Net",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI standard host CPU bridge",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK"
+          },
+          {
+            "Name": "AMD Radeon(TM) Graphics",
+            "PNPClass": "Display",
+            "Status": "OK"
+          },
+          {
+            "Name": "High Definition Audio Controller",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "High Definition Audio Bus",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Upstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI standard host CPU bridge",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "AMD SMBUS",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Root Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Root Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Root Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          {
+            "Name": "PCI Express Root Port",
+            "PNPClass": "System",
+            "Status": "OK"
+          },
+          "... truncated 1 more item(s)"
+        ],
+        "DeviceCount": 68,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "No PCI/PCIe Device Manager problem code was found. Link stability under load still needs symptom-driven testing."
+      ]
+    },
+    {
+      "id": "firmware-device-inventory-firmware-class-pnp-devices",
+      "category": "Firmware Device Inventory",
+      "name": "Firmware-class PnP devices",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "DeviceCount": 4,
+        "Devices": [
+          {
+            "Name": "System Firmware",
+            "PNPClass": "Firmware",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0"
+          },
+          {
+            "Name": "BIOS",
+            "PNPClass": "WPD",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0"
+          },
+          {
+            "Name": "Microsoft UEFI-Compliant System",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0"
+          },
+          {
+            "Name": "Microsoft System Management BIOS Driver",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0"
+          }
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "Firmware-class device inventory is captured. BIOS/firmware updates should only be considered for a specific fix or vendor recommendation."
+      ]
+    },
+    {
       "id": "audio-realtek-high-definition-audio",
       "category": "Audio",
       "name": "Realtek High Definition Audio",
@@ -1088,6 +1298,22 @@
       ]
     },
     {
+      "id": "device-reliability-events-recent-pnp-device-setup-history",
+      "category": "Device Reliability Events",
+      "name": "Recent PnP/device setup history",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "EventCount": 1,
+        "ProblemEvents": [],
+        "ProblemEventCount": 0
+      },
+      "signals": [],
+      "recommendations": [
+        "No recent PnP/device setup warning or error event was found in the scan window."
+      ]
+    },
+    {
       "id": "device-manager-problem-devices",
       "category": "Device Manager",
       "name": "Problem devices",
@@ -1108,7 +1334,7 @@
       "component": "Power stability",
       "title": "Recent power-loss or crash-path events",
       "detail": "Kernel-Power or volmgr events can indicate forced shutdowns, PSU instability, crashes, or power loss.",
-      "evidence": "4 event(s) since 06/09/2026 16:11:41",
+      "evidence": "4 event(s) since 06/09/2026 16:34:15",
       "recommendation": "If unexpected shutdowns are happening, inspect PSU, wall power, GPU power cables, and crash dumps.",
       "confidence": "medium"
     }
@@ -1141,20 +1367,26 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 70C, PState P0, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 38C, PState P5, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
       "name": "Thermal and fan telemetry",
       "status": "limited",
-      "evidence": "0 ACPI thermal zone(s), 0 WMI fan sensor(s).",
+      "evidence": "0 ACPI thermal zone(s), 0 WMI fan sensor(s), 0 third-party sensor row(s).",
       "nextStep": "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
     },
     {
-      "name": "RAM live evidence",
+      "name": "RAM live evidence and diagnostic history",
       "status": "limited",
-      "evidence": "2 DIMM(s) inventoried; Windows live inventory cannot test memory cells.",
-      "nextStep": "Run Windows Memory Diagnostic or MemTest86 from boot for real RAM fault testing."
+      "evidence": "2 DIMM(s) inventoried; 0 Windows Memory Diagnostic result event(s) in the last 14 day(s).",
+      "nextStep": "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
+    },
+    {
+      "name": "PCI/PCIe and device setup reliability",
+      "status": "passed",
+      "evidence": "68 PCI/PCIe device(s), 0 PCI problem device(s), 0 recent PnP/device setup warning or error event(s).",
+      "nextStep": "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
     },
     {
       "name": "Physical inspection boundary",
@@ -1171,18 +1403,19 @@
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   ],
   "raw": {
-    "RecentEventCount": 4,
+    "RecentEventCount": 5,
     "RecentEvents": [
       "06/23/2026 15:48:08 | Id=508 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has been constrained to a periodic tick Reason: BCD override.",
       "06/23/2026 15:48:08 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
       "06/23/2026 15:47:41 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
-      "06/23/2026 15:47:38 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API"
+      "06/23/2026 15:47:38 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API",
+      "06/23/2026 13:55:23 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service HidUsb for Device Instance ID USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000 with the following status: 0."
     ],
     "NvidiaDetail": [
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 16:12:08 2026",
+      "Timestamp : Tue Jun 23 16:34:31 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -1190,11 +1423,11 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P0",
+      " Performance State : P5",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
-      " SW Power Cap : Active",
+      " SW Power Cap : Not Active",
       " HW Slowdown : Not Active",
       " HW Thermal Slowdown : Not Active",
       " HW Power Brake Slowdown : Not Active",
@@ -1202,15 +1435,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 239796355 us",
+      " SW Power Capping : 375268250 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 70 C",
-      " GPU Current T.Limit Temp : 18 C",
+      " GPU Current Temp : 38 C",
+      " GPU Current T.Limit Temp : 50 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -1218,8 +1451,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 359.96 W",
-      " Instantaneous Power Draw : 359.84 W",
+      " Average Power Draw : 27.61 W",
+      " Instantaneous Power Draw : 26.43 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -1231,11 +1464,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.32 sec",
+      " Duration : 2.33 sec",
       " Number of Samples : 119",
-      " Max : 366.27 W",
-      " Min : 352.60 W",
-      " Avg : 360.04 W",
+      " Max : 37.35 W",
+      " Min : 25.63 W",
+      " Avg : 28.00 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
