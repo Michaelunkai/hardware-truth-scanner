@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T15:06:51.4735653Z",
+  "generatedAt": "2026-06-23T15:15:58.3877516Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 73,
+    "componentCount": 74,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -252,6 +252,73 @@
       ]
     },
     {
+      "id": "storage-controller-inventory-storage-controller-and-adapter-pnp-devices",
+      "category": "Storage Controller Inventory",
+      "name": "Storage controller and adapter PnP devices",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Devices": [
+          {
+            "Name": "Microsoft VHD Loopback Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "{8E7BD593-6E6C-4C52-86A6-77175494DD8E}\\MSVHDHBA\\1&3030E83&0&01"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F6&SUBSYS_10621B21&REV_01\\6&3AE87E62&0&00680011"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F6&SUBSYS_10621B21&REV_01\\8&1BF325A0&0&006800400011"
+          },
+          {
+            "Name": "Standard NVM Express Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_144D&DEV_A810&SUBSYS_A801144D&REV_00\\4&218BD16B&0&000A"
+          },
+          {
+            "Name": "Standard NVM Express Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "PCI\\VEN_1E4B&DEV_1202&SUBSYS_12021E4B&REV_01\\8&6A83F4D&0&000800000012"
+          },
+          {
+            "Name": "Microsoft Storage Spaces Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "ROOT\\SPACEPORT\\0000"
+          },
+          {
+            "Name": "USB Attached SCSI (UAS) Mass Storage Device",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "USB\\VID_090C&PID_2320\\MSFT30FWX0814A250700349"
+          }
+        ],
+        "ProblemDeviceCount": 0,
+        "ControllerDeviceCount": 7,
+        "ProblemDevices": []
+      },
+      "signals": [],
+      "recommendations": [
+        "Storage controllers/adapters are enumerated without Device Manager problem codes. Intermittent cable, slot, dock, controller, or power-path faults still require symptom-time testing."
+      ]
+    },
+    {
       "id": "storage-smart-prediction-msstoragedriver-failurepredictstatus",
       "category": "Storage SMART Prediction",
       "name": "MSStorageDriver FailurePredictStatus",
@@ -301,7 +368,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1705.34,
+        "FreeGB": 1695.47,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -358,7 +425,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 490.84,
+        "FreeGB": 490.82,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -410,7 +477,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 490.84,
+            "VolumeFreeGB": 490.82,
             "DirtyBit": true
           },
           {
@@ -461,7 +528,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1705.34,
+            "VolumeFreeGB": 1695.47,
             "DirtyBit": false
           },
           {
@@ -723,16 +790,16 @@
           "Name": "NVIDIA GeForce RTX 5080",
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
-          "TemperatureC": "38",
+          "TemperatureC": "45",
           "FanPercent": "0",
           "PState": "P8",
-          "PowerDrawW": "26.89",
+          "PowerDrawW": "27.18",
           "PowerLimitW": "360.00",
           "GraphicsClockMhz": "180",
           "MemoryClockMhz": "405",
           "PcieGen": "1",
           "PcieWidth": "16",
-          "UtilizationPercent": "0"
+          "UtilizationPercent": "4"
         }
       },
       "signals": [],
@@ -860,8 +927,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 3070545,
-            "BytesSentPerSec": 669272,
+            "BytesReceivedPerSec": 29428,
+            "BytesSentPerSec": 35071,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2580,6 +2647,12 @@
       "nextStep": "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
     },
     {
+      "name": "Storage controller and adapter sweep",
+      "status": "passed",
+      "evidence": "7 storage controller/adapter PnP row(s), 0 problem device(s).",
+      "nextStep": "No storage controller/adapter Device Manager problem codes were found; retest during storage disconnect or performance symptoms for intermittent faults."
+    },
+    {
       "name": "Physical disk to volume correlation",
       "status": "warning",
       "evidence": "10 disk/partition mapping row(s), 5 mapped drive-letter volume(s), 0 unmapped drive-letter volume(s), 1 dirty mapped volume(s).",
@@ -2594,7 +2667,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 38C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 45C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -2654,7 +2727,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 18:06:50 2026",
+      "Timestamp : Tue Jun 23 18:15:57 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -2674,15 +2747,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 611305103 us",
+      " SW Power Capping : 734720992 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 38 C",
-      " GPU Current T.Limit Temp : 50 C",
+      " GPU Current Temp : 45 C",
+      " GPU Current T.Limit Temp : 43 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -2690,8 +2763,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 26.89 W",
-      " Instantaneous Power Draw : 26.74 W",
+      " Average Power Draw : 27.80 W",
+      " Instantaneous Power Draw : 30.95 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -2703,11 +2776,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.29 sec",
+      " Duration : 2.41 sec",
       " Number of Samples : 119",
-      " Max : 30.28 W",
-      " Min : 26.35 W",
-      " Avg : 26.94 W",
+      " Max : 40.78 W",
+      " Min : 25.49 W",
+      " Avg : 27.50 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
