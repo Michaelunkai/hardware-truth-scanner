@@ -412,6 +412,58 @@ function Invoke-TextCommand {
   }
 }
 
+function Invoke-BoundedTextProcess {
+  param(
+    [string]$Name,
+    [string]$FilePath,
+    [string[]]$Arguments,
+    [int]$TimeoutMs = 45000
+  )
+
+  $stdoutPath = Join-Path $env:TEMP ("hardware-truth-" + [guid]::NewGuid().ToString("N") + ".out")
+  $stderrPath = Join-Path $env:TEMP ("hardware-truth-" + [guid]::NewGuid().ToString("N") + ".err")
+  $timedOut = $false
+  $exitCode = $null
+  try {
+    $process = Start-Process -FilePath $FilePath -ArgumentList $Arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
+    if (-not $process.WaitForExit($TimeoutMs)) {
+      $timedOut = $true
+      try { $process.Kill() } catch {}
+    } else {
+      $exitCode = $process.ExitCode
+    }
+
+    $stdout = @(Get-Content -Path $stdoutPath -ErrorAction SilentlyContinue | ForEach-Object { [string]$_ })
+    $stderr = @(Get-Content -Path $stderrPath -ErrorAction SilentlyContinue | ForEach-Object { [string]$_ })
+    return [pscustomobject]@{
+      Name = $Name
+      FilePath = $FilePath
+      Arguments = ($Arguments -join " ")
+      TimedOut = $timedOut
+      ExitCode = $exitCode
+      Output = $stdout
+      ErrorOutput = $stderr
+    }
+  } catch {
+    $script:optionalProbeErrors += [pscustomobject]@{
+      Name = $Name
+      Error = $_.Exception.Message
+    }
+    return [pscustomobject]@{
+      Name = $Name
+      FilePath = $FilePath
+      Arguments = ($Arguments -join " ")
+      TimedOut = $false
+      ExitCode = $null
+      Output = @()
+      ErrorOutput = @($_.Exception.Message)
+    }
+  } finally {
+    Remove-Item -LiteralPath $stdoutPath -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $stderrPath -Force -ErrorAction SilentlyContinue
+  }
+}
+
 $probeErrors = @()
 $optionalProbeErrors = @()
 $components = @()
@@ -502,6 +554,29 @@ foreach ($volume in $volumes) {
       IsDirty = (($dirtyOutput -join " ") -match "dirty" -and ($dirtyOutput -join " ") -notmatch "not dirty")
       IsUnsupported = (($dirtyOutput -join " ") -match "requires|denied|not supported|failed|error")
     }
+  }
+}
+
+$dirtyVolumeReadOnlyChecks = @()
+foreach ($dirtyResult in @($volumeDirtyResults | Where-Object { $_.IsDirty -eq $true } | Select-Object -First 3)) {
+  $checkResult = Invoke-BoundedTextProcess -Name "read-only chkdsk $($dirtyResult.DeviceID)" -FilePath "chkdsk.exe" -Arguments @($dirtyResult.DeviceID) -TimeoutMs 45000
+  $checkText = ((@($checkResult.Output) + @($checkResult.ErrorOutput)) -join " ")
+  $problemLines = @(
+    (@($checkResult.Output) + @($checkResult.ErrorOutput)) |
+      Where-Object { $_ -match "error|errors|corrupt|corruption|bad sector|bad clusters|invalid|unreadable|failed|failure|problem|cannot continue|insufficient" -and $_ -notmatch "found no problems|No further action is required" } |
+      Select-Object -First 30
+  )
+  $cleanVerdict = [bool]($checkText -match "Windows has scanned the file system and found no problems|No further action is required|Windows found no problems")
+  $dirtyVolumeReadOnlyChecks += [pscustomobject]@{
+    DeviceID = $dirtyResult.DeviceID
+    TimedOut = $checkResult.TimedOut
+    ExitCode = $checkResult.ExitCode
+    CompletedWithCleanVerdict = $cleanVerdict
+    ProblemLineCount = $problemLines.Count
+    ProblemLines = @($problemLines)
+    OutputHead = @($checkResult.Output | Select-Object -First 30)
+    OutputTail = @($checkResult.Output | Select-Object -Last 20)
+    ErrorOutput = @($checkResult.ErrorOutput | Select-Object -First 20)
   }
 }
 
@@ -1019,17 +1094,30 @@ New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair fl
   Results = @($volumeDirtyResults | Select-Object -First 20 DeviceID, IsDirty, IsUnsupported, Output)
 } -Signals $(if ($dirtyVolumes.Count -gt 0) { @("$($dirtyVolumes.Count) volume(s) have the filesystem dirty bit set.") } elseif ($volumeDirtyResults.Count -eq 0) { @("No drive-letter volumes were eligible for fsutil dirty query.") } else { @() }) -Recommendations $(if ($dirtyVolumes.Count -gt 0) { @("Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability.") } else { @("No filesystem dirty bit was reported by fsutil for checked volumes.") })
 
+$dirtyVolumeReadOnlyProblemChecks = @($dirtyVolumeReadOnlyChecks | Where-Object { $_.ProblemLineCount -gt 0 })
+$dirtyVolumeReadOnlyIncompleteChecks = @($dirtyVolumeReadOnlyChecks | Where-Object { $_.TimedOut -eq $true -or ($_.CompletedWithCleanVerdict -ne $true -and $_.ProblemLineCount -eq 0) })
+New-Component -Category "Filesystem Read-Only Check" -Name "Dirty-volume chkdsk evidence" -Status $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "warning" } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "unknown" } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0 -and $dirtyVolumes.Count -gt 0) { "unknown" } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0) { "ok" } else { "ok" }) -Confidence "medium" -Evidence @{
+  DirtyVolumeCount = $dirtyVolumes.Count
+  CheckedDirtyVolumeCount = $dirtyVolumeReadOnlyChecks.Count
+  ProblemCheckCount = $dirtyVolumeReadOnlyProblemChecks.Count
+  IncompleteCheckCount = $dirtyVolumeReadOnlyIncompleteChecks.Count
+  Checks = @($dirtyVolumeReadOnlyChecks | Select-Object -First 10)
+} -Signals $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { @("$($dirtyVolumeReadOnlyProblemChecks.Count) dirty-volume read-only chkdsk check(s) produced problem text.") } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { @("$($dirtyVolumeReadOnlyIncompleteChecks.Count) dirty-volume read-only chkdsk check(s) did not reach a clean final verdict inside the bounded scan window.") } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0 -and $dirtyVolumes.Count -gt 0) { @("Dirty volume(s) exist, but no read-only chkdsk check was captured.") } else { @() }) -Recommendations $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { @("Back up the affected volume, preserve this output, and run a planned filesystem/vendor-storage diagnostic before any repair.") } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { @("The read-only check did not finish cleanly inside the bounded scan. Back up first, then rerun chkdsk manually during a quiet window before repairing or replacing hardware.") } elseif ($dirtyVolumes.Count -gt 0) { @("Read-only chkdsk did not report problem text for dirty volume(s), but the dirty bit still requires backup and planned follow-up.") } else { @("No dirty volumes required a read-only chkdsk follow-up in this scan.") })
+
 $storageRiskRows = @()
 foreach ($disk in $diskDrives) {
   $diskIndex = $disk.Index
   $diskMappings = @($storageMapRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
   $diskDirtyRows = @($diskMappings | Where-Object { $_.DirtyBit -eq $true })
+  $diskReadOnlyChecks = @($dirtyVolumeReadOnlyChecks | Where-Object { $diskMappings.LogicalDisk -contains $_.DeviceID })
   $diskPhysicalPressure = @($busyPhysicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
   $diskLogicalPressure = @($busyLogicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
   $diskSignals = @()
   if ($disk.Status -and $disk.Status -ne "OK") { $diskSignals += "Win32_DiskDrive status is $($disk.Status)." }
   if ($disk.ConfigManagerErrorCode -and $disk.ConfigManagerErrorCode -ne 0) { $diskSignals += "Device Manager problem code $($disk.ConfigManagerErrorCode) is attached to this disk." }
   if ($diskDirtyRows.Count -gt 0) { $diskSignals += "Dirty filesystem flag on $((@($diskDirtyRows | ForEach-Object { $_.LogicalDisk }) | Select-Object -Unique) -join ', ')." }
+  if (($diskReadOnlyChecks | Where-Object { $_.ProblemLineCount -gt 0 }).Count -gt 0) { $diskSignals += "Read-only chkdsk output contains problem text for a mapped dirty volume." }
+  if (($diskReadOnlyChecks | Where-Object { $_.TimedOut -eq $true -or ($_.CompletedWithCleanVerdict -ne $true -and $_.ProblemLineCount -eq 0) }).Count -gt 0) { $diskSignals += "Read-only chkdsk did not reach a clean final verdict inside the bounded scan window." }
   if ($diskPhysicalPressure.Count -gt 0 -or $diskLogicalPressure.Count -gt 0) { $diskSignals += "High live queue/disk-time pressure appeared on this physical disk or its logical volume during the scan." }
 
   $storageRiskRows += [pscustomobject]@{
@@ -1046,6 +1134,7 @@ foreach ($disk in $diskDrives) {
     LogicalDisks = @($diskMappings | Where-Object { $_.LogicalDisk } | ForEach-Object { $_.LogicalDisk } | Select-Object -Unique)
     FileSystems = @($diskMappings | Where-Object { $_.FileSystem } | ForEach-Object { "$($_.LogicalDisk)=$($_.FileSystem)" } | Select-Object -Unique)
     DirtyVolumes = @($diskDirtyRows | ForEach-Object { "$($_.LogicalDisk) $($_.FileSystem) $($_.VolumeName) on $($_.Partition)" })
+    ReadOnlyCheckResults = @($diskReadOnlyChecks | ForEach-Object { "$($_.DeviceID): timedOut=$($_.TimedOut), exit=$($_.ExitCode), cleanVerdict=$($_.CompletedWithCleanVerdict), problemLines=$($_.ProblemLineCount)" })
     BusyPhysicalCounters = @($diskPhysicalPressure | ForEach-Object { "$($_.CounterName): queue=$($_.CurrentQueueLength), avgQueue=$($_.AvgQueueLength), diskTime=$($_.PercentDiskTime)%, read=$($_.ReadMBPerSec) MB/s, write=$($_.WriteMBPerSec) MB/s, splitIO=$($_.SplitIOPerSec)" })
     BusyLogicalCounters = @($diskLogicalPressure | ForEach-Object { "volume=$($_.LogicalDisk), queue=$($_.CurrentQueueLength), avgQueue=$($_.AvgQueueLength), diskTime=$($_.PercentDiskTime)%, read=$($_.ReadMBPerSec) MB/s, write=$($_.WriteMBPerSec) MB/s, free=$($_.FreeGB) GB ($($_.PercentFreeSpace)%)" })
     SignalCount = $diskSignals.Count
@@ -1618,6 +1707,7 @@ New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciP
 New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
 New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } elseif ($inaccessibleDumpRoots.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($recentCrashDumps.Count) recent dump file(s), $($liveKernelDumps.Count) LiveKernelReports file(s), $($crashDumpHintValues.Count) unique bounded keyword hint(s), $($inaccessibleDumpRoots.Count) inaccessible/missing dump root(s)." -NextStep "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
 New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($volumeDirtyResults.Count) volume(s) checked; $($dirtyVolumes.Count) dirty volume(s); $($unsupportedDirtyChecks.Count) unsupported/failed check(s)." -NextStep "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
+New-Diagnostic -Name "Dirty-volume read-only filesystem check" -Status $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "warning" } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "limited" } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0 -and $dirtyVolumes.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($dirtyVolumeReadOnlyChecks.Count) dirty-volume read-only chkdsk check(s), $($dirtyVolumeReadOnlyProblemChecks.Count) with problem text, $($dirtyVolumeReadOnlyIncompleteChecks.Count) incomplete or without clean final verdict." -NextStep $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "Back up affected data and review read-only chkdsk output before any repair." } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "Rerun chkdsk manually during a quiet window; the app intentionally bounds read-only filesystem checks." } elseif ($dirtyVolumes.Count -gt 0) { "Dirty volume follow-up was captured; keep backups current and repair only in a planned window." } else { "No dirty volume needed read-only chkdsk follow-up." })
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
 if ($probeErrors.Count -gt 0) {

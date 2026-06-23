@@ -1,15 +1,15 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T16:42:12.8796729Z",
+  "generatedAt": "2026-06-23T16:50:34.4314579Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 82,
-    "findingCount": 1,
+    "componentCount": 83,
+    "findingCount": 0,
     "criticalCount": 0,
-    "warningCount": 4,
+    "warningCount": 1,
     "unknownCount": 9
   },
   "components": [
@@ -141,7 +141,7 @@
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
             "CurrentClockSpeed": "4668",
-            "LoadPercentage": "36",
+            "LoadPercentage": "11",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -155,8 +155,8 @@
         "SystemProcessorQueue": [
           {
             "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "81345",
-            "SystemCallsPersec": "1092715"
+            "ContextSwitchesPersec": "24922",
+            "SystemCallsPersec": "213778"
           }
         ],
         "LogicalProcessorCounterCount": 16,
@@ -164,22 +164,22 @@
           {
             "Name": "0,_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "72",
+            "PercentProcessorUtility": "7",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "26",
-            "PercentUserTime": "42",
+            "PercentPrivilegedTime": "4",
+            "PercentUserTime": "1",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "50128"
+            "InterruptsPerSec": "13559"
           },
           {
             "Name": "_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "72",
+            "PercentProcessorUtility": "7",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "26",
-            "PercentUserTime": "42",
+            "PercentPrivilegedTime": "4",
+            "PercentUserTime": "1",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "50128"
+            "InterruptsPerSec": "13559"
           }
         ],
         "TotalEnabledCores": 8,
@@ -187,162 +187,162 @@
           {
             "Name": "0,0",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "60",
+            "PercentProcessorUtility": "10",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "40",
-            "PercentUserTime": "28",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5355"
+            "InterruptsPerSec": "1916"
           },
           {
             "Name": "0,1",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "62",
+            "PercentProcessorUtility": "3",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "40",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3476"
+            "InterruptsPerSec": "647"
           },
           {
             "Name": "0,10",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "78",
+            "PercentProcessorUtility": "8",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "40",
-            "PercentUserTime": "28",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2058"
+            "InterruptsPerSec": "522"
           },
           {
             "Name": "0,11",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "75",
+            "PercentProcessorUtility": "7",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "51",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1115"
+            "InterruptsPerSec": "430"
           },
           {
             "Name": "0,12",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "80",
+            "PercentProcessorUtility": "2",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "46",
-            "PercentUserTime": "40",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2704"
+            "InterruptsPerSec": "548"
           },
           {
             "Name": "0,13",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "75",
+            "PercentProcessorUtility": "1",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "34",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1943"
+            "InterruptsPerSec": "243"
           },
           {
             "Name": "0,14",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "81",
+            "PercentProcessorUtility": "15",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "51",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5378"
+            "InterruptsPerSec": "2595"
           },
           {
             "Name": "0,15",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "73",
+            "PercentProcessorUtility": "8",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "34",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "6583"
+            "InterruptsPerSec": "1326"
           },
           {
             "Name": "0,2",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "74",
+            "PercentProcessorUtility": "7",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "46",
-            "PercentUserTime": "34",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3341"
+            "InterruptsPerSec": "724"
           },
           {
             "Name": "0,3",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "78",
+            "PercentProcessorUtility": "16",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "57",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2066"
+            "InterruptsPerSec": "506"
           },
           {
             "Name": "0,4",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "60",
+            "PercentProcessorUtility": "4",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "34",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "4341"
+            "InterruptsPerSec": "602"
           },
           {
             "Name": "0,5",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "67",
+            "PercentProcessorUtility": "8",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "34",
-            "PercentUserTime": "40",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2636"
+            "InterruptsPerSec": "743"
           },
           {
             "Name": "0,6",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "68",
+            "PercentProcessorUtility": "4",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "40",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3547"
+            "InterruptsPerSec": "621"
           },
           {
             "Name": "0,7",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "69",
+            "PercentProcessorUtility": "16",
             "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "5",
-            "PercentUserTime": "57",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2234"
+            "InterruptsPerSec": "1128"
           },
           {
             "Name": "0,8",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "81",
+            "PercentProcessorUtility": "3",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "46",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1917"
+            "InterruptsPerSec": "403"
           },
           {
             "Name": "0,9",
-            "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "72",
+            "PercentProcessorPerformance": "99",
+            "PercentProcessorUtility": "5",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "51",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1428"
+            "InterruptsPerSec": "598"
           }
         ]
       },
@@ -658,7 +658,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1702.88,
+        "FreeGB": 1671.14,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -715,7 +715,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 480.12,
+        "FreeGB": 503.25,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -749,7 +749,7 @@
       "id": "storage-mapping-physical-disk-to-volume-map",
       "category": "Storage Mapping",
       "name": "Physical disk to volume map",
-      "status": "warning",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
         "Mappings": [
@@ -767,8 +767,8 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 480.12,
-            "DirtyBit": true
+            "VolumeFreeGB": 503.25,
+            "DirtyBit": false
           },
           {
             "DiskIndex": "1",
@@ -818,7 +818,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1702.88,
+            "VolumeFreeGB": 1671.14,
             "DirtyBit": false
           },
           {
@@ -924,28 +924,15 @@
             "DirtyBit": false
           }
         ],
-        "DirtyMappedVolumeCount": 1,
+        "DirtyMappedVolumeCount": 0,
         "UnmappedLogicalDisks": [],
-        "DirtyMappedVolumes": [
-          {
-            "LogicalDisk": "F:",
-            "DiskIndex": "1",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
-            "InterfaceType": "SCSI",
-            "Partition": "Disk #1, Partition #0",
-            "FileSystem": "exFAT",
-            "VolumeName": "Ventoy"
-          }
-        ],
+        "DirtyMappedVolumes": [],
         "MappedLogicalDiskCount": 5,
         "MappingCount": 10
       },
-      "signals": [
-        "1 dirty volume(s) are mapped to exact physical disk rows."
-      ],
+      "signals": [],
       "recommendations": [
-        "Back up and run read-only filesystem diagnostics for: F: on Disk 1 Fanxiang FF951 SCSI Disk Device (\\\\.\\PHYSICALDRIVE1). Do not repair until the mapped physical disk is confirmed stable."
+        "Disk-to-volume mapping is captured, so future volume warnings can be tied to the exact physical drive."
       ]
     },
     {
@@ -967,14 +954,14 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "1187",
-            "WritesPerSec": "35",
-            "ReadMBPerSec": 28,
-            "WriteMBPerSec": 0.42,
-            "PercentDiskTime": "10",
-            "PercentFreeSpace": "92",
-            "FreeGB": 1721.71,
-            "SplitIOPerSec": "79"
+            "ReadsPerSec": "3",
+            "WritesPerSec": "1574",
+            "ReadMBPerSec": 0.02,
+            "WriteMBPerSec": 21.68,
+            "PercentDiskTime": "3",
+            "PercentFreeSpace": "89",
+            "FreeGB": 1671.15,
+            "SplitIOPerSec": "156"
           },
           {
             "LogicalDisk": "D:",
@@ -1020,8 +1007,8 @@
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
             "PercentDiskTime": "0",
-            "PercentFreeSpace": "50",
-            "FreeGB": 480.12,
+            "PercentFreeSpace": "52",
+            "FreeGB": 503.25,
             "SplitIOPerSec": "0"
           },
           {
@@ -1068,13 +1055,13 @@
             "LogicalDisks": "C: D:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "1222",
-            "WritesPerSec": "7016",
-            "ReadMBPerSec": 20.74,
-            "WriteMBPerSec": 79,
-            "PercentDiskTime": "62",
-            "PercentIdleTime": "62",
-            "SplitIOPerSec": "376"
+            "ReadsPerSec": "3",
+            "WritesPerSec": "15",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0.05,
+            "PercentDiskTime": "0",
+            "PercentIdleTime": "99",
+            "SplitIOPerSec": "0"
           },
           {
             "CounterName": "1 F:",
@@ -1084,7 +1071,7 @@
             "LogicalDisks": "F:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "3",
+            "ReadsPerSec": "0",
             "WritesPerSec": "0",
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
@@ -1135,10 +1122,10 @@
       "id": "volume-dirty-bit-read-only-filesystem-repair-flag-check",
       "category": "Volume Dirty Bit",
       "name": "Read-only filesystem repair flag check",
-      "status": "warning",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "DirtyVolumeCount": 1,
+        "DirtyVolumeCount": 0,
         "CheckedVolumeCount": 5,
         "Results": [
           {
@@ -1161,9 +1148,9 @@
           },
           {
             "DeviceID": "F:",
-            "IsDirty": true,
+            "IsDirty": false,
             "IsUnsupported": false,
-            "Output": "Volume - F: is Dirty"
+            "Output": "Volume - F: is NOT Dirty"
           },
           {
             "DeviceID": "G:",
@@ -1174,42 +1161,38 @@
         ],
         "UnsupportedOrFailedCount": 0
       },
-      "signals": [
-        "1 volume(s) have the filesystem dirty bit set."
-      ],
+      "signals": [],
       "recommendations": [
-        "Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability."
+        "No filesystem dirty bit was reported by fsutil for checked volumes."
+      ]
+    },
+    {
+      "id": "filesystem-read-only-check-dirty-volume-chkdsk-evidence",
+      "category": "Filesystem Read-Only Check",
+      "name": "Dirty-volume chkdsk evidence",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "CheckedDirtyVolumeCount": 0,
+        "DirtyVolumeCount": 0,
+        "ProblemCheckCount": 0,
+        "IncompleteCheckCount": 0,
+        "Checks": []
+      },
+      "signals": [],
+      "recommendations": [
+        "No dirty volumes required a read-only chkdsk follow-up in this scan."
       ]
     },
     {
       "id": "storage-fix-summary-per-physical-drive-risk-summary",
       "category": "Storage Fix Summary",
       "name": "Per-physical-drive risk summary",
-      "status": "warning",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "ProblemDiskCount": 1,
-        "ProblemDisks": [
-          {
-            "DiskIndex": "1",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
-            "SerialNumber": "FWX0814A250700349",
-            "FirmwareRevision": "1000",
-            "InterfaceType": "SCSI",
-            "MediaType": "External hard disk media",
-            "SizeGB": 953.86,
-            "GenericDiskStatus": "OK",
-            "ConfigManagerErrorCode": "0",
-            "LogicalDisks": "F:",
-            "FileSystems": "F:=exFAT",
-            "DirtyVolumes": "F: exFAT Ventoy on Disk #1, Partition #0",
-            "BusyPhysicalCounters": "",
-            "BusyLogicalCounters": "",
-            "SignalCount": 1,
-            "Signals": "Dirty filesystem flag on F:."
-          }
-        ],
+        "ProblemDiskCount": 0,
+        "ProblemDisks": [],
         "DiskCount": 4,
         "AllDisks": [
           {
@@ -1225,11 +1208,12 @@
             "ConfigManagerErrorCode": "0",
             "LogicalDisks": "F:",
             "FileSystems": "F:=exFAT",
-            "DirtyVolumes": "F: exFAT Ventoy on Disk #1, Partition #0",
+            "DirtyVolumes": "",
+            "ReadOnlyCheckResults": "",
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
-            "SignalCount": 1,
-            "Signals": "Dirty filesystem flag on F:."
+            "SignalCount": 0,
+            "Signals": ""
           },
           {
             "DiskIndex": "0",
@@ -1245,6 +1229,7 @@
             "LogicalDisks": "C: D:",
             "FileSystems": "C:=NTFS D:=NTFS",
             "DirtyVolumes": "",
+            "ReadOnlyCheckResults": "",
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
@@ -1264,6 +1249,7 @@
             "LogicalDisks": "E:",
             "FileSystems": "E:=exFAT",
             "DirtyVolumes": "",
+            "ReadOnlyCheckResults": "",
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
@@ -1283,6 +1269,7 @@
             "LogicalDisks": "G:",
             "FileSystems": "G:=FAT32",
             "DirtyVolumes": "",
+            "ReadOnlyCheckResults": "",
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
@@ -1290,11 +1277,9 @@
           }
         ]
       },
-      "signals": [
-        "1 physical disk(s) have combined storage risk signals from disk status, dirty-bit mapping, or live pressure counters."
-      ],
+      "signals": [],
       "recommendations": [
-        "Disk 1 Fanxiang FF951 SCSI Disk Device (F:): back up affected data first, avoid repair while heavy writes are active, rerun read-only filesystem and vendor SMART diagnostics, then inspect cable/port/dock/power path only if the warning repeats."
+        "No disk has a combined generic-status, dirty-bit, or live-pressure signal in this scan. Vendor SMART and symptom-time testing are still required for full physical certainty."
       ]
     },
     {
@@ -1380,19 +1365,19 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "936",
-          "MemoryFreeMiB": "15042",
+          "MemoryUsedMiB": "1282",
+          "MemoryFreeMiB": "14696",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 0.91,
-          "MemoryFreeGB": 14.69,
+          "MemoryUsedGB": 1.25,
+          "MemoryFreeGB": 14.35,
           "TemperatureC": "40",
           "FanPercent": "0",
-          "PState": "P8",
-          "PowerDrawW": "27.60",
+          "PState": "P3",
+          "PowerDrawW": "45.31",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "180",
-          "MemoryClockMhz": "405",
-          "PcieGen": "1",
+          "GraphicsClockMhz": "555",
+          "MemoryClockMhz": "7001",
+          "PcieGen": "5",
           "PcieGenMax": "5",
           "PcieWidth": "16",
           "PcieWidthMax": "16"
@@ -1448,10 +1433,10 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 0.91,
-            "NvidiaMemoryFreeGB": 14.69,
+            "NvidiaMemoryUsedGB": 1.25,
+            "NvidiaMemoryFreeGB": 14.35,
             "NvidiaDisplayActive": "Enabled",
-            "NvidiaPcieLink": "Gen 1/5, x16/x16"
+            "NvidiaPcieLink": "Gen 5/5, x16/x16"
           }
         ],
         "NvidiaTelemetryCount": 1
@@ -1581,8 +1566,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 910,
-            "BytesSentPerSec": 253,
+            "BytesReceivedPerSec": 61379,
+            "BytesSentPerSec": 14594,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2919,17 +2904,39 @@
       "id": "peripheral-inventory-printer-and-print-path-devices",
       "category": "Peripheral Inventory",
       "name": "Printer and print-path devices",
-      "status": "info",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
         "ProblemDeviceCount": 0,
-        "SampleDevices": [],
-        "DeviceCount": 0,
+        "SampleDevices": [
+          {
+            "Name": "Root Print Queue",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\PRINTQUEUES"
+          },
+          {
+            "Name": "Microsoft Print to PDF",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\{E1FCA9E2-B78E-4010-9482-582293E6D2CF}"
+          },
+          {
+            "Name": "Microsoft XPS Document Writer",
+            "PNPClass": "PrintQueue",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\PRINTENUM\\{A8354A02-8B75-4A3A-A581-9B3673DD0FFA}"
+          }
+        ],
+        "DeviceCount": 3,
         "ProblemDevices": []
       },
       "signals": [],
       "recommendations": [
-        "No printer-class hardware was exposed by Windows in this scan."
+        "Printer-class devices are detected without Device Manager problem codes. Paper path, ink/toner, and mechanical feed issues require printer self-test pages."
       ]
     },
     {
@@ -3798,7 +3805,7 @@
             "DriverVersion": "25.10.0.1"
           }
         ],
-        "DriverCount": 298,
+        "DriverCount": 301,
         "UnsignedDriverCount": 12
       },
       "signals": [
@@ -3827,7 +3834,7 @@
           "\tThe system firmware does not support this standby state.",
           "",
           "    Hibernate",
-          "\tThe hiberfile type does not support hibernation.",
+          "\tHibernation has not been enabled.",
           "",
           "    Standby (S0 Low Power Idle)",
           "\tThe system firmware does not support this standby state.",
@@ -3950,22 +3957,12 @@
       ]
     }
   ],
-  "findings": [
-    {
-      "severity": "warning",
-      "component": "Volume dirty bit",
-      "title": "Filesystem dirty bit is set",
-      "detail": "Windows reports at least one volume may need filesystem checking.",
-      "evidence": "1 dirty volume(s): F: on Disk 1 Fanxiang FF951 SCSI Disk Device (\\\\.\\PHYSICALDRIVE1)",
-      "recommendation": "Back up first, then use read-only diagnostics or a planned repair window for the affected mapped volume and physical disk.",
-      "confidence": "medium"
-    }
-  ],
+  "findings": [],
   "diagnostics": [
     {
       "name": "Device Manager problem-code sweep",
       "status": "passed",
-      "evidence": "0 problem device(s) from 292 enumerated PnP device(s).",
+      "evidence": "0 problem device(s) from 299 enumerated PnP device(s).",
       "nextStep": "No Device Manager problem codes found."
     },
     {
@@ -3983,7 +3980,7 @@
     {
       "name": "Peripheral inventory problem-code sweep",
       "status": "passed",
-      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=0; 0 unique peripheral problem device(s).",
+      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
       "nextStep": "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep."
     },
     {
@@ -4030,9 +4027,9 @@
     },
     {
       "name": "Physical disk to volume correlation",
-      "status": "warning",
-      "evidence": "10 disk/partition mapping row(s), 5 mapped drive-letter volume(s), 0 unmapped drive-letter volume(s), 1 dirty mapped volume(s).",
-      "nextStep": "Use the mapped disk model/index before running repair or replacing storage: F: on Disk 1 Fanxiang FF951 SCSI Disk Device (\\\\.\\PHYSICALDRIVE1)."
+      "status": "passed",
+      "evidence": "10 disk/partition mapping row(s), 5 mapped drive-letter volume(s), 0 unmapped drive-letter volume(s), 0 dirty mapped volume(s).",
+      "nextStep": "Volume-to-physical-disk mapping is available for future storage warnings."
     },
     {
       "name": "Storage live performance counter sweep",
@@ -4055,7 +4052,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 40C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 40C, PState P3, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -4108,9 +4105,15 @@
     },
     {
       "name": "Filesystem dirty-bit sweep",
-      "status": "warning",
-      "evidence": "5 volume(s) checked; 1 dirty volume(s); 0 unsupported/failed check(s).",
+      "status": "passed",
+      "evidence": "5 volume(s) checked; 0 dirty volume(s); 0 unsupported/failed check(s).",
       "nextStep": "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
+    },
+    {
+      "name": "Dirty-volume read-only filesystem check",
+      "status": "passed",
+      "evidence": "0 dirty-volume read-only chkdsk check(s), 0 with problem text, 0 incomplete or without clean final verdict.",
+      "nextStep": "No dirty volume needed read-only chkdsk follow-up."
     },
     {
       "name": "Physical inspection boundary",
@@ -4133,7 +4136,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 19:42:12 2026",
+      "Timestamp : Tue Jun 23 19:50:33 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4141,7 +4144,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P8",
+      " Performance State : P3",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -4169,8 +4172,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 27.60 W",
-      " Instantaneous Power Draw : 27.72 W",
+      " Average Power Draw : 45.31 W",
+      " Instantaneous Power Draw : 31.75 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -4182,11 +4185,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.27 sec",
+      " Duration : 2.31 sec",
       " Number of Samples : 119",
-      " Max : 44.45 W",
-      " Min : 25.57 W",
-      " Avg : 27.53 W",
+      " Max : 56.95 W",
+      " Min : 30.69 W",
+      " Avg : 49.09 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -4214,7 +4217,7 @@
       " The system firmware does not support this standby state.",
       "",
       " Hibernate",
-      " The hiberfile type does not support hibernation.",
+      " Hibernation has not been enabled.",
       "",
       " Standby (S0 Low Power Idle)",
       " The system firmware does not support this standby state.",
@@ -4224,7 +4227,7 @@
       " The hypervisor does not support this standby state.",
       "",
       " Fast Startup",
-      " This action is disabled in the current system policy.",
+      " Hibernation is not available.",
       ""
     ],
     "PnPProblemDeviceText": [
@@ -4245,7 +4248,7 @@
       "C: | Dirty=False | Unsupported=False | Volume - C: is NOT Dirty",
       "D: | Dirty=False | Unsupported=False | Volume - D: is NOT Dirty",
       "E: | Dirty=False | Unsupported=False | Volume - E: is NOT Dirty",
-      "F: | Dirty=True | Unsupported=False | Volume - F: is Dirty",
+      "F: | Dirty=False | Unsupported=False | Volume - F: is NOT Dirty",
       "G: | Dirty=False | Unsupported=False | Volume - G: is NOT Dirty"
     ],
     "ProbeErrors": [],
