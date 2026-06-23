@@ -171,7 +171,7 @@ try {
 
   let bodyText = "";
   let debugState = {};
-  for (let attempt = 0; attempt < 90; attempt += 1) {
+  for (let attempt = 0; attempt < 180; attempt += 1) {
     const result = await send("Runtime.evaluate", {
       expression: "({ href: location.href, readyState: document.readyState, text: document.body ? document.body.innerText : '', html: document.documentElement ? document.documentElement.outerHTML.slice(0, 1000) : '' })",
       returnByValue: true
@@ -185,6 +185,7 @@ try {
       bodyText.includes("What to fix or verify first") &&
       bodyText.includes("What was actually tested") &&
       bodyText.includes("Component evidence") &&
+      bodyText.includes("Findings that may need action") &&
       bodyText.includes("Confidence:") &&
       bodyText.includes("Recommended action") &&
       bodyText.includes("What software cannot prove physically")

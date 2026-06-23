@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T16:09:21.5509242Z",
+  "generatedAt": "2026-06-23T16:26:42.0072235Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 80,
+    "componentCount": 81,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 4,
@@ -140,8 +140,8 @@
             "NumberOfLogicalProcessors": "16",
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
-            "CurrentClockSpeed": "4700",
-            "LoadPercentage": "87",
+            "CurrentClockSpeed": "4668",
+            "LoadPercentage": "85",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -154,195 +154,195 @@
         ],
         "SystemProcessorQueue": [
           {
-            "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "144399",
-            "SystemCallsPersec": "697264"
+            "ProcessorQueueLength": "5",
+            "ContextSwitchesPersec": "148160",
+            "SystemCallsPersec": "1517252"
           }
         ],
         "LogicalProcessorCounterCount": 16,
         "TotalCounterRows": [
           {
             "Name": "0,_Total",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "49",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "48",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "20",
+            "PercentUserTime": "20",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "51753"
+            "InterruptsPerSec": "64876"
           },
           {
             "Name": "_Total",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "49",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "48",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "20",
+            "PercentUserTime": "20",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "51753"
+            "InterruptsPerSec": "64876"
           }
         ],
         "TotalEnabledCores": 8,
         "LogicalProcessorSamples": [
           {
             "Name": "0,0",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "35",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "37",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "10890"
+            "InterruptsPerSec": "5812"
           },
           {
             "Name": "0,1",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "47",
-            "PercentUserTime": "11",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "52",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "23",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5189"
+            "InterruptsPerSec": "4554"
           },
           {
             "Name": "0,10",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "47",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "55",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "23",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3202"
+            "InterruptsPerSec": "2535"
           },
           {
             "Name": "0,11",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "59",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "51",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "29",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1603"
+            "InterruptsPerSec": "2958"
           },
           {
             "Name": "0,12",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "35",
-            "PercentUserTime": "59",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "50",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "11",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "741"
+            "InterruptsPerSec": "2906"
           },
           {
             "Name": "0,13",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "65",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "47",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1007"
+            "InterruptsPerSec": "2988"
           },
           {
             "Name": "0,14",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "83",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "65",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "58",
+            "PercentUserTime": "29",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3340"
+            "InterruptsPerSec": "5767"
           },
           {
             "Name": "0,15",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "51",
+            "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "17",
-            "PercentUserTime": "71",
-            "PercentInterruptTime": "5",
-            "InterruptsPerSec": "2767"
+            "PercentUserTime": "17",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "7954"
           },
           {
             "Name": "0,2",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "55",
+            "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "35",
-            "PercentUserTime": "41",
-            "PercentInterruptTime": "5",
-            "InterruptsPerSec": "4101"
+            "PercentUserTime": "23",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "4610"
           },
           {
             "Name": "0,3",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "41",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "37",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3140"
+            "InterruptsPerSec": "2962"
           },
           {
             "Name": "0,4",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "59",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "54",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "11",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3375"
+            "InterruptsPerSec": "4651"
           },
           {
             "Name": "0,5",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "52",
+            "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "29",
-            "PercentUserTime": "35",
+            "PercentUserTime": "11",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2210"
+            "InterruptsPerSec": "4070"
           },
           {
             "Name": "0,6",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "59",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "50",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "40",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2606"
+            "InterruptsPerSec": "3471"
           },
           {
             "Name": "0,7",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "35",
-            "PercentUserTime": "35",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "31",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2352"
+            "InterruptsPerSec": "3190"
           },
           {
             "Name": "0,8",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "53",
+            "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "17",
-            "PercentUserTime": "47",
+            "PercentUserTime": "23",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2706"
+            "InterruptsPerSec": "2842"
           },
           {
             "Name": "0,9",
-            "PercentProcessorPerformance": "94",
-            "PercentProcessorUtility": "94",
-            "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "35",
+            "PercentProcessorPerformance": "98",
+            "PercentProcessorUtility": "38",
+            "ProcessorFrequency": "4668",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2517"
+            "InterruptsPerSec": "3599"
           }
         ]
       },
@@ -658,7 +658,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1722.93,
+        "FreeGB": 1720.91,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -715,7 +715,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 407.14,
+        "FreeGB": 380.47,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -767,7 +767,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 407.14,
+            "VolumeFreeGB": 380.47,
             "DirtyBit": true
           },
           {
@@ -818,7 +818,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1722.93,
+            "VolumeFreeGB": 1720.91,
             "DirtyBit": false
           },
           {
@@ -955,9 +955,42 @@
       "status": "warning",
       "confidence": "medium",
       "evidence": {
-        "BusyPhysicalDisks": [],
-        "BusyPhysicalDiskCount": 0,
-        "BusyLogicalDiskCount": 1,
+        "BusyPhysicalDisks": [
+          {
+            "CounterName": "0 C: D:",
+            "DiskIndex": 0,
+            "DiskModel": "Samsung SSD 9100 PRO 2TB",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
+            "LogicalDisks": "C: D:",
+            "CurrentQueueLength": "10",
+            "AvgQueueLength": "10",
+            "ReadsPerSec": "6976",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 40.81,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "1018",
+            "PercentIdleTime": "0",
+            "SplitIOPerSec": "79"
+          },
+          {
+            "CounterName": "1 F:",
+            "DiskIndex": 1,
+            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
+            "LogicalDisks": "F:",
+            "CurrentQueueLength": "22",
+            "AvgQueueLength": "26",
+            "ReadsPerSec": "158",
+            "WritesPerSec": "1488",
+            "ReadMBPerSec": 11.88,
+            "WriteMBPerSec": 40.86,
+            "PercentDiskTime": "2651",
+            "PercentIdleTime": "0",
+            "SplitIOPerSec": "11"
+          }
+        ],
+        "BusyPhysicalDiskCount": 2,
+        "BusyLogicalDiskCount": 2,
         "PhysicalCounterCount": 4,
         "LogicalDisks": [
           {
@@ -965,16 +998,16 @@
             "DiskIndex": "0",
             "DiskModel": "Samsung SSD 9100 PRO 2TB",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
-            "CurrentQueueLength": "0",
-            "AvgQueueLength": "0",
-            "ReadsPerSec": "1158",
-            "WritesPerSec": "11",
-            "ReadMBPerSec": 2.72,
-            "WriteMBPerSec": 0.03,
-            "PercentDiskTime": "11",
+            "CurrentQueueLength": "12",
+            "AvgQueueLength": "13",
+            "ReadsPerSec": "1935",
+            "WritesPerSec": "1656",
+            "ReadMBPerSec": 26.06,
+            "WriteMBPerSec": 23.25,
+            "PercentDiskTime": "1355",
             "PercentFreeSpace": "92",
-            "FreeGB": 1722.93,
-            "SplitIOPerSec": "0"
+            "FreeGB": 1721.01,
+            "SplitIOPerSec": "196"
           },
           {
             "LogicalDisk": "D:",
@@ -1013,16 +1046,16 @@
             "DiskIndex": "1",
             "DiskModel": "Fanxiang FF951 SCSI Disk Device",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "CurrentQueueLength": "1",
-            "AvgQueueLength": "1",
-            "ReadsPerSec": "109",
-            "WritesPerSec": "4199",
-            "ReadMBPerSec": 19.58,
-            "WriteMBPerSec": 32.73,
-            "PercentDiskTime": "144",
-            "PercentFreeSpace": "42",
-            "FreeGB": 407.18,
-            "SplitIOPerSec": "79"
+            "CurrentQueueLength": "26",
+            "AvgQueueLength": "18",
+            "ReadsPerSec": "90",
+            "WritesPerSec": "959",
+            "ReadMBPerSec": 5.59,
+            "WriteMBPerSec": 27.42,
+            "PercentDiskTime": "1867",
+            "PercentFreeSpace": "40",
+            "FreeGB": 383.97,
+            "SplitIOPerSec": "27"
           },
           {
             "LogicalDisk": "G:",
@@ -1059,20 +1092,36 @@
         ],
         "BusyLogicalDisks": [
           {
+            "LogicalDisk": "C:",
+            "DiskIndex": "0",
+            "DiskModel": "Samsung SSD 9100 PRO 2TB",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
+            "CurrentQueueLength": "12",
+            "AvgQueueLength": "13",
+            "ReadsPerSec": "1935",
+            "WritesPerSec": "1656",
+            "ReadMBPerSec": 26.06,
+            "WriteMBPerSec": 23.25,
+            "PercentDiskTime": "1355",
+            "PercentFreeSpace": "92",
+            "FreeGB": 1721.01,
+            "SplitIOPerSec": "196"
+          },
+          {
             "LogicalDisk": "F:",
             "DiskIndex": "1",
             "DiskModel": "Fanxiang FF951 SCSI Disk Device",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "CurrentQueueLength": "1",
-            "AvgQueueLength": "1",
-            "ReadsPerSec": "109",
-            "WritesPerSec": "4199",
-            "ReadMBPerSec": 19.58,
-            "WriteMBPerSec": 32.73,
-            "PercentDiskTime": "144",
-            "PercentFreeSpace": "42",
-            "FreeGB": 407.18,
-            "SplitIOPerSec": "79"
+            "CurrentQueueLength": "26",
+            "AvgQueueLength": "18",
+            "ReadsPerSec": "90",
+            "WritesPerSec": "959",
+            "ReadMBPerSec": 5.59,
+            "WriteMBPerSec": 27.42,
+            "PercentDiskTime": "1867",
+            "PercentFreeSpace": "40",
+            "FreeGB": 383.97,
+            "SplitIOPerSec": "27"
           }
         ],
         "LogicalCounterCount": 6,
@@ -1083,15 +1132,15 @@
             "DiskModel": "Samsung SSD 9100 PRO 2TB",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "LogicalDisks": "C: D:",
-            "CurrentQueueLength": "0",
-            "AvgQueueLength": "0",
-            "ReadsPerSec": "861",
-            "WritesPerSec": "1574",
-            "ReadMBPerSec": 1.26,
-            "WriteMBPerSec": 23.36,
-            "PercentDiskTime": "12",
-            "PercentIdleTime": "87",
-            "SplitIOPerSec": "203"
+            "CurrentQueueLength": "10",
+            "AvgQueueLength": "10",
+            "ReadsPerSec": "6976",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 40.81,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "1018",
+            "PercentIdleTime": "0",
+            "SplitIOPerSec": "79"
           },
           {
             "CounterName": "1 F:",
@@ -1099,15 +1148,15 @@
             "DiskModel": "Fanxiang FF951 SCSI Disk Device",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
             "LogicalDisks": "F:",
-            "CurrentQueueLength": "0",
-            "AvgQueueLength": "0",
-            "ReadsPerSec": "66",
-            "WritesPerSec": "1852",
-            "ReadMBPerSec": 11.79,
-            "WriteMBPerSec": 11.96,
-            "PercentDiskTime": "57",
-            "PercentIdleTime": "69",
-            "SplitIOPerSec": "46"
+            "CurrentQueueLength": "22",
+            "AvgQueueLength": "26",
+            "ReadsPerSec": "158",
+            "WritesPerSec": "1488",
+            "ReadMBPerSec": 11.88,
+            "WriteMBPerSec": 40.86,
+            "PercentDiskTime": "2651",
+            "PercentIdleTime": "0",
+            "SplitIOPerSec": "11"
           },
           {
             "CounterName": "2 E:",
@@ -1122,7 +1171,7 @@
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
             "PercentDiskTime": "0",
-            "PercentIdleTime": "100",
+            "PercentIdleTime": "99",
             "SplitIOPerSec": "0"
           },
           {
@@ -1138,13 +1187,13 @@
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
             "PercentDiskTime": "0",
-            "PercentIdleTime": "100",
+            "PercentIdleTime": "99",
             "SplitIOPerSec": "0"
           }
         ]
       },
       "signals": [
-        "0 physical disk row(s) and 1 logical disk row(s) showed high live queue or disk-time pressure during the sample."
+        "2 physical disk row(s) and 2 logical disk row(s) showed high live queue or disk-time pressure during the sample."
       ],
       "recommendations": [
         "Correlate busy disk rows with the mapped physical drive before repairing or replacing hardware. High queue/disk-time can be a normal active workload, filesystem pressure, cable/controller issue, or failing storage depending on symptoms and repeatability."
@@ -1283,17 +1332,17 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "1596",
-          "MemoryFreeMiB": "14382",
+          "MemoryUsedMiB": "1678",
+          "MemoryFreeMiB": "14300",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 1.56,
-          "MemoryFreeGB": 14.04,
+          "MemoryUsedGB": 1.64,
+          "MemoryFreeGB": 13.96,
           "TemperatureC": "39",
           "FanPercent": "0",
           "PState": "P8",
-          "PowerDrawW": "25.05",
+          "PowerDrawW": "28.34",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "202",
+          "GraphicsClockMhz": "600",
           "MemoryClockMhz": "405",
           "PcieGen": "1",
           "PcieGenMax": "5",
@@ -1351,8 +1400,8 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 1.56,
-            "NvidiaMemoryFreeGB": 14.04,
+            "NvidiaMemoryUsedGB": 1.64,
+            "NvidiaMemoryFreeGB": 13.96,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 1/5, x16/x16"
           }
@@ -1484,8 +1533,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 618445,
-            "BytesSentPerSec": 89372,
+            "BytesReceivedPerSec": 229188,
+            "BytesSentPerSec": 346843,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2110,6 +2159,360 @@
       "signals": [],
       "recommendations": [
         "USB/USBSTOR devices are enumerated without Device Manager problem codes. Intermittent disconnects, weak ports, cables, hubs, and docks still require symptom-time physical testing."
+      ]
+    },
+    {
+      "id": "usb-topology-controller-to-device-path-map",
+      "category": "USB Topology",
+      "name": "Controller-to-device path map",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ControllerPathCount": 8,
+        "ControllerPaths": [
+          {
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 54,
+            "HubOrRouterCount": 2,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\6&2766D23F&0&00600011",
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 36,
+            "HubOrRouterCount": 6,
+            "StoragePathCount": 4,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B7&SUBSYS_50071458&REV_00\\4&16012499&0&0441",
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 3,
+            "HubOrRouterCount": 1,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2425&SUBSYS_24251B21&REV_01&USB4_MS_CM\\451ECAFFFF5177A000",
+            "ControllerName": "USB4(TM) Host Router (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 3,
+            "HubOrRouterCount": 2,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B6&SUBSYS_50071458&REV_00\\4&16012499&0&0341",
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 1,
+            "HubOrRouterCount": 1,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B8&SUBSYS_50071458&REV_00\\4&2C288D56&0&0043",
+            "ControllerName": "AMD USB 2.0 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 1,
+            "HubOrRouterCount": 1,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_8086&DEV_15F0&SUBSYS_00008086&REV_06\\BC6BC97849E9070000",
+            "ControllerName": "Intel(R) USB 3.1 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 1,
+            "HubOrRouterCount": 1,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          },
+          {
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2426&SUBSYS_24261B21&REV_01\\451ECAFFFF5177A000",
+            "ControllerName": "ASMedia USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "DeviceCount": 1,
+            "HubOrRouterCount": 1,
+            "StoragePathCount": 0,
+            "ProblemPathCount": 0
+          }
+        ],
+        "ProblemPathCount": 0,
+        "AssociationCount": 100,
+        "ProblemAssociations": [],
+        "SampleAssociations": [
+          {
+            "ControllerName": "USB4(TM) Host Router (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2425&SUBSYS_24251B21&REV_01&USB4_MS_CM\\451ECAFFFF5177A000",
+            "DependentName": "USB4 Virtual power coordination device",
+            "DependentClass": null,
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB4\\VIRTUAL_POWER_PDO\\7&2434227F&0&0",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "USB4(TM) Host Router (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2425&SUBSYS_24251B21&REV_01&USB4_MS_CM\\451ECAFFFF5177A000",
+            "DependentName": "USB4 Root Router (1.0)",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB4\\ROOT_DEVICE_ROUTER&VID_1B21&PID_2425\\7&2434227F&0&0",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "USB4(TM) Host Router (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2425&SUBSYS_24251B21&REV_01&USB4_MS_CM\\451ECAFFFF5177A000",
+            "DependentName": "Thunderbolt 3(TM) Router, Intel - USB4.0 SSD",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB4\\VID_8086&PID_15EF\\8&E894DE1&0&1",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "ASMedia USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1B21&DEV_2426&SUBSYS_24261B21&REV_01\\451ECAFFFF5177A000",
+            "DependentName": "USB Root Hub (USB 3.0)",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\ROOT_HUB30\\7&2F44DE9B&0&0",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "Intel(R) USB 3.1 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_8086&DEV_15F0&SUBSYS_00008086&REV_06\\BC6BC97849E9070000",
+            "DependentName": "USB Root Hub (USB 3.0)",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\ROOT_HUB30\\9&1C63C548&0&0",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B7&SUBSYS_50071458&REV_00\\4&16012499&0&0441",
+            "DependentName": "USB Root Hub (USB 3.0)",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\ROOT_HUB30\\5&18297C0C&0&0",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B7&SUBSYS_50071458&REV_00\\4&16012499&0&0441",
+            "DependentName": "USB Input Device",
+            "DependentClass": "HIDClass",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\VID_413C&PID_3016\\6&16D50F4A&0&2",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_15B7&SUBSYS_50071458&REV_00\\4&16012499&0&0441",
+            "DependentName": "HID-compliant mouse",
+            "DependentClass": "Mouse",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "HID\\VID_413C&PID_3016\\7&16FCF135&0&0000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "USB Root Hub (USB 3.0)",
+            "DependentClass": "USB",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\ROOT_HUB30\\9&1191AA4&0&0",
+            "IsHubOrRouter": true,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Qualcomm FastConnect 7800 Dual Bluetooth Adapter",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "USB\\VID_0489&PID_E10D\\A&AB935FC&0&11",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Bluetooth Device (RFCOMM Protocol TDI)",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTH\\MS_RFCOMM\\B&1FD3DE35&0&0",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Standard Serial over Bluetooth link (COM3)",
+            "DependentClass": "Ports",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\\C&2B7ACB7D&0&000000000000_00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Standard Serial over Bluetooth link (COM4)",
+            "DependentClass": "Ports",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_VID&00023537_PID&1022\\C&2B7ACB7D&0&D62040BEFDE1_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Microsoft Bluetooth Enumerator",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTH\\MS_BTHBRB\\B&1FD3DE35&0&1",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Object Push Service",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{00001105-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Michael's S25 Ultra A2DP SNK",
+            "DependentClass": "MEDIA",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{0000110A-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Michael's S25 Ultra Avrcp Transport",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{0000110C-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Michael's S25 Ultra Avrcp Transport",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{0000110E-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Headset Audio Gateway Service",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{00001112-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          {
+            "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "ControllerStatus": "OK",
+            "ControllerProblemCode": "0",
+            "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
+            "DependentName": "Personal Area Network Service",
+            "DependentClass": "Bluetooth",
+            "DependentStatus": "OK",
+            "DependentProblemCode": "0",
+            "DependentDeviceID": "BTHENUM\\{00001115-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000",
+            "IsHubOrRouter": false,
+            "IsStoragePath": false
+          },
+          "... truncated 1 more item(s)"
+        ]
+      },
+      "signals": [],
+      "recommendations": [
+        "USB controller-to-device paths are mapped without Windows problem codes. Intermittent port, cable, hub, dock, and power faults still require symptom-time physical testing."
       ]
     },
     {
@@ -3461,7 +3864,7 @@
         "HardwareReliabilityRecordCount": 0,
         "WindowsErrorReportingHardwareEventCount": 0,
         "ReliabilityRecords": [],
-        "ReliabilityRecordCount": 0
+        "ReliabilityRecordCount": 8
       },
       "signals": [],
       "recommendations": [
@@ -3546,6 +3949,12 @@
       "nextStep": "No USB Device Manager problem codes were found; retest during disconnect or performance symptoms for intermittent faults."
     },
     {
+      "name": "USB controller topology and path sweep",
+      "status": "passed",
+      "evidence": "100 USB controller/device association row(s), 8 controller path group(s), 0 problem path(s).",
+      "nextStep": "No USB controller path problem codes were found; retest during disconnect or power/performance symptoms for intermittent USB faults."
+    },
+    {
       "name": "Peripheral inventory problem-code sweep",
       "status": "passed",
       "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
@@ -3602,7 +4011,7 @@
     {
       "name": "Storage live performance counter sweep",
       "status": "warning",
-      "evidence": "4 physical disk counter row(s), 6 logical disk counter row(s), 0 busy physical row(s), 1 busy logical row(s).",
+      "evidence": "4 physical disk counter row(s), 6 logical disk counter row(s), 2 busy physical row(s), 2 busy logical row(s).",
       "nextStep": "Correlate busy disk rows with mapped physical drives, current workload, dirty-bit status, cable/controller path, and repeatability before repair or replacement."
     },
     {
@@ -3614,7 +4023,7 @@
     {
       "name": "CPU topology and live counter sweep",
       "status": "passed",
-      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=0.",
+      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=5.",
       "nextStep": "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
     },
     {
@@ -3661,7 +4070,7 @@
     },
     {
       "name": "Reliability Monitor and WER crash sweep",
-      "status": "limited",
+      "status": "passed",
       "evidence": "0 hardware-matching Reliability Monitor record(s), 0 hardware-matching Windows Error Reporting event(s).",
       "nextStep": "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
     },
@@ -3698,7 +4107,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 19:09:02 2026",
+      "Timestamp : Tue Jun 23 19:26:28 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -3726,7 +4135,7 @@
       " Sparse Operation Mode : N/A",
       " Temperature",
       " GPU Current Temp : 39 C",
-      " GPU Current T.Limit Temp : 50 C",
+      " GPU Current T.Limit Temp : 49 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -3734,8 +4143,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 25.08 W",
-      " Instantaneous Power Draw : 25.41 W",
+      " Average Power Draw : 29.10 W",
+      " Instantaneous Power Draw : 28.67 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -3747,11 +4156,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.38 sec",
+      " Duration : 2.32 sec",
       " Number of Samples : 119",
-      " Max : 30.58 W",
-      " Min : 24.05 W",
-      " Avg : 25.10 W",
+      " Max : 40.63 W",
+      " Min : 24.46 W",
+      " Avg : 28.61 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",

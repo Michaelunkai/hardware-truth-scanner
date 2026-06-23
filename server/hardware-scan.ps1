@@ -105,6 +105,23 @@ function Convert-ToBoundedText {
   return $text
 }
 
+function Get-AssociationReferenceDeviceId {
+  param($Reference)
+
+  if ($null -eq $Reference) { return $null }
+  $deviceIdProperty = $Reference.PSObject.Properties["DeviceID"]
+  if ($deviceIdProperty -and -not [string]::IsNullOrWhiteSpace([string]$deviceIdProperty.Value)) {
+    return [string]$deviceIdProperty.Value
+  }
+
+  $text = [string]$Reference
+  if ($text -match 'DeviceID="([^"]+)"') {
+    return (($Matches[1] -replace "\\\\", "\") -replace '\\"', '"')
+  }
+  if ([string]::IsNullOrWhiteSpace($text)) { return $null }
+  return $text
+}
+
 function Convert-EdidText {
   param($Values)
 
@@ -465,6 +482,7 @@ $keyboards = @(Invoke-Probe "keyboards" { Get-CimInstance Win32_Keyboard })
 $pointingDevices = @(Invoke-Probe "pointing devices" { Get-CimInstance Win32_PointingDevice })
 $usbControllers = @(Invoke-Probe "usb controllers" { Get-CimInstance Win32_USBController })
 $usbHubs = @(Invoke-Probe "usb hubs" { Get-CimInstance Win32_USBHub })
+$usbControllerDeviceAssociations = @(Invoke-OptionalProbe "usb controller device associations" { Get-CimInstance Win32_USBControllerDevice })
 $fans = @(Invoke-Probe "fans" { Get-CimInstance Win32_Fan })
 $thermalZones = @(Invoke-OptionalProbe "thermal zones" { Get-CimInstance -Namespace root\wmi -ClassName MSAcpi_ThermalZoneTemperature })
 $openHardwareSensors = @(Invoke-OptionalProbe "openhardwaremonitor sensors" { Get-CimInstance -Namespace root\OpenHardwareMonitor -ClassName Sensor })
@@ -1264,6 +1282,80 @@ foreach ($pointing in $pointingDevices) {
   } -Signals $(if ($status -eq "warning") { @("Pointing device status is $($pointing.Status).") } else { @() }) -Recommendations $(if ($status -eq "warning") { @("Check USB/Bluetooth path or replace the pointing device if the status persists.") } else { @("Pointing device is detected without Windows status faults. Button/sensor issues require physical testing.") })
 }
 
+$usbControllerById = @{}
+foreach ($controller in $usbControllers) {
+  foreach ($id in @($controller.DeviceID, $controller.PNPDeviceID)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$id) -and -not $usbControllerById.ContainsKey([string]$id)) {
+      $usbControllerById[[string]$id] = $controller
+    }
+  }
+}
+
+$pnpDeviceById = @{}
+foreach ($device in $pnpAll) {
+  foreach ($id in @($device.DeviceID, $device.PNPDeviceID)) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$id) -and -not $pnpDeviceById.ContainsKey([string]$id)) {
+      $pnpDeviceById[[string]$id] = $device
+    }
+  }
+}
+
+$usbTopologyRows = @()
+foreach ($association in $usbControllerDeviceAssociations) {
+  $controllerId = Get-AssociationReferenceDeviceId $association.Antecedent
+  $dependentId = Get-AssociationReferenceDeviceId $association.Dependent
+  $controller = if ($controllerId -and $usbControllerById.ContainsKey($controllerId)) { $usbControllerById[$controllerId] } else { $null }
+  $dependent = if ($dependentId -and $pnpDeviceById.ContainsKey($dependentId)) { $pnpDeviceById[$dependentId] } else { $null }
+  $dependentName = if ($dependent) { $dependent.Name } else { $association.Dependent.Name }
+  $dependentClass = if ($dependent) { $dependent.PNPClass } else { $association.Dependent.PNPClass }
+  $dependentStatus = if ($dependent) { $dependent.Status } else { $association.Dependent.Status }
+  $dependentProblemCode = if ($dependent) { $dependent.ConfigManagerErrorCode } else { $association.Dependent.ConfigManagerErrorCode }
+
+  $usbTopologyRows += [pscustomobject]@{
+    ControllerName = if ($controller) { $controller.Name } else { $association.Antecedent.Name }
+    ControllerStatus = if ($controller) { $controller.Status } else { $association.Antecedent.Status }
+    ControllerProblemCode = if ($controller) { $controller.ConfigManagerErrorCode } else { $association.Antecedent.ConfigManagerErrorCode }
+    ControllerDeviceID = $controllerId
+    DependentName = $dependentName
+    DependentClass = $dependentClass
+    DependentStatus = $dependentStatus
+    DependentProblemCode = $dependentProblemCode
+    DependentDeviceID = $dependentId
+    IsHubOrRouter = [bool](($dependentName -match "hub|router|composite") -or ($dependentClass -eq "USB") -or ($dependentId -match "^USB4\\ROOT_DEVICE_ROUTER|^USB\\ROOT_HUB"))
+    IsStoragePath = [bool](($dependentName -match "mass storage|attached scsi|UAS|disk") -or ($dependentClass -match "DiskDrive|SCSIAdapter") -or ($dependentId -match "^USBSTOR\\"))
+  }
+}
+
+$usbTopologyProblemRows = @($usbTopologyRows | Where-Object {
+  ($_.ControllerProblemCode -and $_.ControllerProblemCode -ne 0) -or
+  ($_.DependentProblemCode -and $_.DependentProblemCode -ne 0) -or
+  ($_.ControllerStatus -and $_.ControllerStatus -ne "OK") -or
+  ($_.DependentStatus -and $_.DependentStatus -ne "OK")
+})
+
+$usbControllerPathSummaries = @(
+  $usbTopologyRows |
+    Group-Object ControllerDeviceID |
+    ForEach-Object {
+      $rows = @($_.Group)
+      [pscustomobject]@{
+        ControllerDeviceID = $_.Name
+        ControllerName = @($rows | Where-Object { $_.ControllerName } | Select-Object -First 1 -ExpandProperty ControllerName)
+        ControllerStatus = @($rows | Where-Object { $_.ControllerStatus } | Select-Object -First 1 -ExpandProperty ControllerStatus)
+        DeviceCount = $rows.Count
+        HubOrRouterCount = @($rows | Where-Object { $_.IsHubOrRouter }).Count
+        StoragePathCount = @($rows | Where-Object { $_.IsStoragePath }).Count
+        ProblemPathCount = @($rows | Where-Object {
+          ($_.ControllerProblemCode -and $_.ControllerProblemCode -ne 0) -or
+          ($_.DependentProblemCode -and $_.DependentProblemCode -ne 0) -or
+          ($_.ControllerStatus -and $_.ControllerStatus -ne "OK") -or
+          ($_.DependentStatus -and $_.DependentStatus -ne "OK")
+        }).Count
+      }
+    } |
+    Sort-Object ProblemPathCount, DeviceCount -Descending
+)
+
 foreach ($usb in $usbControllers) {
   $status = if ($usb.Status -and $usb.Status -ne "OK") { "warning" } else { "ok" }
   New-Component -Category "USB Controller" -Name ($usb.Name) -Status $status -Confidence "medium" -Evidence @{
@@ -1287,6 +1379,15 @@ New-Component -Category "USB Device Inventory" -Name "USB and USB storage PnP de
   StorageDevices = @($usbStorageDevices | Select-Object -First 20 Name, PNPClass, Status, ConfigManagerErrorCode, DeviceID)
   SampleDevices = @($usbPnpDevices | Select-Object -First 40 Name, PNPClass, Status, ConfigManagerErrorCode, DeviceID)
 } -Signals $(if ($usbProblemDevices.Count -gt 0) { @("$($usbProblemDevices.Count) USB/USBSTOR device(s) have Device Manager problem codes.") } elseif ($usbPnpDevices.Count -eq 0) { @("Windows did not expose USB/USBSTOR PnP device rows to this scanner.") } else { @() }) -Recommendations $(if ($usbProblemDevices.Count -gt 0) { @("Fix listed USB problem-code devices before replacing ports, cables, hubs, docks, or USB devices.") } elseif ($usbPnpDevices.Count -eq 0) { @("Use Device Manager or vendor tools if USB symptoms exist because Windows did not expose USB PnP rows.") } else { @("USB/USBSTOR devices are enumerated without Device Manager problem codes. Intermittent disconnects, weak ports, cables, hubs, and docks still require symptom-time physical testing.") })
+
+New-Component -Category "USB Topology" -Name "Controller-to-device path map" -Status $(if ($usbTopologyProblemRows.Count -gt 0) { "warning" } elseif ($usbControllerDeviceAssociations.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  AssociationCount = $usbControllerDeviceAssociations.Count
+  ControllerPathCount = $usbControllerPathSummaries.Count
+  ProblemPathCount = $usbTopologyProblemRows.Count
+  ControllerPaths = @($usbControllerPathSummaries | Select-Object -First 20)
+  ProblemAssociations = @($usbTopologyProblemRows | Select-Object -First 30)
+  SampleAssociations = @($usbTopologyRows | Select-Object -First 80)
+} -Signals $(if ($usbTopologyProblemRows.Count -gt 0) { @("$($usbTopologyProblemRows.Count) USB controller/device association path(s) report a non-OK status or Device Manager problem code.") } elseif ($usbControllerDeviceAssociations.Count -eq 0) { @("Windows did not expose USB controller-to-device association rows to this scanner.") } else { @() }) -Recommendations $(if ($usbTopologyProblemRows.Count -gt 0) { @("Use the listed controller path to test the affected physical port, cable, hub, dock, or USB device before replacing hardware.") } elseif ($usbControllerDeviceAssociations.Count -eq 0) { @("Use Device Manager by connection view or vendor USB/Thunderbolt tools if USB symptoms exist because association rows were unavailable.") } else { @("USB controller-to-device paths are mapped without Windows problem codes. Intermittent port, cable, hub, dock, and power faults still require symptom-time physical testing.") })
 
 New-PnpInventoryComponent -Name "HID-class controls and human interface devices" -Devices $hidPeripheralDevices -AbsentRecommendation "No HID-class peripheral inventory was exposed by Windows in this scan." -HealthyRecommendation "HID-class devices are detected without Device Manager problem codes. Button, stick, key, touch, and sensor accuracy still require physical testing." -ProblemRecommendation "Fix the listed HID Device Manager problem codes first, then test the affected control path with a known-good cable, dongle, or port."
 New-PnpInventoryComponent -Name "Bluetooth radios and paired hardware" -Devices $bluetoothPeripheralDevices -AbsentRecommendation "No Bluetooth hardware was exposed by Windows in this scan." -HealthyRecommendation "Bluetooth-class devices are detected without Device Manager problem codes. Range, antenna, battery, and interference still require physical testing." -ProblemRecommendation "Fix the listed Bluetooth problem devices before replacing radios or paired hardware."
@@ -1442,6 +1543,7 @@ if ($pnpProblems.Count -gt 0) {
 
 New-Diagnostic -Name "Device Manager problem-code sweep" -Status $(if ($pnpProblems.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pnpProblems.Count) problem device(s) from $($pnpAll.Count) enumerated PnP device(s)." -NextStep $(if ($pnpProblems.Count -gt 0) { "Open Device Manager and fix the listed problem-code devices first." } else { "No Device Manager problem codes found." })
 New-Diagnostic -Name "USB device inventory and problem-code sweep" -Status $(if ($usbProblemDevices.Count -gt 0) { "warning" } elseif ($usbPnpDevices.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($usbPnpDevices.Count) USB/USBSTOR/USB4 PnP device row(s), $($usbStorageDevices.Count) USB storage-related row(s), $($usbHubDevices.Count) hub/router/composite row(s), $($usbProblemDevices.Count) USB problem device(s)." -NextStep $(if ($usbProblemDevices.Count -gt 0) { "Inspect listed USB devices, cables, ports, hubs, docks, and drivers before replacing hardware." } elseif ($usbPnpDevices.Count -eq 0) { "Use Device Manager/vendor tools if USB symptoms exist because USB PnP rows were unavailable." } else { "No USB Device Manager problem codes were found; retest during disconnect or performance symptoms for intermittent faults." })
+New-Diagnostic -Name "USB controller topology and path sweep" -Status $(if ($usbTopologyProblemRows.Count -gt 0) { "warning" } elseif ($usbControllerDeviceAssociations.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($usbControllerDeviceAssociations.Count) USB controller/device association row(s), $($usbControllerPathSummaries.Count) controller path group(s), $($usbTopologyProblemRows.Count) problem path(s)." -NextStep $(if ($usbTopologyProblemRows.Count -gt 0) { "Use the listed controller-to-device paths to isolate the physical USB port, cable, hub, dock, or attached device." } elseif ($usbControllerDeviceAssociations.Count -eq 0) { "Use Device Manager by connection view or vendor tooling if USB symptoms exist because topology association rows were unavailable." } else { "No USB controller path problem codes were found; retest during disconnect or power/performance symptoms for intermittent USB faults." })
 New-Diagnostic -Name "Peripheral inventory problem-code sweep" -Status $(if ($peripheralProblemDevices.Count -gt 0) { "warning" } else { "passed" }) -Evidence "HID=$($hidPeripheralDevices.Count), Bluetooth=$($bluetoothPeripheralDevices.Count), Camera/Imaging=$($cameraPeripheralDevices.Count), Sensors=$($sensorPeripheralDevices.Count), Printers=$($printerPeripheralDevices.Count); $($peripheralProblemDevices.Count) unique peripheral problem device(s)." -NextStep $(if ($peripheralProblemDevices.Count -gt 0) { "Fix listed peripheral Device Manager problem codes, then retest the physical device path with known-good cables, ports, dongles, or vendor tools." } else { "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep." })
 New-Diagnostic -Name "Display EDID identity sweep" -Status $(if ($monitorIdentityRows.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($monitorIdentityRows.Count) active EDID display identity row(s), $($monitorDisplayParams.Count) display parameter row(s), $($monitorConnectionParams.Count) connection parameter row(s)." -NextStep $(if ($monitorIdentityRows.Count -gt 0) { "Use the display identity rows to match physical monitors before testing cables, ports, dead pixels, HDR, VRR, or flicker." } else { "Run with current GPU/display drivers and active monitors attached; visually test displays because EDID was not exposed." })
 New-Diagnostic -Name "Network link and packet error counters" -Status $(if ($networkProblemCounters.Count -gt 0) { "warning" } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($networkCounterRows.Count) physical adapter counter row(s), $($enabledNetworkRows.Count) enabled adapter(s), $($networkProblemCounters.Count) adapter row(s) with packet errors/discards." -NextStep $(if ($networkProblemCounters.Count -gt 0) { "Inspect cable, port, antenna, router/switch, and NIC driver for the listed adapter counters." } elseif ($networkCounterRows.Count -eq 0 -or $networkInterfaceCounters.Count -eq 0) { "Use vendor/router/switch counters if network symptoms exist because Windows counters were unavailable." } else { "No live packet error/discard counters were reported; retest during symptoms for intermittent link faults." })
