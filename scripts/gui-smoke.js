@@ -182,6 +182,7 @@ try {
       bodyText.includes("Hardware Truth Scanner") &&
       bodyText.includes("Scan completed") &&
       bodyText.includes("Human-readable verdict") &&
+      bodyText.includes("What to fix or verify first") &&
       bodyText.includes("What was actually tested") &&
       bodyText.includes("Component evidence") &&
       bodyText.includes("Confidence:") &&
@@ -197,6 +198,7 @@ try {
     "Hardware Truth Scanner",
     "Scan completed",
     "Human-readable verdict",
+    "What to fix or verify first",
     "What was actually tested",
     "Component evidence",
     "Findings that may need action",

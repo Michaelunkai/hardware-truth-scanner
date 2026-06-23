@@ -30,6 +30,19 @@ function DiagnosticBadge({ value }: { value: DiagnosticCheck["status"] }) {
   return <span className={`badge diagnostic-${value}`}>{value.replace("_", " ").toUpperCase()}</span>;
 }
 
+type ActionItem = {
+  title: string;
+  priority: "Fix first" | "Verify next" | "Known limit";
+  evidence: string;
+  action: string;
+};
+
+const actionRank: Record<ActionItem["priority"], number> = {
+  "Fix first": 3,
+  "Verify next": 2,
+  "Known limit": 1
+};
+
 function EvidenceList({ data }: { data: Record<string, unknown> }) {
   const entries = Object.entries(data).filter(([, value]) => value !== null && value !== undefined && value !== "");
 
@@ -149,6 +162,69 @@ function Diagnostics({ diagnostics }: { diagnostics: DiagnosticCheck[] }) {
   );
 }
 
+function ActionQueue({ report }: { report: ScanReport }) {
+  const findingItems: ActionItem[] = report.findings.map((finding) => ({
+    title: finding.title,
+    priority: finding.severity === "critical" || finding.severity === "warning" ? "Fix first" : "Verify next",
+    evidence: `${finding.component}: ${finding.evidence}`,
+    action: finding.recommendation
+  }));
+
+  const warningItems: ActionItem[] = report.components
+    .filter((component) => component.status === "critical" || component.status === "warning")
+    .map((component) => ({
+      title: `${component.category}: ${component.name}`,
+      priority: "Fix first",
+      evidence: asStringArray(component.signals)[0] ?? `${component.status.toUpperCase()} status`,
+      action: asStringArray(component.recommendations)[0] ?? "Review the detailed component evidence below."
+    }));
+
+  const limitedDiagnostics: ActionItem[] = report.diagnostics
+    .filter((item) => item.status === "limited" || item.status === "unavailable" || item.status === "not_run")
+    .map((item) => ({
+      title: item.name,
+      priority: item.status === "not_run" ? "Known limit" : "Verify next",
+      evidence: item.evidence,
+      action: item.nextStep
+    }));
+
+  const items = [...findingItems, ...warningItems, ...limitedDiagnostics]
+    .filter((item, index, allItems) => allItems.findIndex((candidate) => candidate.title === item.title) === index)
+    .sort((a, b) => actionRank[b.priority] - actionRank[a.priority] || a.title.localeCompare(b.title))
+    .slice(0, 12);
+
+  if (items.length === 0) {
+    return (
+      <section className="action-queue clean-queue">
+        <div className="section-title">
+          <p className="eyebrow">Fix priority</p>
+          <h2>Nothing needs action from safe live telemetry</h2>
+        </div>
+        <p>Every safe live software-visible check passed. Remaining certainty still depends on the boundary list below.</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="action-queue">
+      <div className="section-title">
+        <p className="eyebrow">Fix priority</p>
+        <h2>What to fix or verify first</h2>
+      </div>
+      <div className="action-grid">
+        {items.map((item) => (
+          <article className={`action-card action-${item.priority.toLowerCase().replace(/\s+/g, "-")}`} key={item.title}>
+            <span>{item.priority}</span>
+            <h3>{item.title}</h3>
+            <p className="muted">Evidence: {item.evidence}</p>
+            <p className="recommendation">Next: {item.action}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [report, setReport] = useState<ScanReport | null>(null);
   const [status, setStatus] = useState("Ready to run hardware scan.");
@@ -228,6 +304,8 @@ function App() {
               <strong>{report.summary.unknownCount}</strong>
             </div>
           </section>
+
+          <ActionQueue report={report} />
 
           <Diagnostics diagnostics={diagnostics} />
 

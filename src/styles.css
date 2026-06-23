@@ -207,14 +207,16 @@ p {
 
 .finding-list,
 .component-grid,
-.diagnostic-grid {
+.diagnostic-grid,
+.action-grid {
   display: grid;
   gap: 1rem;
 }
 
 .finding,
 .component-card,
-.diagnostic-card {
+.diagnostic-card,
+.action-card {
   padding: 1.2rem;
   border-radius: 24px;
   background: rgba(255, 250, 240, 0.9);
@@ -229,6 +231,64 @@ p {
 
 .recommendation {
   font-weight: 800;
+}
+
+.action-queue {
+  margin: 1.4rem 0 2.2rem;
+}
+
+.action-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.action-card {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+}
+
+.action-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.45rem;
+  background: var(--amber);
+}
+
+.action-card span {
+  display: inline-flex;
+  margin-bottom: 0.8rem;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  background: rgba(23, 32, 27, 0.08);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.action-card h3 {
+  margin-bottom: 0.8rem;
+  font-size: 1.35rem;
+}
+
+.action-fix-first::before {
+  background: var(--rust);
+}
+
+.action-verify-next::before {
+  background: var(--amber);
+}
+
+.action-known-limit::before {
+  background: var(--sky);
+}
+
+.clean-queue {
+  padding: 1.2rem;
+  border-radius: 24px;
+  background: rgba(255, 250, 240, 0.86);
+  border: 1px solid var(--line);
 }
 
 .component-grid {
@@ -362,6 +422,7 @@ li {
   .summary-grid,
   .component-grid,
   .diagnostic-grid,
+  .action-grid,
   .meta-strip {
     grid-template-columns: 1fr;
   }
