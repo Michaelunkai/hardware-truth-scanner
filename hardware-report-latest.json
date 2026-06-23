@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T16:26:42.0072235Z",
+  "generatedAt": "2026-06-23T16:42:12.8796729Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 81,
+    "componentCount": 82,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 4,
@@ -141,7 +141,7 @@
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
             "CurrentClockSpeed": "4668",
-            "LoadPercentage": "85",
+            "LoadPercentage": "36",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -154,9 +154,9 @@
         ],
         "SystemProcessorQueue": [
           {
-            "ProcessorQueueLength": "5",
-            "ContextSwitchesPersec": "148160",
-            "SystemCallsPersec": "1517252"
+            "ProcessorQueueLength": "0",
+            "ContextSwitchesPersec": "81345",
+            "SystemCallsPersec": "1092715"
           }
         ],
         "LogicalProcessorCounterCount": 16,
@@ -164,22 +164,22 @@
           {
             "Name": "0,_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "48",
+            "PercentProcessorUtility": "72",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "20",
-            "PercentUserTime": "20",
+            "PercentPrivilegedTime": "26",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "64876"
+            "InterruptsPerSec": "50128"
           },
           {
             "Name": "_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "48",
+            "PercentProcessorUtility": "72",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "20",
-            "PercentUserTime": "20",
+            "PercentPrivilegedTime": "26",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "64876"
+            "InterruptsPerSec": "50128"
           }
         ],
         "TotalEnabledCores": 8,
@@ -187,162 +187,162 @@
           {
             "Name": "0,0",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "37",
+            "PercentProcessorUtility": "60",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "40",
+            "PercentUserTime": "28",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5812"
+            "InterruptsPerSec": "5355"
           },
           {
             "Name": "0,1",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "52",
+            "PercentProcessorUtility": "62",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "23",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "40",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "4554"
+            "InterruptsPerSec": "3476"
           },
           {
             "Name": "0,10",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "55",
+            "PercentProcessorUtility": "78",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "23",
+            "PercentPrivilegedTime": "40",
+            "PercentUserTime": "28",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2535"
+            "InterruptsPerSec": "2058"
           },
           {
             "Name": "0,11",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "51",
+            "PercentProcessorUtility": "75",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "29",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "51",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2958"
+            "InterruptsPerSec": "1115"
           },
           {
             "Name": "0,12",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "50",
+            "PercentProcessorUtility": "80",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "11",
+            "PercentPrivilegedTime": "46",
+            "PercentUserTime": "40",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2906"
+            "InterruptsPerSec": "2704"
           },
           {
             "Name": "0,13",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "47",
+            "PercentProcessorUtility": "75",
             "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "23",
-            "PercentUserTime": "17",
+            "PercentUserTime": "34",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2988"
+            "InterruptsPerSec": "1943"
           },
           {
             "Name": "0,14",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "65",
+            "PercentProcessorUtility": "81",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "58",
-            "PercentUserTime": "29",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "51",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5767"
+            "InterruptsPerSec": "5378"
           },
           {
             "Name": "0,15",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "51",
+            "PercentProcessorUtility": "73",
             "ProcessorFrequency": "4668",
             "PercentPrivilegedTime": "17",
-            "PercentUserTime": "17",
+            "PercentUserTime": "34",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "7954"
+            "InterruptsPerSec": "6583"
           },
           {
             "Name": "0,2",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "55",
+            "PercentProcessorUtility": "74",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "35",
-            "PercentUserTime": "23",
+            "PercentPrivilegedTime": "46",
+            "PercentUserTime": "34",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "4610"
+            "InterruptsPerSec": "3341"
           },
           {
             "Name": "0,3",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "37",
+            "PercentProcessorUtility": "78",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "57",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2962"
+            "InterruptsPerSec": "2066"
           },
           {
             "Name": "0,4",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "54",
+            "PercentProcessorUtility": "60",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "11",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "34",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "4651"
+            "InterruptsPerSec": "4341"
           },
           {
             "Name": "0,5",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "52",
+            "PercentProcessorUtility": "67",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "11",
+            "PercentPrivilegedTime": "34",
+            "PercentUserTime": "40",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "4070"
+            "InterruptsPerSec": "2636"
           },
           {
             "Name": "0,6",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "50",
+            "PercentProcessorUtility": "68",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
+            "PercentPrivilegedTime": "28",
             "PercentUserTime": "40",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3471"
+            "InterruptsPerSec": "3547"
           },
           {
             "Name": "0,7",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "31",
+            "PercentProcessorUtility": "69",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "57",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3190"
+            "InterruptsPerSec": "2234"
           },
           {
             "Name": "0,8",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "53",
+            "PercentProcessorUtility": "81",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "23",
+            "PercentPrivilegedTime": "28",
+            "PercentUserTime": "46",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2842"
+            "InterruptsPerSec": "1917"
           },
           {
             "Name": "0,9",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "38",
+            "PercentProcessorUtility": "72",
             "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "51",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "3599"
+            "InterruptsPerSec": "1428"
           }
         ]
       },
@@ -658,7 +658,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1720.91,
+        "FreeGB": 1702.88,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -715,7 +715,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 380.47,
+        "FreeGB": 480.12,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -767,7 +767,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 380.47,
+            "VolumeFreeGB": 480.12,
             "DirtyBit": true
           },
           {
@@ -818,7 +818,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1720.91,
+            "VolumeFreeGB": 1702.88,
             "DirtyBit": false
           },
           {
@@ -952,45 +952,12 @@
       "id": "storage-performance-counters-live-disk-queue-throughput-and-free-space-pressure",
       "category": "Storage Performance Counters",
       "name": "Live disk queue, throughput, and free-space pressure",
-      "status": "warning",
+      "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "BusyPhysicalDisks": [
-          {
-            "CounterName": "0 C: D:",
-            "DiskIndex": 0,
-            "DiskModel": "Samsung SSD 9100 PRO 2TB",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
-            "LogicalDisks": "C: D:",
-            "CurrentQueueLength": "10",
-            "AvgQueueLength": "10",
-            "ReadsPerSec": "6976",
-            "WritesPerSec": "0",
-            "ReadMBPerSec": 40.81,
-            "WriteMBPerSec": 0,
-            "PercentDiskTime": "1018",
-            "PercentIdleTime": "0",
-            "SplitIOPerSec": "79"
-          },
-          {
-            "CounterName": "1 F:",
-            "DiskIndex": 1,
-            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "LogicalDisks": "F:",
-            "CurrentQueueLength": "22",
-            "AvgQueueLength": "26",
-            "ReadsPerSec": "158",
-            "WritesPerSec": "1488",
-            "ReadMBPerSec": 11.88,
-            "WriteMBPerSec": 40.86,
-            "PercentDiskTime": "2651",
-            "PercentIdleTime": "0",
-            "SplitIOPerSec": "11"
-          }
-        ],
-        "BusyPhysicalDiskCount": 2,
-        "BusyLogicalDiskCount": 2,
+        "BusyPhysicalDisks": [],
+        "BusyPhysicalDiskCount": 0,
+        "BusyLogicalDiskCount": 0,
         "PhysicalCounterCount": 4,
         "LogicalDisks": [
           {
@@ -998,16 +965,16 @@
             "DiskIndex": "0",
             "DiskModel": "Samsung SSD 9100 PRO 2TB",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
-            "CurrentQueueLength": "12",
-            "AvgQueueLength": "13",
-            "ReadsPerSec": "1935",
-            "WritesPerSec": "1656",
-            "ReadMBPerSec": 26.06,
-            "WriteMBPerSec": 23.25,
-            "PercentDiskTime": "1355",
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "1187",
+            "WritesPerSec": "35",
+            "ReadMBPerSec": 28,
+            "WriteMBPerSec": 0.42,
+            "PercentDiskTime": "10",
             "PercentFreeSpace": "92",
-            "FreeGB": 1721.01,
-            "SplitIOPerSec": "196"
+            "FreeGB": 1721.71,
+            "SplitIOPerSec": "79"
           },
           {
             "LogicalDisk": "D:",
@@ -1046,16 +1013,16 @@
             "DiskIndex": "1",
             "DiskModel": "Fanxiang FF951 SCSI Disk Device",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "CurrentQueueLength": "26",
-            "AvgQueueLength": "18",
-            "ReadsPerSec": "90",
-            "WritesPerSec": "959",
-            "ReadMBPerSec": 5.59,
-            "WriteMBPerSec": 27.42,
-            "PercentDiskTime": "1867",
-            "PercentFreeSpace": "40",
-            "FreeGB": 383.97,
-            "SplitIOPerSec": "27"
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "50",
+            "FreeGB": 480.12,
+            "SplitIOPerSec": "0"
           },
           {
             "LogicalDisk": "G:",
@@ -1090,40 +1057,7 @@
             "SplitIOPerSec": "0"
           }
         ],
-        "BusyLogicalDisks": [
-          {
-            "LogicalDisk": "C:",
-            "DiskIndex": "0",
-            "DiskModel": "Samsung SSD 9100 PRO 2TB",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
-            "CurrentQueueLength": "12",
-            "AvgQueueLength": "13",
-            "ReadsPerSec": "1935",
-            "WritesPerSec": "1656",
-            "ReadMBPerSec": 26.06,
-            "WriteMBPerSec": 23.25,
-            "PercentDiskTime": "1355",
-            "PercentFreeSpace": "92",
-            "FreeGB": 1721.01,
-            "SplitIOPerSec": "196"
-          },
-          {
-            "LogicalDisk": "F:",
-            "DiskIndex": "1",
-            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
-            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
-            "CurrentQueueLength": "26",
-            "AvgQueueLength": "18",
-            "ReadsPerSec": "90",
-            "WritesPerSec": "959",
-            "ReadMBPerSec": 5.59,
-            "WriteMBPerSec": 27.42,
-            "PercentDiskTime": "1867",
-            "PercentFreeSpace": "40",
-            "FreeGB": 383.97,
-            "SplitIOPerSec": "27"
-          }
-        ],
+        "BusyLogicalDisks": [],
         "LogicalCounterCount": 6,
         "PhysicalDisks": [
           {
@@ -1132,15 +1066,15 @@
             "DiskModel": "Samsung SSD 9100 PRO 2TB",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "LogicalDisks": "C: D:",
-            "CurrentQueueLength": "10",
-            "AvgQueueLength": "10",
-            "ReadsPerSec": "6976",
-            "WritesPerSec": "0",
-            "ReadMBPerSec": 40.81,
-            "WriteMBPerSec": 0,
-            "PercentDiskTime": "1018",
-            "PercentIdleTime": "0",
-            "SplitIOPerSec": "79"
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "1222",
+            "WritesPerSec": "7016",
+            "ReadMBPerSec": 20.74,
+            "WriteMBPerSec": 79,
+            "PercentDiskTime": "62",
+            "PercentIdleTime": "62",
+            "SplitIOPerSec": "376"
           },
           {
             "CounterName": "1 F:",
@@ -1148,15 +1082,15 @@
             "DiskModel": "Fanxiang FF951 SCSI Disk Device",
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
             "LogicalDisks": "F:",
-            "CurrentQueueLength": "22",
-            "AvgQueueLength": "26",
-            "ReadsPerSec": "158",
-            "WritesPerSec": "1488",
-            "ReadMBPerSec": 11.88,
-            "WriteMBPerSec": 40.86,
-            "PercentDiskTime": "2651",
-            "PercentIdleTime": "0",
-            "SplitIOPerSec": "11"
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "3",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentIdleTime": "99",
+            "SplitIOPerSec": "0"
           },
           {
             "CounterName": "2 E:",
@@ -1192,11 +1126,9 @@
           }
         ]
       },
-      "signals": [
-        "2 physical disk row(s) and 2 logical disk row(s) showed high live queue or disk-time pressure during the sample."
-      ],
+      "signals": [],
       "recommendations": [
-        "Correlate busy disk rows with the mapped physical drive before repairing or replacing hardware. High queue/disk-time can be a normal active workload, filesystem pressure, cable/controller issue, or failing storage depending on symptoms and repeatability."
+        "No live disk queue or disk-time pressure was visible in this sample. Retest while storage symptoms are happening."
       ]
     },
     {
@@ -1247,6 +1179,122 @@
       ],
       "recommendations": [
         "Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability."
+      ]
+    },
+    {
+      "id": "storage-fix-summary-per-physical-drive-risk-summary",
+      "category": "Storage Fix Summary",
+      "name": "Per-physical-drive risk summary",
+      "status": "warning",
+      "confidence": "medium",
+      "evidence": {
+        "ProblemDiskCount": 1,
+        "ProblemDisks": [
+          {
+            "DiskIndex": "1",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
+            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
+            "SerialNumber": "FWX0814A250700349",
+            "FirmwareRevision": "1000",
+            "InterfaceType": "SCSI",
+            "MediaType": "External hard disk media",
+            "SizeGB": 953.86,
+            "GenericDiskStatus": "OK",
+            "ConfigManagerErrorCode": "0",
+            "LogicalDisks": "F:",
+            "FileSystems": "F:=exFAT",
+            "DirtyVolumes": "F: exFAT Ventoy on Disk #1, Partition #0",
+            "BusyPhysicalCounters": "",
+            "BusyLogicalCounters": "",
+            "SignalCount": 1,
+            "Signals": "Dirty filesystem flag on F:."
+          }
+        ],
+        "DiskCount": 4,
+        "AllDisks": [
+          {
+            "DiskIndex": "1",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
+            "DiskModel": "Fanxiang FF951 SCSI Disk Device",
+            "SerialNumber": "FWX0814A250700349",
+            "FirmwareRevision": "1000",
+            "InterfaceType": "SCSI",
+            "MediaType": "External hard disk media",
+            "SizeGB": 953.86,
+            "GenericDiskStatus": "OK",
+            "ConfigManagerErrorCode": "0",
+            "LogicalDisks": "F:",
+            "FileSystems": "F:=exFAT",
+            "DirtyVolumes": "F: exFAT Ventoy on Disk #1, Partition #0",
+            "BusyPhysicalCounters": "",
+            "BusyLogicalCounters": "",
+            "SignalCount": 1,
+            "Signals": "Dirty filesystem flag on F:."
+          },
+          {
+            "DiskIndex": "0",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
+            "DiskModel": "Samsung SSD 9100 PRO 2TB",
+            "SerialNumber": "0025_38AB_5140_FC31.",
+            "FirmwareRevision": "0B2QNXH7",
+            "InterfaceType": "SCSI",
+            "MediaType": "Fixed hard disk media",
+            "SizeGB": 1863.01,
+            "GenericDiskStatus": "OK",
+            "ConfigManagerErrorCode": "0",
+            "LogicalDisks": "C: D:",
+            "FileSystems": "C:=NTFS D:=NTFS",
+            "DirtyVolumes": "",
+            "BusyPhysicalCounters": "",
+            "BusyLogicalCounters": "",
+            "SignalCount": 0,
+            "Signals": ""
+          },
+          {
+            "DiskIndex": "2",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE2",
+            "DiskModel": "YC3000-SSD-2048G",
+            "SerialNumber": "0000_0000_0000_0001.",
+            "FirmwareRevision": "SN07730",
+            "InterfaceType": "SCSI",
+            "MediaType": "Fixed hard disk media",
+            "SizeGB": 1907.73,
+            "GenericDiskStatus": "OK",
+            "ConfigManagerErrorCode": "0",
+            "LogicalDisks": "E:",
+            "FileSystems": "E:=exFAT",
+            "DirtyVolumes": "",
+            "BusyPhysicalCounters": "",
+            "BusyLogicalCounters": "",
+            "SignalCount": 0,
+            "Signals": ""
+          },
+          {
+            "DiskIndex": "3",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE3",
+            "DiskModel": "USB 3.0 USB 3.0 USB Device",
+            "SerialNumber": "1142151091563008469",
+            "FirmwareRevision": "2.00",
+            "InterfaceType": "USB",
+            "MediaType": "Removable Media",
+            "SizeGB": 29.29,
+            "GenericDiskStatus": "OK",
+            "ConfigManagerErrorCode": "0",
+            "LogicalDisks": "G:",
+            "FileSystems": "G:=FAT32",
+            "DirtyVolumes": "",
+            "BusyPhysicalCounters": "",
+            "BusyLogicalCounters": "",
+            "SignalCount": 0,
+            "Signals": ""
+          }
+        ]
+      },
+      "signals": [
+        "1 physical disk(s) have combined storage risk signals from disk status, dirty-bit mapping, or live pressure counters."
+      ],
+      "recommendations": [
+        "Disk 1 Fanxiang FF951 SCSI Disk Device (F:): back up affected data first, avoid repair while heavy writes are active, rerun read-only filesystem and vendor SMART diagnostics, then inspect cable/port/dock/power path only if the warning repeats."
       ]
     },
     {
@@ -1332,17 +1380,17 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "1678",
-          "MemoryFreeMiB": "14300",
+          "MemoryUsedMiB": "936",
+          "MemoryFreeMiB": "15042",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 1.64,
-          "MemoryFreeGB": 13.96,
-          "TemperatureC": "39",
+          "MemoryUsedGB": 0.91,
+          "MemoryFreeGB": 14.69,
+          "TemperatureC": "40",
           "FanPercent": "0",
           "PState": "P8",
-          "PowerDrawW": "28.34",
+          "PowerDrawW": "27.60",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "600",
+          "GraphicsClockMhz": "180",
           "MemoryClockMhz": "405",
           "PcieGen": "1",
           "PcieGenMax": "5",
@@ -1400,8 +1448,8 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 1.64,
-            "NvidiaMemoryFreeGB": 13.96,
+            "NvidiaMemoryUsedGB": 0.91,
+            "NvidiaMemoryFreeGB": 14.69,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 1/5, x16/x16"
           }
@@ -1533,8 +1581,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 229188,
-            "BytesSentPerSec": 346843,
+            "BytesReceivedPerSec": 910,
+            "BytesSentPerSec": 253,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2871,39 +2919,17 @@
       "id": "peripheral-inventory-printer-and-print-path-devices",
       "category": "Peripheral Inventory",
       "name": "Printer and print-path devices",
-      "status": "ok",
+      "status": "info",
       "confidence": "medium",
       "evidence": {
         "ProblemDeviceCount": 0,
-        "SampleDevices": [
-          {
-            "Name": "Root Print Queue",
-            "PNPClass": "PrintQueue",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\PRINTENUM\\PRINTQUEUES"
-          },
-          {
-            "Name": "Microsoft Print to PDF",
-            "PNPClass": "PrintQueue",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\PRINTENUM\\{E1FCA9E2-B78E-4010-9482-582293E6D2CF}"
-          },
-          {
-            "Name": "Microsoft XPS Document Writer",
-            "PNPClass": "PrintQueue",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\PRINTENUM\\{A8354A02-8B75-4A3A-A581-9B3673DD0FFA}"
-          }
-        ],
-        "DeviceCount": 3,
+        "SampleDevices": [],
+        "DeviceCount": 0,
         "ProblemDevices": []
       },
       "signals": [],
       "recommendations": [
-        "Printer-class devices are detected without Device Manager problem codes. Paper path, ink/toner, and mechanical feed issues require printer self-test pages."
+        "No printer-class hardware was exposed by Windows in this scan."
       ]
     },
     {
@@ -3772,7 +3798,7 @@
             "DriverVersion": "25.10.0.1"
           }
         ],
-        "DriverCount": 297,
+        "DriverCount": 298,
         "UnsignedDriverCount": 12
       },
       "signals": [
@@ -3801,7 +3827,7 @@
           "\tThe system firmware does not support this standby state.",
           "",
           "    Hibernate",
-          "\tHibernation has not been enabled.",
+          "\tThe hiberfile type does not support hibernation.",
           "",
           "    Standby (S0 Low Power Idle)",
           "\tThe system firmware does not support this standby state.",
@@ -3864,7 +3890,7 @@
         "HardwareReliabilityRecordCount": 0,
         "WindowsErrorReportingHardwareEventCount": 0,
         "ReliabilityRecords": [],
-        "ReliabilityRecordCount": 8
+        "ReliabilityRecordCount": 0
       },
       "signals": [],
       "recommendations": [
@@ -3939,7 +3965,7 @@
     {
       "name": "Device Manager problem-code sweep",
       "status": "passed",
-      "evidence": "0 problem device(s) from 295 enumerated PnP device(s).",
+      "evidence": "0 problem device(s) from 292 enumerated PnP device(s).",
       "nextStep": "No Device Manager problem codes found."
     },
     {
@@ -3957,7 +3983,7 @@
     {
       "name": "Peripheral inventory problem-code sweep",
       "status": "passed",
-      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
+      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=0; 0 unique peripheral problem device(s).",
       "nextStep": "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep."
     },
     {
@@ -4010,9 +4036,9 @@
     },
     {
       "name": "Storage live performance counter sweep",
-      "status": "warning",
-      "evidence": "4 physical disk counter row(s), 6 logical disk counter row(s), 2 busy physical row(s), 2 busy logical row(s).",
-      "nextStep": "Correlate busy disk rows with mapped physical drives, current workload, dirty-bit status, cable/controller path, and repeatability before repair or replacement."
+      "status": "passed",
+      "evidence": "4 physical disk counter row(s), 6 logical disk counter row(s), 0 busy physical row(s), 0 busy logical row(s).",
+      "nextStep": "No live disk queue/disk-time pressure was visible; retest while storage symptoms are happening."
     },
     {
       "name": "WHEA and recent hardware event sweep",
@@ -4023,13 +4049,13 @@
     {
       "name": "CPU topology and live counter sweep",
       "status": "passed",
-      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=5.",
+      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=0.",
       "nextStep": "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
     },
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 39C, PState P8, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 40C, PState P8, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -4070,7 +4096,7 @@
     },
     {
       "name": "Reliability Monitor and WER crash sweep",
-      "status": "passed",
+      "status": "limited",
       "evidence": "0 hardware-matching Reliability Monitor record(s), 0 hardware-matching Windows Error Reporting event(s).",
       "nextStep": "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
     },
@@ -4107,7 +4133,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 19:26:28 2026",
+      "Timestamp : Tue Jun 23 19:42:12 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4134,8 +4160,8 @@
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 39 C",
-      " GPU Current T.Limit Temp : 49 C",
+      " GPU Current Temp : 40 C",
+      " GPU Current T.Limit Temp : 48 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -4143,8 +4169,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 29.10 W",
-      " Instantaneous Power Draw : 28.67 W",
+      " Average Power Draw : 27.60 W",
+      " Instantaneous Power Draw : 27.72 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -4156,11 +4182,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.32 sec",
+      " Duration : 2.27 sec",
       " Number of Samples : 119",
-      " Max : 40.63 W",
-      " Min : 24.46 W",
-      " Avg : 28.61 W",
+      " Max : 44.45 W",
+      " Min : 25.57 W",
+      " Avg : 27.53 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -4188,7 +4214,7 @@
       " The system firmware does not support this standby state.",
       "",
       " Hibernate",
-      " Hibernation has not been enabled.",
+      " The hiberfile type does not support hibernation.",
       "",
       " Standby (S0 Low Power Idle)",
       " The system firmware does not support this standby state.",
@@ -4198,7 +4224,7 @@
       " The hypervisor does not support this standby state.",
       "",
       " Fast Startup",
-      " Hibernation is not available.",
+      " This action is disabled in the current system policy.",
       ""
     ],
     "PnPProblemDeviceText": [

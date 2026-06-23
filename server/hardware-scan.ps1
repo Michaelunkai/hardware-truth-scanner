@@ -1019,6 +1019,58 @@ New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair fl
   Results = @($volumeDirtyResults | Select-Object -First 20 DeviceID, IsDirty, IsUnsupported, Output)
 } -Signals $(if ($dirtyVolumes.Count -gt 0) { @("$($dirtyVolumes.Count) volume(s) have the filesystem dirty bit set.") } elseif ($volumeDirtyResults.Count -eq 0) { @("No drive-letter volumes were eligible for fsutil dirty query.") } else { @() }) -Recommendations $(if ($dirtyVolumes.Count -gt 0) { @("Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability.") } else { @("No filesystem dirty bit was reported by fsutil for checked volumes.") })
 
+$storageRiskRows = @()
+foreach ($disk in $diskDrives) {
+  $diskIndex = $disk.Index
+  $diskMappings = @($storageMapRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
+  $diskDirtyRows = @($diskMappings | Where-Object { $_.DirtyBit -eq $true })
+  $diskPhysicalPressure = @($busyPhysicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
+  $diskLogicalPressure = @($busyLogicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
+  $diskSignals = @()
+  if ($disk.Status -and $disk.Status -ne "OK") { $diskSignals += "Win32_DiskDrive status is $($disk.Status)." }
+  if ($disk.ConfigManagerErrorCode -and $disk.ConfigManagerErrorCode -ne 0) { $diskSignals += "Device Manager problem code $($disk.ConfigManagerErrorCode) is attached to this disk." }
+  if ($diskDirtyRows.Count -gt 0) { $diskSignals += "Dirty filesystem flag on $((@($diskDirtyRows | ForEach-Object { $_.LogicalDisk }) | Select-Object -Unique) -join ', ')." }
+  if ($diskPhysicalPressure.Count -gt 0 -or $diskLogicalPressure.Count -gt 0) { $diskSignals += "High live queue/disk-time pressure appeared on this physical disk or its logical volume during the scan." }
+
+  $storageRiskRows += [pscustomobject]@{
+    DiskIndex = $diskIndex
+    PhysicalDrive = $disk.DeviceID
+    DiskModel = $disk.Model
+    SerialNumber = (($disk.SerialNumber -as [string]).Trim())
+    FirmwareRevision = $disk.FirmwareRevision
+    InterfaceType = $disk.InterfaceType
+    MediaType = $disk.MediaType
+    SizeGB = if ($disk.Size) { [math]::Round(($disk.Size / 1GB), 2) } else { $null }
+    GenericDiskStatus = $disk.Status
+    ConfigManagerErrorCode = $disk.ConfigManagerErrorCode
+    LogicalDisks = @($diskMappings | Where-Object { $_.LogicalDisk } | ForEach-Object { $_.LogicalDisk } | Select-Object -Unique)
+    FileSystems = @($diskMappings | Where-Object { $_.FileSystem } | ForEach-Object { "$($_.LogicalDisk)=$($_.FileSystem)" } | Select-Object -Unique)
+    DirtyVolumes = @($diskDirtyRows | ForEach-Object { "$($_.LogicalDisk) $($_.FileSystem) $($_.VolumeName) on $($_.Partition)" })
+    BusyPhysicalCounters = @($diskPhysicalPressure | ForEach-Object { "$($_.CounterName): queue=$($_.CurrentQueueLength), avgQueue=$($_.AvgQueueLength), diskTime=$($_.PercentDiskTime)%, read=$($_.ReadMBPerSec) MB/s, write=$($_.WriteMBPerSec) MB/s, splitIO=$($_.SplitIOPerSec)" })
+    BusyLogicalCounters = @($diskLogicalPressure | ForEach-Object { "volume=$($_.LogicalDisk), queue=$($_.CurrentQueueLength), avgQueue=$($_.AvgQueueLength), diskTime=$($_.PercentDiskTime)%, read=$($_.ReadMBPerSec) MB/s, write=$($_.WriteMBPerSec) MB/s, free=$($_.FreeGB) GB ($($_.PercentFreeSpace)%)" })
+    SignalCount = $diskSignals.Count
+    Signals = $diskSignals
+  }
+}
+
+$storageRiskProblemRows = @($storageRiskRows | Where-Object { $_.SignalCount -gt 0 })
+$storageRiskRecommendations = @()
+if ($storageRiskProblemRows.Count -gt 0) {
+  foreach ($row in @($storageRiskProblemRows | Select-Object -First 4)) {
+    $targets = @($row.LogicalDisks) -join ", "
+    if ([string]::IsNullOrWhiteSpace($targets)) { $targets = $row.PhysicalDrive }
+    $storageRiskRecommendations += "Disk $($row.DiskIndex) $($row.DiskModel) ($targets): back up affected data first, avoid repair while heavy writes are active, rerun read-only filesystem and vendor SMART diagnostics, then inspect cable/port/dock/power path only if the warning repeats."
+  }
+} else {
+  $storageRiskRecommendations += "No disk has a combined generic-status, dirty-bit, or live-pressure signal in this scan. Vendor SMART and symptom-time testing are still required for full physical certainty."
+}
+New-Component -Category "Storage Fix Summary" -Name "Per-physical-drive risk summary" -Status $(if ($storageRiskProblemRows.Count -gt 0) { "warning" } elseif ($storageRiskRows.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  DiskCount = $storageRiskRows.Count
+  ProblemDiskCount = $storageRiskProblemRows.Count
+  ProblemDisks = @($storageRiskProblemRows | Select-Object -First 20)
+  AllDisks = @($storageRiskRows | Select-Object -First 20)
+} -Signals $(if ($storageRiskProblemRows.Count -gt 0) { @("$($storageRiskProblemRows.Count) physical disk(s) have combined storage risk signals from disk status, dirty-bit mapping, or live pressure counters.") } elseif ($storageRiskRows.Count -eq 0) { @("Windows did not expose physical disk rows for the storage risk summary.") } else { @() }) -Recommendations $storageRiskRecommendations
+
 if ($dirtyVolumes.Count -gt 0) {
   $dirtyEvidence = if ($dirtyStorageTargets.Count -gt 0) { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyStorageTargets) | Select-Object -First 8) -join '; ')" } else { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyVolumes | ForEach-Object { $_.DeviceID }) -join ', '))" }
   New-Finding -Severity "warning" -Component "Volume dirty bit" -Title "Filesystem dirty bit is set" -Detail "Windows reports at least one volume may need filesystem checking." -Evidence $dirtyEvidence -Recommendation "Back up first, then use read-only diagnostics or a planned repair window for the affected mapped volume and physical disk." -Confidence "medium"
