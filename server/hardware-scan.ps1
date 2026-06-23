@@ -393,6 +393,37 @@ function As-Text {
   return [string]$Value
 }
 
+function Convert-PnpUtilDriverPackages {
+  param([string[]]$Lines)
+
+  $packages = @()
+  $current = [ordered]@{ Files = @() }
+  foreach ($line in @($Lines)) {
+    if ($line -match "^Published Name:\s*(.+)$") {
+      if ($current.Contains("PublishedName")) { $packages += [pscustomobject]$current }
+      $current = [ordered]@{ Files = @(); PublishedName = $Matches[1].Trim() }
+    } elseif ($line -match "^Original Name:\s*(.+)$") {
+      $current["OriginalName"] = $Matches[1].Trim()
+    } elseif ($line -match "^Provider Name:\s*(.+)$") {
+      $current["ProviderName"] = $Matches[1].Trim()
+    } elseif ($line -match "^Class Name:\s*(.+)$") {
+      $current["ClassName"] = $Matches[1].Trim()
+    } elseif ($line -match "^Class GUID:\s*(.+)$") {
+      $current["ClassGuid"] = $Matches[1].Trim()
+    } elseif ($line -match "^Driver Version:\s*(.+)$") {
+      $current["DriverVersion"] = $Matches[1].Trim()
+    } elseif ($line -match "^Signer Name:\s*(.+)$") {
+      $current["SignerName"] = $Matches[1].Trim()
+    } elseif ($line -match "^Catalog File:\s*(.+)$") {
+      $current["CatalogFile"] = $Matches[1].Trim()
+    } elseif ($line -match "^\s{4}(.+)$") {
+      $current["Files"] += $Matches[1].Trim()
+    }
+  }
+  if ($current.Contains("PublishedName")) { $packages += [pscustomobject]$current }
+  return @($packages)
+}
+
 function Invoke-TextCommand {
   param(
     [string]$Name,
@@ -544,6 +575,7 @@ $tpm = @(Invoke-OptionalProbe "tpm" { Get-CimInstance -Namespace root\cimv2\Secu
 
 $powerCfgA = Invoke-TextCommand -Name "powercfg available sleep states" -FilePath "powercfg.exe" -Arguments @("/a")
 $problemDevicesText = Invoke-TextCommand -Name "pnputil problem devices" -FilePath "pnputil.exe" -Arguments @("/enum-devices", "/problem")
+$driverPackageText = Invoke-TextCommand -Name "pnputil driver packages with files" -FilePath "pnputil.exe" -Arguments @("/enum-drivers", "/files")
 $volumeDirtyResults = @()
 foreach ($volume in $volumes) {
   if ($volume.DeviceID -match "^[A-Z]:$") {
@@ -1579,12 +1611,56 @@ New-Component -Category "Audio Endpoint Inventory" -Name "Speaker, microphone, a
   MediaDevices = @($audioMediaDevices | Select-Object -First 30 Name, PNPClass, Status, ConfigManagerErrorCode, DeviceID)
 } -Signals $(if ($audioProblemDevices.Count -gt 0) { @("$($audioProblemDevices.Count) audio endpoint/media device(s) have Device Manager problem codes.") } elseif ($audioInventoryDevices.Count -eq 0) { @("Windows did not expose audio endpoint/media PnP rows to this scanner.") } else { @() }) -Recommendations $(if ($audioProblemDevices.Count -gt 0) { @("Fix listed audio Device Manager problem-code devices before replacing speakers, headsets, microphones, cables, ports, or Bluetooth/USB audio hardware.") } elseif ($audioInventoryDevices.Count -eq 0) { @("Use Sound settings, Device Manager, or vendor tools if audio symptoms exist because endpoint rows were unavailable.") } else { @("Audio endpoints and media devices are enumerated without Device Manager problem codes. Crackle, low volume, mic quality, speaker damage, cable noise, and Bluetooth range still require live symptom-time testing.") })
 
-$unsignedDrivers = @($signedDrivers | Where-Object { $_.IsSigned -eq $false })
-New-Component -Category "Driver Integrity" -Name "PnP signed driver inventory" -Status $(if ($unsignedDrivers.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+$driverPackages = @(Convert-PnpUtilDriverPackages $driverPackageText)
+$driverPackageByPublishedName = @{}
+foreach ($package in $driverPackages) {
+  if ($package.PublishedName -and -not $driverPackageByPublishedName.ContainsKey($package.PublishedName)) {
+    $driverPackageByPublishedName[$package.PublishedName] = $package
+  }
+}
+
+$wmiUnsignedDrivers = @($signedDrivers | Where-Object { $_.IsSigned -eq $false })
+$nullSignedDrivers = @($signedDrivers | Where-Object { $null -eq $_.IsSigned })
+$driverSignatureRows = @()
+foreach ($driver in $wmiUnsignedDrivers) {
+  $package = if ($driver.InfName -and $driverPackageByPublishedName.ContainsKey($driver.InfName)) { $driverPackageByPublishedName[$driver.InfName] } else { $null }
+  $packageSigner = if ($package) { [string]$package.SignerName } else { $null }
+  $packageSigned = [bool](-not [string]::IsNullOrWhiteSpace($packageSigner))
+  $packageMicrosoftSigned = [bool]($packageSigner -match "Microsoft Windows Hardware Compatibility Publisher|Microsoft Windows|Microsoft")
+  $driverSignatureRows += [pscustomobject]@{
+    DeviceName = $driver.DeviceName
+    DeviceClass = $driver.DeviceClass
+    DeviceID = $driver.DeviceID
+    HardwareID = $driver.HardWareID
+    InfName = $driver.InfName
+    WmiIsSigned = $driver.IsSigned
+    WmiSigner = $driver.Signer
+    DriverProviderName = $driver.DriverProviderName
+    DriverVersion = $driver.DriverVersion
+    DriverDate = $driver.DriverDate
+    PackageOriginalName = if ($package) { $package.OriginalName } else { $null }
+    PackageSignerName = $packageSigner
+    PackageCatalogFile = if ($package) { $package.CatalogFile } else { $null }
+    PackageDriverFiles = if ($package) { @($package.Files | Select-Object -First 20) } else { @() }
+    PackageSigned = $packageSigned
+    PackageMicrosoftSigned = $packageMicrosoftSigned
+    NeedsReview = -not $packageSigned
+  }
+}
+$unresolvedUnsignedDriverRows = @($driverSignatureRows | Where-Object { $_.NeedsReview -eq $true })
+$packageSignedWmiUnsignedRows = @($driverSignatureRows | Where-Object { $_.PackageSigned -eq $true })
+$nullSignedDriverRows = @($nullSignedDrivers | Select-Object -First 30 DeviceName, DeviceClass, DeviceID, HardWareID, InfName, DriverProviderName)
+New-Component -Category "Driver Integrity" -Name "PnP driver signature cross-check" -Status $(if ($unresolvedUnsignedDriverRows.Count -gt 0) { "warning" } elseif ($wmiUnsignedDrivers.Count -gt 0 -or $nullSignedDrivers.Count -gt 0) { "info" } else { "ok" }) -Confidence "medium" -Evidence @{
   DriverCount = $signedDrivers.Count
-  UnsignedDriverCount = $unsignedDrivers.Count
-  UnsignedDrivers = @($unsignedDrivers | Select-Object -First 20 DeviceName, DriverProviderName, DriverVersion)
-} -Signals $(if ($unsignedDrivers.Count -gt 0) { @("$($unsignedDrivers.Count) unsigned PnP driver(s) found.") } else { @() }) -Recommendations $(if ($unsignedDrivers.Count -gt 0) { @("Review unsigned drivers; driver integrity issues can mimic hardware failures.") } else { @("All enumerated PnP drivers report signed status.") })
+  DriverPackageCount = $driverPackages.Count
+  WmiUnsignedDriverCount = $wmiUnsignedDrivers.Count
+  PackageSignedWmiUnsignedCount = $packageSignedWmiUnsignedRows.Count
+  UnresolvedUnsignedDriverCount = $unresolvedUnsignedDriverRows.Count
+  NullSignedDriverCount = $nullSignedDrivers.Count
+  UnresolvedUnsignedDrivers = @($unresolvedUnsignedDriverRows | Select-Object -First 30)
+  WmiUnsignedDriversWithPackageSigners = @($packageSignedWmiUnsignedRows | Select-Object -First 30)
+  NullSignedDrivers = $nullSignedDriverRows
+} -Signals $(if ($unresolvedUnsignedDriverRows.Count -gt 0) { @("$($unresolvedUnsignedDriverRows.Count) PnP driver row(s) are WMI-unsigned and have no package signer in pnputil output.") } elseif ($wmiUnsignedDrivers.Count -gt 0) { @("$($wmiUnsignedDrivers.Count) WMI-unsigned PnP driver row(s) were cross-checked against pnputil; $($packageSignedWmiUnsignedRows.Count) have package-level catalog signers.") } elseif ($nullSignedDrivers.Count -gt 0) { @("$($nullSignedDrivers.Count) PnP driver row(s) did not expose a WMI IsSigned value.") } else { @() }) -Recommendations $(if ($unresolvedUnsignedDriverRows.Count -gt 0) { @("Review unresolved unsigned driver rows first; driver integrity issues can mimic hardware failures.") } elseif ($wmiUnsignedDrivers.Count -gt 0) { @("No unresolved unsigned driver package was found. Treat WMI unsigned rows with package-level Microsoft/WHCP signer as a Windows reporting mismatch unless device symptoms point to that driver.") } elseif ($nullSignedDrivers.Count -gt 0) { @("Rows without WMI signing metadata are listed for transparency; correlate only if the matching device has symptoms.") } else { @("All enumerated PnP drivers report signed status.") })
 
 New-Component -Category "Power Capabilities" -Name "powercfg /a" -Status "info" -Confidence "medium" -Evidence @{
   Lines = @($powerCfgA | Select-Object -First 40)
@@ -1704,6 +1780,7 @@ New-Diagnostic -Name "Memory slot topology and error-correction sweep" -Status $
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCIe topology and lane-sensitive device sweep" -Status $(if ($pciBridgeProblems.Count -gt 0 -or $pciLaneSensitiveProblems.Count -gt 0) { "warning" } elseif ($pciBridgeDevices.Count -eq 0 -and $pciLaneSensitiveDevices.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($pciBridgeDevices.Count) PCIe bridge/root/switch port row(s), $($pciLaneSensitiveDevices.Count) lane-sensitive PCIe device row(s), $($pciBridgeProblems.Count) bridge/port problem device(s), $($pciLaneSensitiveProblems.Count) lane-sensitive problem device(s)." -NextStep $(if ($pciBridgeProblems.Count -gt 0 -or $pciLaneSensitiveProblems.Count -gt 0) { "Fix listed PCIe path devices before replacing GPU, NVMe, NIC, USB controller, or motherboard hardware." } elseif ($pciBridgeDevices.Count -eq 0 -and $pciLaneSensitiveDevices.Count -eq 0) { "Use BIOS/UEFI or vendor topology tools if PCIe symptoms exist because Windows topology rows were unavailable." } else { "No PCIe topology Device Manager problem codes were found; retest during GPU, NVMe, USB, or NIC symptoms for intermittent slot or lane faults." })
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
+New-Diagnostic -Name "Driver package signer cross-check" -Status $(if ($unresolvedUnsignedDriverRows.Count -gt 0) { "warning" } elseif ($driverPackages.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($signedDrivers.Count) PnP signed-driver row(s), $($driverPackages.Count) pnputil driver package row(s), $($wmiUnsignedDrivers.Count) WMI-unsigned row(s), $($packageSignedWmiUnsignedRows.Count) WMI-unsigned row(s) with package signer(s), $($unresolvedUnsignedDriverRows.Count) unresolved unsigned row(s)." -NextStep $(if ($unresolvedUnsignedDriverRows.Count -gt 0) { "Review unresolved unsigned packages before blaming hardware because driver faults can mimic hardware problems." } elseif ($driverPackages.Count -eq 0) { "Run pnputil manually or rerun elevated if driver package inventory was unavailable." } elseif ($wmiUnsignedDrivers.Count -gt 0) { "No unresolved unsigned package was found; correlate listed package-signed WMI mismatches only if matching hardware has symptoms." } else { "No unsigned PnP driver evidence was found." })
 New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
 New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } elseif ($inaccessibleDumpRoots.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($recentCrashDumps.Count) recent dump file(s), $($liveKernelDumps.Count) LiveKernelReports file(s), $($crashDumpHintValues.Count) unique bounded keyword hint(s), $($inaccessibleDumpRoots.Count) inaccessible/missing dump root(s)." -NextStep "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
 New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($volumeDirtyResults.Count) volume(s) checked; $($dirtyVolumes.Count) dirty volume(s); $($unsupportedDirtyChecks.Count) unsupported/failed check(s)." -NextStep "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
