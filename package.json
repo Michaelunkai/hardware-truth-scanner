@@ -1,0 +1,28 @@
+{
+  "name": "hardware-truth-scanner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "node server/index.js",
+    "gui:smoke": "node scripts/gui-smoke.js",
+    "preview": "vite preview --host 127.0.0.1",
+    "scan": "node scripts/run-scan.js",
+    "start": "node server/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "express": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

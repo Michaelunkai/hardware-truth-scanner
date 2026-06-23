@@ -1,0 +1,536 @@
+{
+  "scanner": "hardware-truth-scanner",
+  "generatedAt": "2026-06-23T11:39:19.402508Z",
+  "host": "user",
+  "os": "Microsoft Windows 11 Pro 10.0.26200",
+  "scanWindowDays": 14,
+  "summary": {
+    "overallStatus": "unknown",
+    "componentCount": 23,
+    "findingCount": 0,
+    "criticalCount": 0,
+    "warningCount": 0,
+    "unknownCount": 3
+  },
+  "components": [
+    {
+      "id": "system-x870e-aorus-pro",
+      "category": "System",
+      "name": "X870E AORUS PRO",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Manufacturer": "Gigabyte Technology Co., Ltd.",
+        "LastBoot": "2026-06-22T23:06:18.5Z",
+        "Model": "X870E AORUS PRO",
+        "TotalMemoryGB": 93.64,
+        "OS": "Microsoft Windows 11 Pro"
+      },
+      "signals": [],
+      "recommendations": [
+        "No chassis-level fault was visible to Windows telemetry."
+      ]
+    },
+    {
+      "id": "motherboard-and-bios-x870e-aorus-pro",
+      "category": "Motherboard and BIOS",
+      "name": "X870E AORUS PRO",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "SerialNumber": "Default string",
+        "BiosVersion": "FB2a",
+        "Manufacturer": "Gigabyte Technology Co., Ltd.",
+        "BiosDate": "2026-06-09T00:00:00Z",
+        "Product": "X870E AORUS PRO"
+      },
+      "signals": [],
+      "recommendations": [
+        "No motherboard-specific Windows hardware fault signal was found. Inspect physically only if symptoms persist."
+      ]
+    },
+    {
+      "id": "cpu-amd-ryzen-7-9800x3d-8-core-processor",
+      "category": "CPU",
+      "name": "AMD Ryzen 7 9800X3D 8-Core Processor           ",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "MaxClockMHz": 4700,
+        "LogicalProcessors": 16,
+        "Status": "OK",
+        "Cores": 8,
+        "RecentWheaCpuEvents": 0
+      },
+      "signals": [],
+      "recommendations": [
+        "No CPU fault signal was found. A real thermal/load test is still required to rule out intermittent physical CPU cooling or power issues."
+      ]
+    },
+    {
+      "id": "memory-dimm-p0-channel-a-48-gb",
+      "category": "Memory",
+      "name": "DIMM P0 CHANNEL A 48 GB",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "SerialNumber": "00000000",
+        "Manufacturer": "CORSAIR",
+        "CapacityGB": 48,
+        "SpeedMHz": 6000,
+        "ConfiguredClockMHz": 6000,
+        "PartNumber": "CMH96GX5M2B6000Z30"
+      },
+      "signals": [
+        "Windows inventory cannot prove RAM cells are healthy without a memory test."
+      ],
+      "recommendations": [
+        "Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults."
+      ]
+    },
+    {
+      "id": "memory-dimm-p0-channel-b-48-gb",
+      "category": "Memory",
+      "name": "DIMM P0 CHANNEL B 48 GB",
+      "status": "unknown",
+      "confidence": "low",
+      "evidence": {
+        "SerialNumber": "00000000",
+        "Manufacturer": "CORSAIR",
+        "CapacityGB": 48,
+        "SpeedMHz": 6000,
+        "ConfiguredClockMHz": 6000,
+        "PartNumber": "CMH96GX5M2B6000Z30"
+      },
+      "signals": [
+        "Windows inventory cannot prove RAM cells are healthy without a memory test."
+      ],
+      "recommendations": [
+        "Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults."
+      ]
+    },
+    {
+      "id": "disk-device-fanxiang-ff951-scsi-disk-device",
+      "category": "Disk Device",
+      "name": "Fanxiang FF951 SCSI Disk Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "SerialNumber": "FWX0814A250700349",
+        "Status": "OK",
+        "MediaType": "External hard disk media",
+        "InterfaceType": "SCSI",
+        "SizeGB": 953.86
+      },
+      "signals": [],
+      "recommendations": [
+        "No generic disk device fault was reported."
+      ]
+    },
+    {
+      "id": "disk-device-samsung-ssd-9100-pro-2tb",
+      "category": "Disk Device",
+      "name": "Samsung SSD 9100 PRO 2TB",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "SerialNumber": "0025_38AB_5140_FC31.",
+        "Status": "OK",
+        "MediaType": "Fixed hard disk media",
+        "InterfaceType": "SCSI",
+        "SizeGB": 1863.01
+      },
+      "signals": [],
+      "recommendations": [
+        "No generic disk device fault was reported."
+      ]
+    },
+    {
+      "id": "disk-device-yc3000-ssd-2048g",
+      "category": "Disk Device",
+      "name": "YC3000-SSD-2048G",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "SerialNumber": "0000_0000_0000_0001.",
+        "Status": "OK",
+        "MediaType": "Fixed hard disk media",
+        "InterfaceType": "SCSI",
+        "SizeGB": 1907.73
+      },
+      "signals": [],
+      "recommendations": [
+        "No generic disk device fault was reported."
+      ]
+    },
+    {
+      "id": "disk-device-usb-3-0-usb-3-0-usb-device",
+      "category": "Disk Device",
+      "name": "USB 3.0 USB 3.0 USB Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "SerialNumber": "1142151091563008469",
+        "Status": "OK",
+        "MediaType": "Removable Media",
+        "InterfaceType": "USB",
+        "SizeGB": 29.29
+      },
+      "signals": [],
+      "recommendations": [
+        "No generic disk device fault was reported."
+      ]
+    },
+    {
+      "id": "storage-advanced-health-smart-and-storage-module-telemetry",
+      "category": "Storage Advanced Health",
+      "name": "SMART and Storage module telemetry",
+      "status": "unknown",
+      "confidence": "medium",
+      "evidence": {
+        "Errors": [
+          {
+            "Name": "physicaldisks",
+            "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+          },
+          {
+            "Name": "storage counters",
+            "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+          }
+        ],
+        "FallbackUsed": "Win32_DiskDrive status and recent disk/NTFS/storage event scan"
+      },
+      "signals": [
+        "Advanced storage health providers were unavailable on this Windows installation."
+      ],
+      "recommendations": [
+        "Install or run vendor storage diagnostics such as Samsung Magician, the SSD vendor tool, or smartctl to prove SMART attribute health beyond Windows generic disk status."
+      ]
+    },
+    {
+      "id": "gpu-amd-radeon-tm-graphics",
+      "category": "GPU",
+      "name": "AMD Radeon(TM) Graphics",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "AdapterRAMGB": 2,
+        "RecentGpuEvents": 0,
+        "DriverVersion": "32.0.21043.19003",
+        "NvidiaTelemetry": null
+      },
+      "signals": [],
+      "recommendations": [
+        "No GPU fault signal was found at scan time. Use a load test if crashes occur only under gaming/rendering load."
+      ]
+    },
+    {
+      "id": "gpu-nvidia-geforce-rtx-5080",
+      "category": "GPU",
+      "name": "NVIDIA GeForce RTX 5080",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "AdapterRAMGB": 4,
+        "RecentGpuEvents": 0,
+        "DriverVersion": "32.0.16.1062",
+        "NvidiaTelemetry": {
+          "Name": "NVIDIA GeForce RTX 5080",
+          "DriverVersion": "610.62",
+          "VbiosVersion": "98.03.3b.40.11",
+          "TemperatureC": "37",
+          "FanPercent": "0",
+          "PState": "P8",
+          "PowerDrawW": "25.69",
+          "PowerLimitW": "360.00",
+          "GraphicsClockMhz": "180",
+          "MemoryClockMhz": "405",
+          "PcieGen": "1",
+          "PcieWidth": "16",
+          "UtilizationPercent": "0"
+        }
+      },
+      "signals": [],
+      "recommendations": [
+        "No GPU fault signal was found at scan time. Use a load test if crashes occur only under gaming/rendering load."
+      ]
+    },
+    {
+      "id": "battery-no-battery-detected",
+      "category": "Battery",
+      "name": "No battery detected",
+      "status": "info",
+      "confidence": "high",
+      "evidence": {
+        "Present": false
+      },
+      "signals": [],
+      "recommendations": [
+        "No battery hardware is exposed to Windows on this machine."
+      ]
+    },
+    {
+      "id": "network-qualcomm-fastconnect-7800-wi-fi-7-high-band-simultaneous-hbs-network-adapter",
+      "category": "Network",
+      "name": "Qualcomm FastConnect 7800 Wi-Fi 7 High Band Simultaneous (HBS) Network Adapter",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "Speed": 1201000000,
+        "NetConnectionStatus": 7,
+        "ConfigManagerErrorCode": 0,
+        "AdapterType": "Ethernet 802.3",
+        "NetEnabled": false,
+        "MacAddress": "4C:23:38:D0:30:A1"
+      },
+      "signals": null,
+      "recommendations": [
+        "No adapter hardware fault was reported."
+      ]
+    },
+    {
+      "id": "network-realtek-pcie-2-5gbe-family-controller",
+      "category": "Network",
+      "name": "Realtek PCIe 2.5GbE Family Controller",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Speed": 1000000000,
+        "NetConnectionStatus": 2,
+        "ConfigManagerErrorCode": 0,
+        "AdapterType": "Ethernet 802.3",
+        "NetEnabled": true,
+        "MacAddress": "30:56:0F:40:D2:4C"
+      },
+      "signals": null,
+      "recommendations": [
+        "No adapter hardware fault was reported."
+      ]
+    },
+    {
+      "id": "network-bluetooth-device-personal-area-network",
+      "category": "Network",
+      "name": "Bluetooth Device (Personal Area Network)",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "Speed": 3000000,
+        "NetConnectionStatus": 7,
+        "ConfigManagerErrorCode": 0,
+        "AdapterType": "Ethernet 802.3",
+        "NetEnabled": false,
+        "MacAddress": "4C:23:38:D0:30:A2"
+      },
+      "signals": null,
+      "recommendations": [
+        "No adapter hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-realtek-high-definition-audio",
+      "category": "Audio",
+      "name": "Realtek High Definition Audio",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Realtek",
+        "ProductName": "Realtek High Definition Audio"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-amd-streaming-audio-device",
+      "category": "Audio",
+      "name": "AMD Streaming Audio Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "AMD",
+        "ProductName": "AMD Streaming Audio Device"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-usb-audio-device",
+      "category": "Audio",
+      "name": "USB Audio Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "(Generic USB Audio)",
+        "ProductName": "USB Audio Device"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-nvidia-virtual-audio-device-wave-extensible-wdm",
+      "category": "Audio",
+      "name": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "NVIDIA",
+        "ProductName": "NVIDIA Virtual Audio Device (Wave Extensible) (WDM)"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-nvidia-high-definition-audio",
+      "category": "Audio",
+      "name": "NVIDIA High Definition Audio",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "NVIDIA",
+        "ProductName": "NVIDIA High Definition Audio"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "audio-amd-high-definition-audio-device",
+      "category": "Audio",
+      "name": "AMD High Definition Audio Device",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "Status": "OK",
+        "Manufacturer": "Advanced Micro Devices",
+        "ProductName": "AMD High Definition Audio Device"
+      },
+      "signals": null,
+      "recommendations": [
+        "No audio hardware fault was reported."
+      ]
+    },
+    {
+      "id": "device-manager-problem-devices",
+      "category": "Device Manager",
+      "name": "Problem devices",
+      "status": "ok",
+      "confidence": "high",
+      "evidence": {
+        "Count": 0
+      },
+      "signals": [],
+      "recommendations": [
+        "No Device Manager problem devices were found."
+      ]
+    }
+  ],
+  "findings": [],
+  "coverageLimits": [
+    "Software telemetry cannot guarantee detection of loose internal cables, dust buildup, bad ports that were not exercised, swollen capacitors, bent pins, cracked solder joints, fan bearing noise, weak PSU ripple, or intermittent faults that did not occur during the scan window.",
+    "RAM health cannot be proven from inventory alone. A boot-level memory diagnostic or MemTest86 pass is required for physical RAM certainty.",
+    "CPU, GPU, PSU, and cooling problems that appear only under sustained load need a controlled stress test with temperature and power monitoring.",
+    "SMART and Windows storage health are strong signals, but vendor diagnostics are still required before trusting or discarding a drive.",
+    "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
+  ],
+  "raw": {
+    "RecentEvents": [],
+    "NvidiaDetail": [
+      "",
+      "==============NVSMI LOG==============",
+      "",
+      "Timestamp                                              : Tue Jun 23 14:39:19 2026",
+      "Driver Version                                         : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
+      "CUDA Version                                           : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
+      "KMD Version                                            : 610.62",
+      "CUDA UMD Version                                       : 13.3",
+      "",
+      "Attached GPUs                                          : 1",
+      "GPU 00000000:01:00.0",
+      "    Performance State                                  : P8",
+      "    Clocks Event Reasons",
+      "        Idle                                           : Not Active",
+      "        Applications Clocks Setting                    : Not Active",
+      "        SW Power Cap                                   : Not Active",
+      "        HW Slowdown                                    : Not Active",
+      "            HW Thermal Slowdown                        : Not Active",
+      "            HW Power Brake Slowdown                    : Not Active",
+      "        Sync Boost                                     : Not Active",
+      "        SW Thermal Slowdown                            : Not Active",
+      "        Display Clock Setting                          : Not Active",
+      "    Clocks Event Reasons Counters",
+      "        SW Power Capping                               : 260264 us",
+      "        Sync Boost                                     : 0 us",
+      "        SW Thermal Slowdown                            : 0 us",
+      "        HW Thermal Slowdown                            : 0 us",
+      "        HW Power Braking                               : 0 us",
+      "    Sparse Operation Mode                              : N/A",
+      "    Temperature",
+      "        GPU Current Temp                               : 37 C",
+      "        GPU Current T.Limit Temp                       : 51 C",
+      "        GPU Shutdown T.Limit Temp Specification        : -5 C",
+      "        GPU Slowdown T.Limit Temp Specification        : -2 C",
+      "        GPU Max Operating T.Limit Temp Specification   : 0 C",
+      "        GPU Target Temperature Specification           : N/A",
+      "        Memory Current Temp                            : N/A",
+      "        Memory Max Operating T.Limit Temp Specification: N/A",
+      "    GPU Power Readings",
+      "        Average Power Draw                             : 25.69 W",
+      "        Instantaneous Power Draw                       : 23.92 W",
+      "        GPU Ceiling Power Limit",
+      "            Current Power Limit                        : 360.00 W",
+      "            Requested Power Limit                      : 360.00 W",
+      "            Default Power Limit                        : 360.00 W",
+      "        GPU Base Power",
+      "            Current Base Power                         : N/A",
+      "            Requested Base Power                       : N/A",
+      "            Default Base Power                         : N/A",
+      "        Min Power Limit                                : 250.00 W",
+      "        Max Power Limit                                : 400.00 W",
+      "    Power Samples",
+      "        Duration                                       : 2.36 sec",
+      "        Number of Samples                              : 119",
+      "        Max                                            : 54.01 W",
+      "        Min                                            : 23.42 W",
+      "        Avg                                            : 25.58 W",
+      "    GPU Memory Power Readings ",
+      "        Average Power Draw                             : N/A",
+      "        Instantaneous Power Draw                       : N/A",
+      "    Module Power Readings",
+      "        Average Power Draw                             : N/A",
+      "        Instantaneous Power Draw                       : N/A",
+      "        Current Power Limit                            : N/A",
+      "        Requested Power Limit                          : N/A",
+      "        Default Power Limit                            : N/A",
+      "        Min Power Limit                                : N/A",
+      "        Max Power Limit                                : N/A",
+      "    EDPp Multiplier                                    : N/A",
+      ""
+    ],
+    "ProbeErrors": [],
+    "OptionalProbeErrors": [
+      {
+        "Name": "physicaldisks",
+        "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+      },
+      {
+        "Name": "storage counters",
+        "Error": "Exception calling \"MoveNext\" with \"0\" argument(s): \"Invalid property \""
+      }
+    ]
+  }
+}
