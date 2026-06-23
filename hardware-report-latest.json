@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T15:29:27.7148538Z",
+  "generatedAt": "2026-06-23T15:37:38.8077145Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "warning",
-    "componentCount": 76,
+    "componentCount": 77,
     "findingCount": 1,
     "criticalCount": 0,
     "warningCount": 3,
@@ -426,7 +426,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1685.13,
+        "FreeGB": 1693.37,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -483,7 +483,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 490.82,
+        "FreeGB": 469.24,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -535,7 +535,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 490.82,
+            "VolumeFreeGB": 469.24,
             "DirtyBit": true
           },
           {
@@ -586,7 +586,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1685.13,
+            "VolumeFreeGB": 1693.37,
             "DirtyBit": false
           },
           {
@@ -851,13 +851,13 @@
           "TemperatureC": "36",
           "FanPercent": "0",
           "PState": "P8",
-          "PowerDrawW": "26.34",
+          "PowerDrawW": "25.79",
           "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "487",
+          "GraphicsClockMhz": "405",
           "MemoryClockMhz": "405",
           "PcieGen": "1",
           "PcieWidth": "16",
-          "UtilizationPercent": "2"
+          "UtilizationPercent": "4"
         }
       },
       "signals": [],
@@ -985,8 +985,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 41827,
-            "BytesSentPerSec": 23371,
+            "BytesReceivedPerSec": 890071,
+            "BytesSentPerSec": 495081,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2124,6 +2124,379 @@
       ]
     },
     {
+      "id": "pcie-topology-root-ports-switch-ports-and-lane-sensitive-devices",
+      "category": "PCIe Topology",
+      "name": "Root ports, switch ports, and lane-sensitive devices",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "BridgeAndPortDevices": [
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&000011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&200011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&280011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&300011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&380011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&600011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\5&2B8B9E2F&0&680011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&0000400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&1000400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&1800400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&2000400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&4000400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&6000400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F5&SUBSYS_33281B21&REV_01\\7&239A30C&0&6800400011"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2423&SUBSYS_24231B21&REV_01\\451ECAFFFF5177A000"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2423&SUBSYS_24231B21&REV_01\\451ECAFFFF5177A008"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2423&SUBSYS_24231B21&REV_01\\451ECAFFFF5177A010"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2423&SUBSYS_24231B21&REV_01\\451ECAFFFF5177A018"
+          },
+          {
+            "Name": "PCI Express Downstream Switch Port",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "(Standard system devices)",
+            "Service": "pci",
+            "DeviceID": "PCI\\VEN_8086&DEV_15EF&SUBSYS_00008086&REV_06\\BC6BC97849E9070008"
+          },
+          "... truncated 1 more item(s)"
+        ],
+        "ProblemLaneSensitiveDeviceCount": 0,
+        "LaneSensitiveDevices": [
+          {
+            "Name": "AMD Radeon(TM) Graphics",
+            "PNPClass": "Display",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Advanced Micro Devices, Inc.",
+            "Service": "amduw23g-201588-df09ebb6",
+            "DeviceID": "PCI\\VEN_1002&DEV_13C0&SUBSYS_D0001458&REV_CB\\4&16012499&0&0041"
+          },
+          {
+            "Name": "NVIDIA GeForce RTX 5080",
+            "PNPClass": "Display",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "NVIDIA",
+            "Service": "nvlddmkm",
+            "DeviceID": "PCI\\VEN_10DE&DEV_2C02&SUBSYS_41961458&REV_A1\\AD03D6761A2DB04800"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Standard SATA AHCI Controller",
+            "Service": "storahci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F6&SUBSYS_10621B21&REV_01\\6&3AE87E62&0&00680011"
+          },
+          {
+            "Name": "Standard SATA AHCI Controller",
+            "PNPClass": "HDC",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Standard SATA AHCI Controller",
+            "Service": "storahci",
+            "DeviceID": "PCI\\VEN_1022&DEV_43F6&SUBSYS_10621B21&REV_01\\8&1BF325A0&0&006800400011"
+          },
+          {
+            "Name": "Qualcomm FastConnect 7800 Wi-Fi 7 High Band Simultaneous (HBS) Network Adapter",
+            "PNPClass": "Net",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Qualcomm Communications Inc.",
+            "Service": "qcwlan",
+            "DeviceID": "PCI\\VEN_17CB&DEV_1107&SUBSYS_E0FB105B&REV_01\\8&2CA3F925&0&001000400011"
+          },
+          {
+            "Name": "Realtek PCIe 2.5GbE Family Controller",
+            "PNPClass": "Net",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Realtek",
+            "Service": "rt25cx21",
+            "DeviceID": "PCI\\VEN_10EC&DEV_8125&SUBSYS_E0001458&REV_0C\\01000000684CE00000"
+          },
+          {
+            "Name": "Standard NVM Express Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Standard NVM Express Controller",
+            "Service": "stornvme",
+            "DeviceID": "PCI\\VEN_144D&DEV_A810&SUBSYS_A801144D&REV_00\\4&218BD16B&0&000A"
+          },
+          {
+            "Name": "Standard NVM Express Controller",
+            "PNPClass": "SCSIAdapter",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Standard NVM Express Controller",
+            "Service": "stornvme",
+            "DeviceID": "PCI\\VEN_1E4B&DEV_1202&SUBSYS_12021E4B&REV_01\\8&6A83F4D&0&000800000012"
+          },
+          {
+            "Name": "High Definition Audio Bus",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "AMD",
+            "Service": "HDAudBus",
+            "DeviceID": "PCI\\VEN_1002&DEV_1640&SUBSYS_16401002&REV_00\\4&16012499&0&0141"
+          },
+          {
+            "Name": "High Definition Audio Controller",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Microsoft",
+            "Service": "HDAudBus",
+            "DeviceID": "PCI\\VEN_1022&DEV_15E3&SUBSYS_A0C31458&REV_00\\4&16012499&0&0641"
+          },
+          {
+            "Name": "High Definition Audio Controller",
+            "PNPClass": "System",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Microsoft",
+            "Service": "HDAudBus",
+            "DeviceID": "PCI\\VEN_10DE&DEV_22E9&SUBSYS_000010DE&REV_A1\\4&D0BDF66&0&0109"
+          },
+          {
+            "Name": "AMD USB 2.0 eXtensible Host Controller - 1.20 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1022&DEV_15B8&SUBSYS_50071458&REV_00\\4&2C288D56&0&0043"
+          },
+          {
+            "Name": "AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\6&2766D23F&0&00600011"
+          },
+          {
+            "Name": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1022&DEV_15B6&SUBSYS_50071458&REV_00\\4&16012499&0&0341"
+          },
+          {
+            "Name": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1022&DEV_15B7&SUBSYS_50071458&REV_00\\4&16012499&0&0441"
+          },
+          {
+            "Name": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011"
+          },
+          {
+            "Name": "ASMedia USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2426&SUBSYS_24261B21&REV_01\\451ECAFFFF5177A000"
+          },
+          {
+            "Name": "Intel(R) USB 3.1 eXtensible Host Controller - 1.10 (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB xHCI Host Controller",
+            "Service": "USBXHCI",
+            "DeviceID": "PCI\\VEN_8086&DEV_15F0&SUBSYS_00008086&REV_06\\BC6BC97849E9070000"
+          },
+          {
+            "Name": "USB4(TM) Host Router (Microsoft)",
+            "PNPClass": "USB",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "Manufacturer": "Generic USB4 Host Router",
+            "Service": "Usb4HostRouter",
+            "DeviceID": "PCI\\VEN_1B21&DEV_2425&SUBSYS_24251B21&REV_01&USB4_MS_CM\\451ECAFFFF5177A000"
+          }
+        ],
+        "LaneSensitiveDeviceCount": 19,
+        "BridgeOrPortCount": 33,
+        "ProblemBridgeOrPortCount": 0
+      },
+      "signals": [],
+      "recommendations": [
+        "PCIe root/switch ports and lane-sensitive devices are enumerated without Device Manager problem codes. Intermittent slot, riser, link-width, signal-integrity, and load-only faults still need symptom-time testing."
+      ]
+    },
+    {
       "id": "firmware-device-inventory-firmware-class-pnp-devices",
       "category": "Firmware Device Inventory",
       "name": "Firmware-class PnP devices",
@@ -2772,6 +3145,12 @@
       "nextStep": "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
     },
     {
+      "name": "PCIe topology and lane-sensitive device sweep",
+      "status": "passed",
+      "evidence": "33 PCIe bridge/root/switch port row(s), 19 lane-sensitive PCIe device row(s), 0 bridge/port problem device(s), 0 lane-sensitive problem device(s).",
+      "nextStep": "No PCIe topology Device Manager problem codes were found; retest during GPU, NVMe, USB, or NIC symptoms for intermittent slot or lane faults."
+    },
+    {
       "name": "PCI/PCIe and device setup reliability",
       "status": "passed",
       "evidence": "68 PCI/PCIe device(s), 0 PCI problem device(s), 0 recent PnP/device setup warning or error event(s).",
@@ -2816,7 +3195,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 18:29:27 2026",
+      "Timestamp : Tue Jun 23 18:37:38 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -2852,8 +3231,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 26.34 W",
-      " Instantaneous Power Draw : 25.90 W",
+      " Average Power Draw : 25.79 W",
+      " Instantaneous Power Draw : 28.51 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 360.00 W",
       " Requested Power Limit : 360.00 W",
@@ -2865,11 +3244,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.35 sec",
+      " Duration : 2.33 sec",
       " Number of Samples : 119",
-      " Max : 43.56 W",
-      " Min : 22.93 W",
-      " Avg : 25.62 W",
+      " Max : 32.12 W",
+      " Min : 23.79 W",
+      " Avg : 25.87 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
