@@ -5,7 +5,7 @@ Local full-stack Windows hardware triage app.
 ## What it does
 
 - Runs a read-only PowerShell scan from the backend.
-- Checks Device Manager problem codes, storage health, SMART failure prediction, storage reliability counters, recent WHEA/disk/NTFS/display/power/PnP events, Reliability Monitor and Windows Error Reporting hardware-crash records, GPU telemetry through `nvidia-smi` when present, DirectX diagnostics, thermal/fan telemetry when Windows or OpenHardwareMonitor/LibreHardwareMonitor exposes it, Windows Memory Diagnostic history, PCI/PCIe inventory, firmware-class devices, driver-signing inventory, USB/input/monitor devices, power capabilities, RAM inventory, battery status, network adapters, audio devices, and volumes.
+- Checks Device Manager problem codes, storage health, SMART failure prediction, storage reliability counters, filesystem dirty-bit status, recent WHEA/disk/NTFS/display/power/PnP events, Reliability Monitor and Windows Error Reporting hardware-crash records, Windows crash dump artifacts, GPU telemetry through `nvidia-smi` when present, DirectX diagnostics, thermal/fan telemetry when Windows or OpenHardwareMonitor/LibreHardwareMonitor exposes it, Windows Memory Diagnostic history, PCI/PCIe inventory, firmware-class devices, driver-signing inventory, USB/input/monitor devices, power capabilities, RAM inventory, battery status, network adapters, audio devices, and volumes.
 - Renders every detected hardware class in the React frontend with status, evidence, confidence, and repair recommendations.
 - Renders a proof-coverage matrix showing what was actually tested live and what still requires reboot, vendor diagnostics, load testing, or physical inspection.
 

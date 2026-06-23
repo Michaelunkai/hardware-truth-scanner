@@ -306,16 +306,28 @@ $tpm = @(Invoke-OptionalProbe "tpm" { Get-CimInstance -Namespace root\cimv2\Secu
 
 $powerCfgA = Invoke-TextCommand -Name "powercfg available sleep states" -FilePath "powercfg.exe" -Arguments @("/a")
 $problemDevicesText = Invoke-TextCommand -Name "pnputil problem devices" -FilePath "pnputil.exe" -Arguments @("/enum-devices", "/problem")
+$volumeDirtyResults = @()
+foreach ($volume in $volumes) {
+  if ($volume.DeviceID -match "^[A-Z]:$") {
+    $dirtyOutput = Invoke-TextCommand -Name "fsutil dirty query $($volume.DeviceID)" -FilePath "fsutil.exe" -Arguments @("dirty", "query", $volume.DeviceID)
+    $volumeDirtyResults += [pscustomobject]@{
+      DeviceID = $volume.DeviceID
+      Output = @($dirtyOutput)
+      IsDirty = (($dirtyOutput -join " ") -match "dirty" -and ($dirtyOutput -join " ") -notmatch "not dirty")
+      IsUnsupported = (($dirtyOutput -join " ") -match "requires|denied|not supported|failed|error")
+    }
+  }
+}
 
 $dxdiagText = @()
 $dxdiagPath = Join-Path $env:TEMP ("hardware-truth-dxdiag-" + [guid]::NewGuid().ToString("N") + ".txt")
 try {
   $dx = Start-Process -FilePath "dxdiag.exe" -ArgumentList @("/dontskip", "/whql:off", "/t", $dxdiagPath) -WindowStyle Hidden -PassThru
-  if ($dx.WaitForExit(25000) -and (Test-Path $dxdiagPath)) {
+  if ($dx.WaitForExit(35000) -and (Test-Path $dxdiagPath)) {
     $dxdiagText = @(Get-Content -Path $dxdiagPath -ErrorAction SilentlyContinue)
   } else {
     try { if (-not $dx.HasExited) { $dx.Kill() } } catch {}
-    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 25 seconds or did not write output." }
+    $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = "dxdiag did not finish within 35 seconds or did not write output." }
   }
 } catch {
   $optionalProbeErrors += [pscustomobject]@{ Name = "dxdiag"; Error = $_.Exception.Message }
@@ -357,6 +369,24 @@ $werEvents = @(Invoke-OptionalProbe "windows error reporting application events"
   Get-WinEvent -FilterHashtable @{ LogName = "Application"; ProviderName = "Windows Error Reporting"; StartTime = $startTime } -MaxEvents 80 |
     Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
 })
+$dumpRoots = @(
+  (Join-Path $env:SystemRoot "LiveKernelReports"),
+  (Join-Path $env:SystemRoot "Minidump"),
+  (Join-Path $env:SystemRoot "MEMORY.DMP")
+)
+$crashDumpFiles = @()
+foreach ($dumpRoot in $dumpRoots) {
+  if (Test-Path -LiteralPath $dumpRoot) {
+    $item = Get-Item -LiteralPath $dumpRoot -ErrorAction SilentlyContinue
+    if ($item -and -not $item.PSIsContainer) {
+      $crashDumpFiles += $item
+    } else {
+      $crashDumpFiles += @(Get-ChildItem -LiteralPath $dumpRoot -Recurse -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.LastWriteTime -ge $startTime -and $_.Extension -match "\.dmp|\.mdmp|\.hdmp" } |
+        Select-Object -First 80)
+    }
+  }
+}
 
 $nvidiaRows = @()
 $nvidiaDetails = @()
@@ -551,6 +581,19 @@ foreach ($volume in $volumes) {
     SizeGB = $size
     FreeGB = $sizeRemaining
   } -Signals $signals -Recommendations @("Logical volume inventory is readable. Filesystem integrity still requires targeted read-only checks or repair tools against a specific volume.")
+}
+
+$dirtyVolumes = @($volumeDirtyResults | Where-Object { $_.IsDirty })
+$unsupportedDirtyChecks = @($volumeDirtyResults | Where-Object { $_.IsUnsupported })
+New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair flag check" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  CheckedVolumeCount = $volumeDirtyResults.Count
+  DirtyVolumeCount = $dirtyVolumes.Count
+  UnsupportedOrFailedCount = $unsupportedDirtyChecks.Count
+  Results = @($volumeDirtyResults | Select-Object -First 20 DeviceID, IsDirty, IsUnsupported, Output)
+} -Signals $(if ($dirtyVolumes.Count -gt 0) { @("$($dirtyVolumes.Count) volume(s) have the filesystem dirty bit set.") } elseif ($volumeDirtyResults.Count -eq 0) { @("No drive-letter volumes were eligible for fsutil dirty query.") } else { @() }) -Recommendations $(if ($dirtyVolumes.Count -gt 0) { @("Back up affected volumes, then run read-only checks before any repair; a dirty bit can indicate an interrupted write, filesystem issue, or storage instability.") } else { @("No filesystem dirty bit was reported by fsutil for checked volumes.") })
+
+if ($dirtyVolumes.Count -gt 0) {
+  New-Finding -Severity "warning" -Component "Volume dirty bit" -Title "Filesystem dirty bit is set" -Detail "Windows reports at least one volume may need filesystem checking." -Evidence "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyVolumes | ForEach-Object { $_.DeviceID }) -join ', '))" -Recommendation "Back up first, then use read-only diagnostics or a planned repair window for the affected volume." -Confidence "medium"
 }
 
 foreach ($thermal in $thermalZones) {
@@ -755,12 +798,12 @@ if ($deviceReliabilityProblemEvents.Count -gt 0) {
 }
 
 $hardwareReliabilityRecords = @($reliabilityRecords | Where-Object {
-  $_.SourceName -match "Windows|Hardware|LiveKernel|BlueScreen|Display|Video|WHEA|Disk|Memory|Device" -or
-  $_.ProductName -match "Windows|Hardware|LiveKernel|BlueScreen|Display|Video|WHEA|Disk|Memory|Device" -or
-  $_.Message -match "LiveKernelEvent|hardware error|BlueScreen|WHEA|Display|Video|disk|memory|device|driver"
+  $recordText = "$(Convert-ToBoundedText $_.SourceName 200) $(Convert-ToBoundedText $_.ProductName 300) $(Convert-ToBoundedText $_.Message 1200)"
+  $recordText -match "LiveKernelEvent|hardware error|BlueScreen|bugcheck|WHEA|VIDEO_TDR|WATCHDOG|display driver|nvlddmkm|amdkmdag|disk has|bad block|memory corruption|driver power state|device reset|stopped responding" -and
+  $recordText -notmatch "WindowsUpdateClient|Installation Successful|Installation Failure|Security Intelligence Update|Windows successfully installed|Windows failed to install"
 })
 $werHardwareEvents = @($werEvents | Where-Object {
-  $_.Message -match "LiveKernelEvent|hardware error|BlueScreen|WHEA|Display|Video|disk|memory|device|driver|bugcheck"
+  $_.Message -match "LiveKernelEvent|hardware error|BlueScreen|bugcheck|WHEA|VIDEO_TDR|WATCHDOG|display driver|nvlddmkm|amdkmdag|disk has|bad block|memory corruption|driver power state|device reset|stopped responding"
 })
 $crashSignalCount = $hardwareReliabilityRecords.Count + $werHardwareEvents.Count
 New-Component -Category "Reliability Monitor" -Name "Hardware-related crash and WER history" -Status $(if ($crashSignalCount -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
@@ -773,6 +816,18 @@ New-Component -Category "Reliability Monitor" -Name "Hardware-related crash and 
 
 if ($crashSignalCount -gt 0) {
   New-Finding -Severity "warning" -Component "Reliability Monitor" -Title "Recent hardware-related crash or WER evidence" -Detail "Reliability Monitor or Windows Error Reporting contains crash records that match hardware, LiveKernelEvent, bugcheck, driver, disk, display, memory, or device patterns." -Evidence "$crashSignalCount record(s) since $startTime" -Recommendation "Inspect the listed bucket/message text, then test the implicated hardware path with vendor tools or controlled load only if the pattern repeats." -Confidence "medium"
+}
+
+$recentCrashDumps = @($crashDumpFiles | Where-Object { $_.LastWriteTime -ge $startTime })
+$liveKernelDumps = @($recentCrashDumps | Where-Object { $_.FullName -match "LiveKernelReports" })
+New-Component -Category "Crash Dump Artifacts" -Name "Recent Windows dump files" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
+  RecentDumpCount = $recentCrashDumps.Count
+  LiveKernelDumpCount = $liveKernelDumps.Count
+  Dumps = @($recentCrashDumps | Sort-Object LastWriteTime -Descending | Select-Object -First 30 @{ Name = "Path"; Expression = { $_.FullName } }, LastWriteTime, @{ Name = "SizeMB"; Expression = { [math]::Round($_.Length / 1MB, 2) } })
+} -Signals $(if ($recentCrashDumps.Count -gt 0) { @("$($recentCrashDumps.Count) recent Windows crash dump artifact(s) were found.") } else { @() }) -Recommendations $(if ($recentCrashDumps.Count -gt 0) { @("Preserve these dumps before cleanup; analyze them to identify whether GPU, storage, USB, RAM, driver, or power instability is implicated.") } else { @("No recent Windows crash dump artifacts were found in the checked dump locations.") })
+
+if ($recentCrashDumps.Count -gt 0) {
+  New-Finding -Severity "warning" -Component "Crash dump artifacts" -Title "Recent Windows crash dump files exist" -Detail "Crash dump files can contain the strongest evidence for intermittent hardware, driver, GPU, USB, RAM, storage, or power faults." -Evidence "$($recentCrashDumps.Count) dump file(s), including $($liveKernelDumps.Count) LiveKernelReports file(s), since $startTime" -Recommendation "Do not delete the dump files until they are analyzed; correlate timestamps with crashes or hardware symptoms." -Confidence "medium"
 }
 
 if ($pnpProblems.Count -gt 0) {
@@ -796,6 +851,8 @@ New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySen
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
 New-Diagnostic -Name "Reliability Monitor and WER crash sweep" -Status $(if ($crashSignalCount -gt 0) { "warning" } elseif ($reliabilityRecords.Count -eq 0 -and $werEvents.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($hardwareReliabilityRecords.Count) hardware-matching Reliability Monitor record(s), $($werHardwareEvents.Count) hardware-matching Windows Error Reporting event(s)." -NextStep "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
+New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($recentCrashDumps.Count) recent dump file(s), $($liveKernelDumps.Count) LiveKernelReports file(s), in checked Windows dump locations." -NextStep "If dump files exist, analyze them before cleanup to identify the implicated driver or hardware path."
+New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($volumeDirtyResults.Count) volume(s) checked; $($dirtyVolumes.Count) dirty volume(s); $($unsupportedDirtyChecks.Count) unsupported/failed check(s)." -NextStep "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
 if ($probeErrors.Count -gt 0) {
@@ -840,6 +897,12 @@ $report = [pscustomobject]@{
     })
     WindowsErrorReportingEvents = @($werHardwareEvents | Select-Object -First 40 | ForEach-Object {
       "$(Convert-ToBoundedText $_.TimeCreated 40) | Id=$($_.Id) | $(Convert-ToBoundedText $_.Message 700)"
+    })
+    CrashDumpFiles = @($recentCrashDumps | Sort-Object LastWriteTime -Descending | Select-Object -First 40 | ForEach-Object {
+      "$(Convert-ToBoundedText $_.LastWriteTime 40) | $([math]::Round($_.Length / 1MB, 2)) MB | $(Convert-ToBoundedText $_.FullName 500)"
+    })
+    VolumeDirtyResults = @($volumeDirtyResults | ForEach-Object {
+      "$($_.DeviceID) | Dirty=$($_.IsDirty) | Unsupported=$($_.IsUnsupported) | $(Convert-ToBoundedText (($_.Output) -join ' ') 500)"
     })
     ProbeErrors = @($probeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
     OptionalProbeErrors = @($optionalProbeErrors | ForEach-Object { "$(Convert-ToBoundedText $_.Name 120): $(Convert-ToBoundedText $_.Error 500)" })
