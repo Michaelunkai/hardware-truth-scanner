@@ -689,6 +689,20 @@ foreach ($provider in $eventProviders) {
       Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
   })
 }
+$eventProviderCoverageRows = @($eventProviders | ForEach-Object {
+  $providerName = $_
+  $providerEvents = @($events | Where-Object { $_.ProviderName -eq $providerName })
+  $problemEvents = @($providerEvents | Where-Object { $_.LevelDisplayName -match "Warning|Error|Critical" })
+  [pscustomobject]@{
+    Provider = $providerName
+    EventCount = $providerEvents.Count
+    ProblemEventCount = $problemEvents.Count
+    LatestEvent = if ($providerEvents.Count -gt 0) { $providerEvents[0].TimeCreated } else { $null }
+    LatestProblemEvent = if ($problemEvents.Count -gt 0) { $problemEvents[0].TimeCreated } else { $null }
+  }
+})
+$eventProviderRowsWithEvents = @($eventProviderCoverageRows | Where-Object { $_.EventCount -gt 0 })
+$eventProviderRowsWithProblems = @($eventProviderCoverageRows | Where-Object { $_.ProblemEventCount -gt 0 })
 $unexpectedShutdownEvents = @(Invoke-OptionalProbe "unexpected shutdown events" {
   Get-WinEvent -FilterHashtable @{ LogName = "System"; ProviderName = "EventLog"; Id = 6008; StartTime = $startTime } -MaxEvents 30 -ErrorAction SilentlyContinue |
     Select-Object TimeCreated, Id, ProviderName, LevelDisplayName, Message
@@ -1218,7 +1232,8 @@ $busyPhysicalDiskRows = @($physicalDiskPerfRows | Where-Object { $_.CurrentQueue
 $storagePerfSignals = @()
 if ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { $storagePerfSignals += "Windows did not expose live disk performance-counter rows to this scanner." }
 if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { $storagePerfSignals += "$($busyPhysicalDiskRows.Count) physical disk row(s) and $($busyLogicalDiskRows.Count) logical disk row(s) showed high live queue or disk-time pressure during the sample." }
-New-Component -Category "Storage Performance Counters" -Name "Live disk queue, throughput, and free-space pressure" -Status $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { "warning" } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+$storagePerfStatus = if ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "unknown" } elseif ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { "info" } else { "ok" }
+New-Component -Category "Storage Performance Counters" -Name "Live disk queue, throughput, and free-space pressure" -Status $storagePerfStatus -Confidence "medium" -Evidence @{
   PhysicalCounterCount = $physicalDiskPerfRows.Count
   LogicalCounterCount = $logicalDiskPerfRows.Count
   BusyPhysicalDiskCount = $busyPhysicalDiskRows.Count
@@ -1227,7 +1242,7 @@ New-Component -Category "Storage Performance Counters" -Name "Live disk queue, t
   BusyLogicalDisks = @($busyLogicalDiskRows | Select-Object -First 20)
   PhysicalDisks = @($physicalDiskPerfRows | Select-Object -First 40)
   LogicalDisks = @($logicalDiskPerfRows | Select-Object -First 40)
-} -Signals $storagePerfSignals -Recommendations $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { @("Correlate busy disk rows with the mapped physical drive before repairing or replacing hardware. High queue/disk-time can be a normal active workload, filesystem pressure, cable/controller issue, or failing storage depending on symptoms and repeatability.") } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { @("Use Resource Monitor, Performance Monitor, or vendor tools if storage symptoms exist because live disk counters were unavailable.") } else { @("No live disk queue or disk-time pressure was visible in this sample. Retest while storage symptoms are happening.") })
+} -Signals $storagePerfSignals -Recommendations $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { @("Live busy counters are workload evidence, not a hardware fault by themselves. Treat them as repair evidence only if they repeat with symptoms, dirty-bit status, disk events, Device Manager errors, or vendor SMART failures.") } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { @("Use Resource Monitor, Performance Monitor, or vendor tools if storage symptoms exist because live disk counters were unavailable.") } else { @("No live disk queue or disk-time pressure was visible in this sample. Retest while storage symptoms are happening.") })
 
 New-Component -Category "Volume Dirty Bit" -Name "Read-only filesystem repair flag check" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
   CheckedVolumeCount = $volumeDirtyResults.Count
@@ -1255,12 +1270,13 @@ foreach ($disk in $diskDrives) {
   $diskPhysicalPressure = @($busyPhysicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
   $diskLogicalPressure = @($busyLogicalDiskRows | Where-Object { $null -ne $diskIndex -and $_.DiskIndex -eq $diskIndex })
   $diskSignals = @()
+  $diskWorkloadSignals = @()
   if ($disk.Status -and $disk.Status -ne "OK") { $diskSignals += "Win32_DiskDrive status is $($disk.Status)." }
   if ($disk.ConfigManagerErrorCode -and $disk.ConfigManagerErrorCode -ne 0) { $diskSignals += "Device Manager problem code $($disk.ConfigManagerErrorCode) is attached to this disk." }
   if ($diskDirtyRows.Count -gt 0) { $diskSignals += "Dirty filesystem flag on $((@($diskDirtyRows | ForEach-Object { $_.LogicalDisk }) | Select-Object -Unique) -join ', ')." }
   if (($diskReadOnlyChecks | Where-Object { $_.ProblemLineCount -gt 0 }).Count -gt 0) { $diskSignals += "Read-only chkdsk output contains problem text for a mapped dirty volume." }
   if (($diskReadOnlyChecks | Where-Object { $_.TimedOut -eq $true -or ($_.CompletedWithCleanVerdict -ne $true -and $_.ProblemLineCount -eq 0) }).Count -gt 0) { $diskSignals += "Read-only chkdsk did not reach a clean final verdict inside the bounded scan window." }
-  if ($diskPhysicalPressure.Count -gt 0 -or $diskLogicalPressure.Count -gt 0) { $diskSignals += "High live queue/disk-time pressure appeared on this physical disk or its logical volume during the scan." }
+  if ($diskPhysicalPressure.Count -gt 0 -or $diskLogicalPressure.Count -gt 0) { $diskWorkloadSignals += "High live queue/disk-time pressure appeared on this physical disk or its logical volume during the scan, but this is workload evidence unless it repeats with symptoms or other fault signals." }
 
   $storageRiskRows += [pscustomobject]@{
     DiskIndex = $diskIndex
@@ -1281,6 +1297,8 @@ foreach ($disk in $diskDrives) {
     BusyLogicalCounters = @($diskLogicalPressure | ForEach-Object { "volume=$($_.LogicalDisk), queue=$($_.CurrentQueueLength), avgQueue=$($_.AvgQueueLength), diskTime=$($_.PercentDiskTime)%, read=$($_.ReadMBPerSec) MB/s, write=$($_.WriteMBPerSec) MB/s, free=$($_.FreeGB) GB ($($_.PercentFreeSpace)%)" })
     SignalCount = $diskSignals.Count
     Signals = $diskSignals
+    WorkloadSignalCount = $diskWorkloadSignals.Count
+    WorkloadSignals = $diskWorkloadSignals
   }
 }
 
@@ -1293,14 +1311,15 @@ if ($storageRiskProblemRows.Count -gt 0) {
     $storageRiskRecommendations += "Disk $($row.DiskIndex) $($row.DiskModel) ($targets): back up affected data first, avoid repair while heavy writes are active, rerun read-only filesystem and vendor SMART diagnostics, then inspect cable/port/dock/power path only if the warning repeats."
   }
 } else {
-  $storageRiskRecommendations += "No disk has a combined generic-status, dirty-bit, or live-pressure signal in this scan. Vendor SMART and symptom-time testing are still required for full physical certainty."
+  $storageRiskRecommendations += "No disk has a generic-status, dirty-bit, read-only check, or Device Manager fault signal in this scan. Live busy counters, if present, are preserved as workload evidence but are not counted as hardware repair signals by themselves. Vendor SMART and symptom-time testing are still required for full physical certainty."
 }
 New-Component -Category "Storage Fix Summary" -Name "Per-physical-drive risk summary" -Status $(if ($storageRiskProblemRows.Count -gt 0) { "warning" } elseif ($storageRiskRows.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
   DiskCount = $storageRiskRows.Count
   ProblemDiskCount = $storageRiskProblemRows.Count
+  WorkloadOnlyDiskCount = @($storageRiskRows | Where-Object { $_.SignalCount -eq 0 -and $_.WorkloadSignalCount -gt 0 }).Count
   ProblemDisks = @($storageRiskProblemRows | Select-Object -First 20)
   AllDisks = @($storageRiskRows | Select-Object -First 20)
-} -Signals $(if ($storageRiskProblemRows.Count -gt 0) { @("$($storageRiskProblemRows.Count) physical disk(s) have combined storage risk signals from disk status, dirty-bit mapping, or live pressure counters.") } elseif ($storageRiskRows.Count -eq 0) { @("Windows did not expose physical disk rows for the storage risk summary.") } else { @() }) -Recommendations $storageRiskRecommendations
+} -Signals $(if ($storageRiskProblemRows.Count -gt 0) { @("$($storageRiskProblemRows.Count) physical disk(s) have storage repair signals from disk status, dirty-bit mapping, read-only checks, or Device Manager codes.") } elseif ($storageRiskRows.Count -eq 0) { @("Windows did not expose physical disk rows for the storage risk summary.") } else { @() }) -Recommendations $storageRiskRecommendations
 
 if ($dirtyVolumes.Count -gt 0) {
   $dirtyEvidence = if ($dirtyStorageTargets.Count -gt 0) { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyStorageTargets) | Select-Object -First 8) -join '; ')" } else { "$($dirtyVolumes.Count) dirty volume(s): $((@($dirtyVolumes | ForEach-Object { $_.DeviceID }) -join ', '))" }
@@ -1811,6 +1830,16 @@ if ($powerStabilityProblemEvents.Count -gt 0) {
   New-Finding -Severity "warning" -Component "Power stability" -Title "Recent power-loss or unexpected-shutdown evidence" -Detail "Windows logged Kernel-Power, EventLog 6008, or volmgr problem evidence in the recent scan window." -Evidence "$($kernelPowerProblemEvents.Count) Kernel-Power problem event(s); $($unexpectedShutdownEvents.Count) EventLog 6008 unexpected shutdown event(s); $($volmgrProblemEvents.Count) volmgr warning/error event(s) since $startTime." -Recommendation "Check wall power, UPS, PSU cables, GPU/CPU load correlation, sleep/resume timing, crash-dump configuration, and PSU health before assuming a single component failure." -Confidence "medium"
 }
 
+New-Component -Category "Event Log Coverage" -Name "Hardware event provider sweep coverage" -Status $(if ($eventProviderRowsWithProblems.Count -gt 0) { "warning" } elseif ($events.Count -eq 0) { "unknown" } else { "ok" }) -Confidence "medium" -Evidence @{
+  ScanWindowDays = $RecentDays
+  ProviderCount = $eventProviderCoverageRows.Count
+  ProviderRowsWithEvents = $eventProviderRowsWithEvents.Count
+  ProviderRowsWithProblemEvents = $eventProviderRowsWithProblems.Count
+  TotalEventRows = @($events).Count
+  Providers = $eventProviderCoverageRows
+  ProblemProviders = @($eventProviderRowsWithProblems | Select-Object -First 20)
+} -Signals $(if ($eventProviderRowsWithProblems.Count -gt 0) { @("$($eventProviderRowsWithProblems.Count) monitored event provider(s) returned warning/error/critical rows in the scan window.") } elseif ($events.Count -eq 0) { @("The monitored System event providers returned no rows in the scan window, so absence of event evidence is limited by event-log availability.") } else { @() }) -Recommendations $(if ($eventProviderRowsWithProblems.Count -gt 0) { @("Review the specific provider rows with problem events before replacing hardware; event timestamps should be correlated with symptoms and component evidence.") } elseif ($events.Count -eq 0) { @("Rerun elevated or inspect Event Viewer manually if event-log evidence is required and no provider rows were returned.") } else { @("The event-provider sweep returned rows and no monitored provider had warning/error/critical rows. Intermittent faults can still be absent if they did not occur inside the scan window.") })
+
 $deviceReliabilityEvents = @($events | Where-Object { $_.ProviderName -match "Kernel-PnP|UserPnp|DeviceSetupManager|DriverFrameworks" })
 $deviceReliabilityProblemEvents = @($deviceReliabilityEvents | Where-Object { $_.LevelDisplayName -match "Warning|Error|Critical" })
 New-Component -Category "Device Reliability Events" -Name "Recent PnP/device setup history" -Status $(if ($deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "ok" }) -Confidence "medium" -Evidence @{
@@ -1901,7 +1930,8 @@ New-Diagnostic -Name "Storage SMART and reliability telemetry" -Status $(if ($op
 New-Diagnostic -Name "SMART provider availability sweep" -Status $(if ($smartPredicting.Count -gt 0) { "critical" } elseif ($smartProviderRowCount -gt 0) { "passed" } else { "limited" }) -Evidence "$smartProviderRowCount total SMART WMI provider row(s); $($smartProviderProbeErrors.Count) provider error/unsupported response(s)." -NextStep $(if ($smartPredicting.Count -gt 0) { "Back up immediately and replace the affected drive after vendor confirmation." } elseif ($smartProviderRowCount -gt 0) { "Interpret SMART attributes with a vendor diagnostic or smartctl before replacing hardware." } else { "Windows did not expose SMART attribute/threshold rows; use vendor diagnostics or smartctl for drive-internal certainty." })
 New-Diagnostic -Name "Storage controller and adapter sweep" -Status $(if ($storageControllerProblemDevices.Count -gt 0) { "warning" } elseif ($storageControllerDevices.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageControllerDevices.Count) storage controller/adapter PnP row(s), $($storageControllerProblemDevices.Count) problem device(s)." -NextStep $(if ($storageControllerProblemDevices.Count -gt 0) { "Inspect listed controller/adapter devices, drivers, docks, slots, and cables before replacing disks." } elseif ($storageControllerDevices.Count -eq 0) { "Use Device Manager, BIOS/UEFI, or vendor controller tooling if storage symptoms exist because controller rows were unavailable." } else { "No storage controller/adapter Device Manager problem codes were found; retest during storage disconnect or performance symptoms for intermittent faults." })
 New-Diagnostic -Name "Physical disk to volume correlation" -Status $(if ($dirtyStorageMapRows.Count -gt 0) { "warning" } elseif ($storageMapRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($storageMapRows.Count) disk/partition mapping row(s), $($mappedLogicalDisks.Count) mapped drive-letter volume(s), $($unmappedLogicalDisks.Count) unmapped drive-letter volume(s), $($dirtyStorageMapRows.Count) dirty mapped volume(s)." -NextStep $(if ($dirtyStorageMapRows.Count -gt 0) { "Use the mapped disk model/index before running repair or replacing storage: $((@($dirtyStorageTargets) | Select-Object -First 5) -join '; ')." } elseif ($storageMapRows.Count -eq 0) { "Use Disk Management or vendor tooling to map affected volumes to physical drives manually." } else { "Volume-to-physical-disk mapping is available for future storage warnings." })
-New-Diagnostic -Name "Storage live performance counter sweep" -Status $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { "warning" } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($physicalDiskPerfRows.Count) physical disk counter row(s), $($logicalDiskPerfRows.Count) logical disk counter row(s), $($busyPhysicalDiskRows.Count) busy physical row(s), $($busyLogicalDiskRows.Count) busy logical row(s)." -NextStep $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { "Correlate busy disk rows with mapped physical drives, current workload, dirty-bit status, cable/controller path, and repeatability before repair or replacement." } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "Use Resource Monitor, Performance Monitor, or vendor tools if storage symptoms exist because live disk counters were unavailable." } else { "No live disk queue/disk-time pressure was visible; retest while storage symptoms are happening." })
+New-Diagnostic -Name "Storage live performance counter sweep" -Status $(if ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($physicalDiskPerfRows.Count) physical disk counter row(s), $($logicalDiskPerfRows.Count) logical disk counter row(s), $($busyPhysicalDiskRows.Count) busy physical row(s), $($busyLogicalDiskRows.Count) busy logical row(s)." -NextStep $(if ($busyLogicalDiskRows.Count -gt 0 -or $busyPhysicalDiskRows.Count -gt 0) { "Busy rows are preserved as workload evidence only. Treat them as a hardware lead only if they repeat with symptoms, dirty-bit status, disk events, Device Manager errors, or vendor SMART failures." } elseif ($physicalDiskPerfRows.Count -eq 0 -and $logicalDiskPerfRows.Count -eq 0) { "Use Resource Monitor, Performance Monitor, or vendor tools if storage symptoms exist because live disk counters were unavailable." } else { "No live disk queue/disk-time pressure was visible in this sample; retest while storage symptoms are happening." })
+New-Diagnostic -Name "Hardware event-provider coverage sweep" -Status $(if ($eventProviderRowsWithProblems.Count -gt 0) { "warning" } elseif ($events.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($eventProviderCoverageRows.Count) provider(s) queried, $($eventProviderRowsWithEvents.Count) provider(s) returned rows, $($eventProviderRowsWithProblems.Count) provider(s) returned warning/error/critical rows, $(@($events).Count) total event row(s)." -NextStep $(if ($eventProviderRowsWithProblems.Count -gt 0) { "Review Event Log Coverage problem-provider rows and correlate timestamps with hardware symptoms." } elseif ($events.Count -eq 0) { "Inspect Event Viewer manually or rerun elevated if event-log evidence is required." } else { "Provider coverage is recorded; lack of problem events only applies to the scan window." })
 New-Diagnostic -Name "WHEA and recent hardware event sweep" -Status $(if (($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count -gt 0) { "warning" } else { "passed" }) -Evidence "$(($events | Where-Object { $_.ProviderName -eq "Microsoft-Windows-WHEA-Logger" }).Count) WHEA event(s) in the last $RecentDays day(s)." -NextStep "If WHEA events exist, correlate the listed component with CPU/RAM/GPU/PCIe/power hardware."
 New-Diagnostic -Name "CPU topology and live counter sweep" -Status $(if ($processors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($processors.Count) processor package row(s), $totalLogicalProcessors logical processor(s), $($processorTotalCounters.Count) total counter row(s), $($logicalProcessorCounters.Count) logical processor counter row(s), processor queue length=$cpuQueueLength." -NextStep "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
 New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -and $nvidiaRows.Count -gt 0) { "passed" } elseif ($videoControllers | Where-Object { $_.Name -match "NVIDIA" }) { "limited" } else { "unavailable" }) -Evidence "$(if ($nvidiaRows.Count -gt 0) { ($nvidiaRows | ForEach-Object { "$($_.Name): $($_.TemperatureC)C, PState $($_.PState), driver $($_.DriverVersion)" }) -join "; " } else { "nvidia-smi telemetry not available or no NVIDIA GPU detected." })" -NextStep "Run vendor/load diagnostics only if symptoms happen under GPU load."

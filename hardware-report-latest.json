@@ -1,16 +1,16 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-24T07:04:09.9125252Z",
+  "generatedAt": "2026-06-24T07:33:28.7386519Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "unknown",
-    "componentCount": 88,
+    "componentCount": 89,
     "findingCount": 0,
     "criticalCount": 0,
     "warningCount": 0,
-    "unknownCount": 11
+    "unknownCount": 12
   },
   "components": [
     {
@@ -23,7 +23,7 @@
         "TotalMemoryGB": 93.64,
         "Manufacturer": "Gigabyte Technology Co., Ltd.",
         "Model": "X870E AORUS PRO",
-        "LastBoot": "2026-06-24T09:07:10.5+03:00",
+        "LastBoot": "2026-06-24T10:21:56.5+03:00",
         "OS": "Microsoft Windows 11 Pro"
       },
       "signals": [],
@@ -141,7 +141,7 @@
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
             "CurrentClockSpeed": "4700",
-            "LoadPercentage": "30",
+            "LoadPercentage": "96",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -154,9 +154,9 @@
         ],
         "SystemProcessorQueue": [
           {
-            "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "12607",
-            "SystemCallsPersec": "129889"
+            "ProcessorQueueLength": "8",
+            "ContextSwitchesPersec": "335568",
+            "SystemCallsPersec": "2912964"
           }
         ],
         "LogicalProcessorCounterCount": 16,
@@ -166,20 +166,20 @@
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "12",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "13159"
+            "PercentPrivilegedTime": "55",
+            "PercentUserTime": "38",
+            "PercentInterruptTime": "1",
+            "InterruptsPerSec": "105299"
           },
           {
             "Name": "_Total",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "12",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "13159"
+            "PercentPrivilegedTime": "55",
+            "PercentUserTime": "38",
+            "PercentInterruptTime": "1",
+            "InterruptsPerSec": "105299"
           }
         ],
         "TotalEnabledCores": 8,
@@ -189,60 +189,60 @@
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "54",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "42",
+            "PercentUserTime": "48",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2435"
+            "InterruptsPerSec": "11127"
           },
           {
             "Name": "0,1",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "0",
+            "PercentPrivilegedTime": "30",
+            "PercentUserTime": "60",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "362"
+            "InterruptsPerSec": "6850"
           },
           {
             "Name": "0,10",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "36",
-            "PercentUserTime": "12",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "793"
+            "PercentPrivilegedTime": "67",
+            "PercentUserTime": "30",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "6526"
           },
           {
             "Name": "0,11",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "0",
-            "PercentUserTime": "18",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "165"
+            "PercentPrivilegedTime": "48",
+            "PercentUserTime": "42",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "4550"
           },
           {
             "Name": "0,12",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "42",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1144"
+            "InterruptsPerSec": "3979"
           },
           {
             "Name": "0,13",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "42",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "242"
+            "InterruptsPerSec": "3679"
           },
           {
             "Name": "0,14",
@@ -250,103 +250,105 @@
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
             "PercentPrivilegedTime": "54",
-            "PercentUserTime": "30",
+            "PercentUserTime": "36",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1217"
+            "InterruptsPerSec": "9162"
           },
           {
             "Name": "0,15",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "24",
+            "PercentPrivilegedTime": "54",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "732"
+            "InterruptsPerSec": "6983"
           },
           {
             "Name": "0,2",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "48",
+            "PercentUserTime": "42",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "828"
+            "InterruptsPerSec": "5881"
           },
           {
             "Name": "0,3",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "0",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "48",
+            "PercentUserTime": "48",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "747"
+            "InterruptsPerSec": "4397"
           },
           {
             "Name": "0,4",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "73",
+            "PercentUserTime": "24",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "693"
+            "InterruptsPerSec": "7487"
           },
           {
             "Name": "0,5",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "66",
-            "PercentUserTime": "24",
+            "PercentPrivilegedTime": "67",
+            "PercentUserTime": "30",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "319"
+            "InterruptsPerSec": "7260"
           },
           {
             "Name": "0,6",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "18",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "924"
+            "PercentPrivilegedTime": "60",
+            "PercentUserTime": "36",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "5424"
           },
           {
             "Name": "0,7",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "0",
-            "PercentUserTime": "0",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "766"
+            "PercentPrivilegedTime": "73",
+            "PercentUserTime": "24",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "4999"
           },
           {
             "Name": "0,8",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "6",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1078"
+            "PercentPrivilegedTime": "60",
+            "PercentUserTime": "36",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "9791"
           },
           {
             "Name": "0,9",
             "PercentProcessorPerformance": "95",
             "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "67",
+            "PercentUserTime": "30",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "705"
+            "InterruptsPerSec": "7198"
           }
         ]
       },
-      "signals": [],
+      "signals": [
+        "The CPU was sampled under high current load (96%). This is workload evidence, not a hardware fault by itself."
+      ],
       "recommendations": [
         "Use these CPU identity, cache, clock, virtualization, interrupt, and queue rows to correlate symptoms with CPU load or scheduler pressure. Physical CPU, cooling, motherboard VRM, and PSU stability still require controlled temperature and load testing if symptoms occur."
       ]
@@ -458,31 +460,31 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "CommittedGB": 30.89,
-        "AvailableMemoryMB": 66335,
+        "CommittedGB": 24.88,
+        "AvailableMemoryMB": 73543,
         "PageWritesPerSec": 0,
         "PagesOutputPerSec": 0,
-        "PageFaultsPerSec": 14941,
+        "PageFaultsPerSec": 792135,
         "PageFiles": [
           {
             "Name": "C:\\pagefile.sys",
             "AllocatedMB": "13824",
-            "CurrentUsageMB": "1980",
-            "PeakUsageMB": "2400",
-            "CurrentUsagePercent": 14.3,
-            "PeakUsagePercent": 17.4,
+            "CurrentUsageMB": "0",
+            "PeakUsageMB": "0",
+            "CurrentUsagePercent": 0,
+            "PeakUsagePercent": 0,
             "TempPageFile": false,
             "Status": null
           }
         ],
-        "PageReadsPerSec": 233,
+        "PageReadsPerSec": 61,
         "CommitLimitGB": 107.14,
         "CounterRows": 1,
-        "PoolPagedGB": 6.75,
+        "PoolPagedGB": 1.71,
         "PageFileCount": 1,
-        "PagesInputPerSec": 2993,
-        "PoolNonpagedGB": 4.31,
-        "CommitPercent": 28
+        "PagesInputPerSec": 119,
+        "PoolNonpagedGB": 1.4,
+        "CommitPercent": 23
       },
       "signals": [],
       "recommendations": [
@@ -735,9 +737,9 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1693.49,
+        "FreeGB": 1689.21,
         "DriveType": "3",
-        "SizeGB": 1860.68,
+        "SizeGB": 1859.67,
         "VolumeName": "",
         "DeviceID": "C:"
       },
@@ -792,7 +794,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 461.6,
+        "FreeGB": 447.83,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -844,7 +846,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 461.6,
+            "VolumeFreeGB": 447.83,
             "DirtyBit": false
           },
           {
@@ -890,12 +892,12 @@
             "DiskSerialNumber": "0025_38AB_5140_FC31.",
             "Partition": "Disk #0, Partition #1",
             "PartitionType": "GPT: Basic Data",
-            "PartitionSizeGB": 1860.68,
+            "PartitionSizeGB": 1859.67,
             "LogicalDisk": "C:",
             "VolumeName": "",
             "FileSystem": "NTFS",
-            "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1693.49,
+            "VolumeSizeGB": 1859.67,
+            "VolumeFreeGB": 1689.21,
             "DirtyBit": false
           },
           {
@@ -907,7 +909,7 @@
             "DiskSerialNumber": "0025_38AB_5140_FC31.",
             "Partition": "Disk #0, Partition #2",
             "PartitionType": "GPT: Unknown",
-            "PartitionSizeGB": 0.74,
+            "PartitionSizeGB": 1.01,
             "LogicalDisk": null,
             "VolumeName": null,
             "FileSystem": null,
@@ -924,7 +926,7 @@
             "DiskSerialNumber": "0025_38AB_5140_FC31.",
             "Partition": "Disk #0, Partition #3",
             "PartitionType": "GPT: Unknown",
-            "PartitionSizeGB": 0.76,
+            "PartitionSizeGB": 0.74,
             "LogicalDisk": null,
             "VolumeName": null,
             "FileSystem": null,
@@ -940,6 +942,23 @@
             "DiskSizeGB": 1863.01,
             "DiskSerialNumber": "0025_38AB_5140_FC31.",
             "Partition": "Disk #0, Partition #4",
+            "PartitionType": "GPT: Unknown",
+            "PartitionSizeGB": 0.76,
+            "LogicalDisk": null,
+            "VolumeName": null,
+            "FileSystem": null,
+            "VolumeSizeGB": null,
+            "VolumeFreeGB": null,
+            "DirtyBit": null
+          },
+          {
+            "DiskIndex": "0",
+            "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
+            "DiskModel": "Samsung SSD 9100 PRO 2TB",
+            "InterfaceType": "SCSI",
+            "DiskSizeGB": 1863.01,
+            "DiskSerialNumber": "0025_38AB_5140_FC31.",
+            "Partition": "Disk #0, Partition #5",
             "PartitionType": "GPT: Basic Data",
             "PartitionSizeGB": 0.73,
             "LogicalDisk": "D:",
@@ -1005,7 +1024,7 @@
         "UnmappedLogicalDisks": [],
         "DirtyMappedVolumes": [],
         "MappedLogicalDiskCount": 5,
-        "MappingCount": 10
+        "MappingCount": 11
       },
       "signals": [],
       "recommendations": [
@@ -1031,14 +1050,14 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "837",
-            "WritesPerSec": "117",
-            "ReadMBPerSec": 17.9,
-            "WriteMBPerSec": 0.46,
-            "PercentDiskTime": "5",
-            "PercentFreeSpace": "91",
-            "FreeGB": 1693.5,
-            "SplitIOPerSec": "0"
+            "ReadsPerSec": "214",
+            "WritesPerSec": "5904",
+            "ReadMBPerSec": 0.83,
+            "WriteMBPerSec": 40.77,
+            "PercentDiskTime": "37",
+            "PercentFreeSpace": "90",
+            "FreeGB": 1689.59,
+            "SplitIOPerSec": "34"
           },
           {
             "LogicalDisk": "D:",
@@ -1079,13 +1098,13 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "876",
-            "WritesPerSec": "316",
-            "ReadMBPerSec": 3.42,
-            "WriteMBPerSec": 5.69,
-            "PercentDiskTime": "18",
-            "PercentFreeSpace": "48",
-            "FreeGB": 461.62,
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "46",
+            "FreeGB": 447.83,
             "SplitIOPerSec": "0"
           },
           {
@@ -1121,7 +1140,7 @@
             "SplitIOPerSec": "0"
           },
           {
-            "LogicalDisk": "HarddiskVolume10",
+            "LogicalDisk": "HarddiskVolume11",
             "DiskIndex": null,
             "DiskModel": null,
             "PhysicalDrive": null,
@@ -1148,7 +1167,7 @@
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
             "PercentDiskTime": "0",
-            "PercentFreeSpace": "14",
+            "PercentFreeSpace": "11",
             "FreeGB": 0.11,
             "SplitIOPerSec": "0"
           },
@@ -1169,7 +1188,23 @@
             "SplitIOPerSec": "0"
           },
           {
-            "LogicalDisk": "HarddiskVolume8",
+            "LogicalDisk": "HarddiskVolume6",
+            "DiskIndex": null,
+            "DiskModel": null,
+            "PhysicalDrive": null,
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "14",
+            "FreeGB": 0.11,
+            "SplitIOPerSec": "0"
+          },
+          {
+            "LogicalDisk": "HarddiskVolume9",
             "DiskIndex": null,
             "DiskModel": null,
             "PhysicalDrive": null,
@@ -1186,7 +1221,7 @@
           }
         ],
         "BusyLogicalDisks": [],
-        "LogicalCounterCount": 10,
+        "LogicalCounterCount": 11,
         "PhysicalDisks": [
           {
             "CounterName": "0 C: D:",
@@ -1196,13 +1231,13 @@
             "LogicalDisks": "C: D:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "735",
-            "WritesPerSec": "130",
-            "ReadMBPerSec": 15.17,
-            "WriteMBPerSec": 4.4,
-            "PercentDiskTime": "5",
-            "PercentIdleTime": "88",
-            "SplitIOPerSec": "19"
+            "ReadsPerSec": "183",
+            "WritesPerSec": "5937",
+            "ReadMBPerSec": 2.43,
+            "WriteMBPerSec": 42.03,
+            "PercentDiskTime": "45",
+            "PercentIdleTime": "68",
+            "SplitIOPerSec": "7"
           },
           {
             "CounterName": "1 F:",
@@ -1332,6 +1367,7 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
+        "WorkloadOnlyDiskCount": 0,
         "ProblemDiskCount": 0,
         "ProblemDisks": [],
         "DiskCount": 4,
@@ -1354,7 +1390,9 @@
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
-            "Signals": ""
+            "Signals": "",
+            "WorkloadSignalCount": 0,
+            "WorkloadSignals": ""
           },
           {
             "DiskIndex": "0",
@@ -1374,7 +1412,9 @@
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
-            "Signals": ""
+            "Signals": "",
+            "WorkloadSignalCount": 0,
+            "WorkloadSignals": ""
           },
           {
             "DiskIndex": "2",
@@ -1394,7 +1434,9 @@
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
-            "Signals": ""
+            "Signals": "",
+            "WorkloadSignalCount": 0,
+            "WorkloadSignals": ""
           },
           {
             "DiskIndex": "3",
@@ -1414,13 +1456,15 @@
             "BusyPhysicalCounters": "",
             "BusyLogicalCounters": "",
             "SignalCount": 0,
-            "Signals": ""
+            "Signals": "",
+            "WorkloadSignalCount": 0,
+            "WorkloadSignals": ""
           }
         ]
       },
       "signals": [],
       "recommendations": [
-        "No disk has a combined generic-status, dirty-bit, or live-pressure signal in this scan. Vendor SMART and symptom-time testing are still required for full physical certainty."
+        "No disk has a generic-status, dirty-bit, read-only check, or Device Manager fault signal in this scan. Live busy counters, if present, are preserved as workload evidence but are not counted as hardware repair signals by themselves. Vendor SMART and symptom-time testing are still required for full physical certainty."
       ]
     },
     {
@@ -1484,6 +1528,7 @@
           "DEFAULT",
           "CIMV2",
           "msdtc",
+          "Cli",
           "MicrosoftIISv2",
           "SECURITY",
           "HyperVCluster",
@@ -1499,7 +1544,6 @@
           "Interop",
           "Hardware",
           "ServiceModel",
-          "SecurityCenter",
           "... truncated 1 more item(s)"
         ],
         "HasLibreHardwareMonitorNamespace": false,
@@ -1554,17 +1598,17 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "999",
-          "MemoryFreeMiB": "14979",
+          "MemoryUsedMiB": "1990",
+          "MemoryFreeMiB": "13988",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 0.98,
-          "MemoryFreeGB": 14.63,
-          "TemperatureC": "42",
+          "MemoryUsedGB": 1.94,
+          "MemoryFreeGB": 13.66,
+          "TemperatureC": "54",
           "FanPercent": "0",
           "PState": "P0",
-          "PowerDrawW": "57.97",
+          "PowerDrawW": "68.79",
           "PowerLimitW": "400.00",
-          "GraphicsClockMhz": "2902",
+          "GraphicsClockMhz": "2887",
           "MemoryClockMhz": "15001",
           "PcieGen": "5",
           "PcieGenMax": "5",
@@ -1595,7 +1639,7 @@
             "VideoProcessor": "AMD Radeon Graphics Processor (0x13C0)",
             "DriverVersion": "32.0.21043.12001",
             "DriverDate": "2026-05-29T03:00:00+03:00",
-            "InfFilename": "oem1.inf",
+            "InfFilename": "oem55.inf",
             "CurrentResolution": "3840x2160",
             "CurrentRefreshRateHz": "60",
             "CurrentBitsPerPixel": "32",
@@ -1615,15 +1659,15 @@
             "VideoProcessor": "NVIDIA GeForce RTX 5080",
             "DriverVersion": "32.0.16.1062",
             "DriverDate": "2026-06-11T03:00:00+03:00",
-            "InfFilename": "oem13.inf",
+            "InfFilename": "oem23.inf",
             "CurrentResolution": "3840x2160",
             "CurrentRefreshRateHz": "160",
             "CurrentBitsPerPixel": "32",
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 0.98,
-            "NvidiaMemoryFreeGB": 14.63,
+            "NvidiaMemoryUsedGB": 1.94,
+            "NvidiaMemoryFreeGB": 13.66,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 5/5, x16/x16"
           }
@@ -1755,8 +1799,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 73717,
-            "BytesSentPerSec": 13824,
+            "BytesReceivedPerSec": 1052079,
+            "BytesSentPerSec": 34492,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -3887,46 +3931,46 @@
         ],
         "Endpoints": [
           {
-            "Name": "Microphone (USB PnP Sound Device)",
+            "Name": "Speakers (Michael's S25 Ultra Hands-Free HF Audio)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{B67C08D5-71F5-4126-9516-5E10E31B09B2}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{BAABE8E2-7C20-400F-817F-19DF4E1D9741}"
           },
           {
             "Name": "Realtek Digital Output (Realtek(R) Audio)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{083758FA-CFC1-415A-B29D-8913663D10DF}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{1B0834DB-4643-45F7-A6FF-7A1BD22C5DB9}"
           },
           {
-            "Name": "M27UP (NVIDIA High Definition Audio)",
+            "Name": "Microphone (USB PnP Sound Device)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{83CB568B-4999-40C9-9044-CEC210B267E8}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{05032AA2-7696-4D48-9F95-FE5061E6B22C}"
           },
           {
             "Name": "1 - M27UP (AMD High Definition Audio Device)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{B128A60C-F250-4483-9D1C-DFF563D020CE}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{BBA1BE13-B3D8-4F33-8A46-1E77407E4171}"
           },
           {
-            "Name": "Speakers (Michael's S25 Ultra Hands-Free HF Audio)",
+            "Name": "M27UP (NVIDIA High Definition Audio)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{A26CEDFC-3882-4C4E-8412-8224EAF25526}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{D30D5342-03F1-4255-A61D-65A3B24281A3}"
           },
           {
             "Name": "Microphone (Michael's S25 Ultra Hands-Free HF Audio)",
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{E1DB7D5B-6481-4364-A4F5-47814D2CC544}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{449D4738-ED50-40CD-9F04-8C7CE0BE16B3}"
           }
         ],
         "ProblemDeviceCount": 0,
@@ -3947,10 +3991,10 @@
       "confidence": "medium",
       "evidence": {
         "UnresolvedUnsignedDriverCount": 0,
-        "WmiUnsignedDriverCount": 12,
-        "DriverCount": 301,
-        "DriverPackageCount": 76,
-        "PackageSignedWmiUnsignedCount": 12,
+        "WmiUnsignedDriverCount": 0,
+        "DriverCount": 302,
+        "DriverPackageCount": 77,
+        "PackageSignedWmiUnsignedCount": 0,
         "NullSignedDrivers": [
           {
             "DeviceName": "USB4 Virtual power coordination device",
@@ -4035,242 +4079,13 @@
         ],
         "UnresolvedUnsignedDrivers": [],
         "NullSignedDriverCount": 10,
-        "WmiUnsignedDriversWithPackageSigners": [
-          {
-            "DeviceName": "AMD Special Tools Driver",
-            "DeviceClass": "SYSTEM",
-            "DeviceID": "ROOT\\SYSTEM\\0001",
-            "HardwareID": "*AMDTOOLSDEV",
-            "InfName": "oem5.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Advanced Micro Devices",
-            "DriverVersion": "1.7.16.219",
-            "DriverDate": "2022-06-22T03:00:00+03:00",
-            "PackageOriginalName": "amdtools.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "AmdTools.cat",
-            "PackageDriverFiles": "AmdTools64.sys",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "AMD Crash Defender",
-            "DeviceClass": "SYSTEM",
-            "DeviceID": "ROOT\\AMDLOG\\0000",
-            "HardwareID": "ROOT\\AMDLOG",
-            "InfName": "oem26.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Advanced Micro Devices, Inc.",
-            "DriverVersion": "25.10.0.7",
-            "DriverDate": "2026-02-06T02:00:00+02:00",
-            "PackageOriginalName": "amdfendr.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "amdfendr.cat",
-            "PackageDriverFiles": "amdfendr.sys amdfendrmgr.sys amdfendrsr.exe",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "ITE USB Connector Client Device",
-            "DeviceClass": "USB",
-            "DeviceID": "ACPI\\ITE8800\\6",
-            "HardwareID": "ACPI\\VEN_ITE&DEV_8800",
-            "InfName": "oem10.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "ITE",
-            "DriverVersion": "1.3.8.21",
-            "DriverDate": "2025-11-06T02:00:00+02:00",
-            "PackageOriginalName": "iteucmcxclient.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "ITEUcmCxClient.cat",
-            "PackageDriverFiles": "ITEUcmCxClient.sys",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "ITE USB Connector Client Device",
-            "DeviceClass": "USB",
-            "DeviceID": "ACPI\\ITE8800\\7",
-            "HardwareID": "ACPI\\VEN_ITE&DEV_8800",
-            "InfName": "oem10.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "ITE",
-            "DriverVersion": "1.3.8.21",
-            "DriverDate": "2025-11-06T02:00:00+02:00",
-            "PackageOriginalName": "iteucmcxclient.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "ITEUcmCxClient.cat",
-            "PackageDriverFiles": "ITEUcmCxClient.sys",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "AMD SMBUS",
-            "DeviceClass": "SYSTEM",
-            "DeviceID": "PCI\\VEN_1022&DEV_790B&SUBSYS_50011458&REV_71\\3&11583659&0&A0",
-            "HardwareID": "PCI\\VEN_1022&DEV_790B&SUBSYS_50011458&REV_71",
-            "InfName": "oem31.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Advanced Micro Devices, Inc",
-            "DriverVersion": "2.0.0.26",
-            "DriverDate": "2025-12-04T02:00:00+02:00",
-            "PackageOriginalName": "amdinterface.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "AMDInterface.cat",
-            "PackageDriverFiles": null,
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "Realtek Audio Universal Service",
-            "DeviceClass": "SOFTWARECOMPONENT",
-            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKSRV&6&2B941894&0",
-            "HardwareID": "SWC\\VEN_10EC&SID_0001",
-            "InfName": "oem20.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Realtek",
-            "DriverVersion": "1.0.937.0",
-            "DriverDate": "2025-12-16T02:00:00+02:00",
-            "PackageOriginalName": "realtekservice.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "RealtekService.cat",
-            "PackageDriverFiles": "RtkCfg64.dll RtkApi64U.dll RtkAudUService64.exe RtkAudUServiceConf64.dll RtkAudUServiceRes64.dll SpeakerVerfDll.dll MonoSeparationEnrollDll.dll MonoSeparationGEnrollDll.dll PTTdll.dll RtDataProc64.dll RtCOM64.dll",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "Realtek Hardware Support Application",
-            "DeviceClass": "SOFTWARECOMPONENT",
-            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKHSA&6&2B941894&0",
-            "HardwareID": "SWC\\VEN_10EC&HID_0001",
-            "InfName": "oem38.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Realtek",
-            "DriverVersion": "11.0.6000.385",
-            "DriverDate": "2025-12-16T02:00:00+02:00",
-            "PackageOriginalName": "realtekhsa.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "RealtekHSA.cat",
-            "PackageDriverFiles": null,
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "Realtek Asio Component",
-            "DeviceClass": "SOFTWARECOMPONENT",
-            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKASIO&6&2B941894&0",
-            "HardwareID": "SWC\\VEN_10EC&ASIO_ID_0001",
-            "InfName": "oem0.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Realtek",
-            "DriverVersion": "1.0.13.1",
-            "DriverDate": "2024-08-28T03:00:00+03:00",
-            "PackageOriginalName": "realtekasio.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "RealtekASIO.cat",
-            "PackageDriverFiles": "RTHDASIO64.dll RTHDASIO.dll",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "Realtek Audio Effects Component",
-            "DeviceClass": "AUDIOPROCESSINGOBJECT",
-            "DeviceID": "SWD\\DRIVERENUM\\{C3A63EDD-2D27-4B66-B155-5E94B43D926A}#REALTEKAPO&6&2B941894&0",
-            "HardwareID": "SWC\\VEN_10EC&AID_0001",
-            "InfName": "oem6.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Realtek",
-            "DriverVersion": "13.0.6000.1905",
-            "DriverDate": "2025-07-10T03:00:00+03:00",
-            "PackageOriginalName": "realtekapo.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "RealtekAPO.cat",
-            "PackageDriverFiles": "RltkAPOU64.dll",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "High Definition Audio Bus",
-            "DeviceClass": "SYSTEM",
-            "DeviceID": "PCI\\VEN_1002&DEV_1640&SUBSYS_16401002&REV_00\\4&16012499&0&0141",
-            "HardwareID": "PCI\\VEN_1002&DEV_1640&SUBSYS_16401002&REV_00",
-            "InfName": "oem35.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "AMD",
-            "DriverVersion": "25.30.0.1",
-            "DriverDate": "2025-08-21T03:00:00+03:00",
-            "PackageOriginalName": "amdafd.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "amdafd.cat",
-            "PackageDriverFiles": null,
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "AMD-Dynamic Audio Noise Supression",
-            "DeviceClass": "SOFTWARECOMPONENT",
-            "DeviceID": "SWD\\DRIVERENUM\\AMDFDANS&5&34128C9C&B",
-            "HardwareID": "SWC\\AMDFDANS-1.0.0",
-            "InfName": "oem61.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "Advanced Micro Devices, Inc.",
-            "DriverVersion": "1.4.40.0",
-            "DriverDate": "2026-03-04T02:00:00+02:00",
-            "PackageOriginalName": "amdfdans.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "AMDFDANS.CAT",
-            "PackageDriverFiles": "AMDNoiseSuppression.exe anronnxlib.dll anrsvc.dll Default.anrcfg DirectML.dll onnxruntime.dll PMLN_model.onnx STLN_model.onnx STLN_modelv2.onnx ippANS.dll mdfaec.dll ANR-bgproc-Lib.dll",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          },
-          {
-            "DeviceName": "AMD Controller Emulation",
-            "DeviceClass": "SYSTEM",
-            "DeviceID": "ROOT\\AMDXE\\0000",
-            "HardwareID": "ROOT\\AMDXE",
-            "InfName": "oem16.inf",
-            "WmiIsSigned": false,
-            "WmiSigner": null,
-            "DriverProviderName": "AMD",
-            "DriverVersion": "25.10.0.1",
-            "DriverDate": "2025-09-23T03:00:00+03:00",
-            "PackageOriginalName": "amdxe.inf",
-            "PackageSignerName": "Microsoft Windows Hardware Compatibility Publisher",
-            "PackageCatalogFile": "amdxe.cat",
-            "PackageDriverFiles": "amdxe.sys",
-            "PackageSigned": true,
-            "PackageMicrosoftSigned": true,
-            "NeedsReview": false
-          }
-        ]
+        "WmiUnsignedDriversWithPackageSigners": []
       },
       "signals": [
-        "12 WMI-unsigned PnP driver row(s) were cross-checked against pnputil; 12 have package-level catalog signers."
+        "10 PnP driver row(s) did not expose a WMI IsSigned value."
       ],
       "recommendations": [
-        "No unresolved unsigned driver package was found. Treat WMI unsigned rows with package-level Microsoft/WHCP signer as a Windows reporting mismatch unless device symptoms point to that driver."
+        "Rows without WMI signing metadata are listed for transparency; correlate only if the matching device has symptoms."
       ]
     },
     {
@@ -4320,32 +4135,32 @@
         "KernelPowerInformationalEventCount": 4,
         "InformationalKernelPowerSamples": [
           {
-            "TimeCreated": "2026-06-24T09:07:13.3936204+03:00",
-            "Id": 508,
-            "ProviderName": "Microsoft-Windows-Kernel-Power",
-            "LevelDisplayName": "Information",
-            "Message": "The system has been constrained to a periodic tick Reason: BCD override."
-          },
-          {
-            "TimeCreated": "2026-06-24T09:07:13.3933084+03:00",
+            "TimeCreated": "2026-06-24T10:21:59.1519712+03:00",
             "Id": 172,
             "ProviderName": "Microsoft-Windows-Kernel-Power",
             "LevelDisplayName": "Information",
             "Message": "Connectivity state in standby: Disconnected, Reason: NIC compliance"
           },
           {
-            "TimeCreated": "2026-06-24T09:06:46.6907712+03:00",
+            "TimeCreated": "2026-06-24T10:21:32.3232699+03:00",
             "Id": 577,
             "ProviderName": "Microsoft-Windows-Kernel-Power",
             "LevelDisplayName": "Information",
             "Message": "The system has prepared for a system initiated reboot from Active."
           },
           {
-            "TimeCreated": "2026-06-24T09:06:43.7025394+03:00",
+            "TimeCreated": "2026-06-24T10:21:30.1510275+03:00",
             "Id": 109,
             "ProviderName": "Microsoft-Windows-Kernel-Power",
             "LevelDisplayName": "Information",
             "Message": "The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API"
+          },
+          {
+            "TimeCreated": "2026-06-24T10:12:21.1285482+03:00",
+            "Id": 172,
+            "ProviderName": "Microsoft-Windows-Kernel-Power",
+            "LevelDisplayName": "Information",
+            "Message": "Connectivity state in standby: Disconnected, Reason: NIC compliance"
           }
         ],
         "KernelPowerProblemEventCount": 0,
@@ -4361,13 +4176,132 @@
       ]
     },
     {
+      "id": "event-log-coverage-hardware-event-provider-sweep-coverage",
+      "category": "Event Log Coverage",
+      "name": "Hardware event provider sweep coverage",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "ProviderCount": 14,
+        "ProblemProviders": [],
+        "ScanWindowDays": 14,
+        "Providers": [
+          {
+            "Provider": "Microsoft-Windows-WHEA-Logger",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "disk",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Disk",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Ntfs",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "stornvme",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "storahci",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Display",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "nvlddmkm",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Microsoft-Windows-Kernel-Power",
+            "EventCount": 4,
+            "ProblemEventCount": 0,
+            "LatestEvent": "2026-06-24T10:21:59.1519712+03:00",
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "volmgr",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Microsoft-Windows-MemoryDiagnostics-Results",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Microsoft-Windows-Kernel-PnP",
+            "EventCount": 0,
+            "ProblemEventCount": 0,
+            "LatestEvent": null,
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Microsoft-Windows-UserPnp",
+            "EventCount": 10,
+            "ProblemEventCount": 0,
+            "LatestEvent": "2026-06-24T10:13:01.0724085+03:00",
+            "LatestProblemEvent": null
+          },
+          {
+            "Provider": "Microsoft-Windows-DriverFrameworks-UserMode",
+            "EventCount": 9,
+            "ProblemEventCount": 0,
+            "LatestEvent": "2026-06-24T10:12:55.9262168+03:00",
+            "LatestProblemEvent": null
+          }
+        ],
+        "ProviderRowsWithEvents": 3,
+        "ProviderRowsWithProblemEvents": 0,
+        "TotalEventRows": 23
+      },
+      "signals": [],
+      "recommendations": [
+        "The event-provider sweep returned rows and no monitored provider had warning/error/critical rows. Intermittent faults can still be absent if they did not occur inside the scan window."
+      ]
+    },
+    {
       "id": "device-reliability-events-recent-pnp-device-setup-history",
       "category": "Device Reliability Events",
       "name": "Recent PnP/device setup history",
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "EventCount": 1,
+        "EventCount": 19,
         "ProblemEvents": [],
         "ProblemEventCount": 0
       },
@@ -4387,7 +4321,7 @@
         "HardwareReliabilityRecordCount": 0,
         "WindowsErrorReportingHardwareEventCount": 0,
         "ReliabilityRecords": [],
-        "ReliabilityRecordCount": 12
+        "ReliabilityRecordCount": 6
       },
       "signals": [],
       "recommendations": [
@@ -4398,7 +4332,7 @@
       "id": "crash-dump-artifacts-recent-windows-dump-files",
       "category": "Crash Dump Artifacts",
       "name": "Recent Windows dump files",
-      "status": "ok",
+      "status": "unknown",
       "confidence": "medium",
       "evidence": {
         "Dumps": [],
@@ -4414,9 +4348,9 @@
           },
           {
             "Root": "C:\\Windows\\Minidump",
-            "Exists": true,
+            "Exists": false,
             "RecentDumpCount": 0,
-            "AccessErrors": ""
+            "AccessErrors": "Path not found or not accessible to this process."
           },
           {
             "Root": "C:\\Windows\\MEMORY.DMP",
@@ -4427,9 +4361,11 @@
         ],
         "RecentDumpCount": 0
       },
-      "signals": [],
+      "signals": [
+        "1 dump root(s) were not accessible or not present for this process."
+      ],
       "recommendations": [
-        "No recent Windows crash dump artifacts were found in the checked dump locations."
+        "Run the launcher as administrator to inspect protected Windows dump locations before concluding no dump evidence exists."
       ]
     },
     {
@@ -4492,7 +4428,7 @@
       "confidence": "high",
       "evidence": {
         "UnavailableDiagnosticCount": 0,
-        "UnknownComponentCount": 11,
+        "UnknownComponentCount": 12,
         "ProofGaps": [
           {
             "Source": "Component",
@@ -4500,6 +4436,13 @@
             "Status": "unknown",
             "Evidence": "Windows did not expose fan sensors through WMI.",
             "NextStep": "Use BIOS, motherboard software, or physical inspection to verify fans and pump behavior."
+          },
+          {
+            "Source": "Component",
+            "Name": "Crash Dump Artifacts: Recent Windows dump files",
+            "Status": "unknown",
+            "Evidence": "1 dump root(s) were not accessible or not present for this process.",
+            "NextStep": "Run the launcher as administrator to inspect protected Windows dump locations before concluding no dump evidence exists."
           },
           {
             "Source": "Component",
@@ -4573,6 +4516,13 @@
           },
           {
             "Source": "Diagnostic",
+            "Name": "Crash dump artifact sweep",
+            "Status": "limited",
+            "Evidence": "0 recent dump file(s), 0 LiveKernelReports file(s), 0 unique bounded keyword hint(s), 1 inaccessible/missing dump root(s).",
+            "NextStep": "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
+          },
+          {
+            "Source": "Diagnostic",
             "Name": "DirectX display/audio/input diagnostic",
             "Status": "limited",
             "Evidence": "dxdiag skipped in the default safe scan path.",
@@ -4596,7 +4546,7 @@
             "Source": "Diagnostic",
             "Name": "Sensor provider availability sweep",
             "Status": "limited",
-            "Evidence": "22 root namespace row(s), 0 PATH tool command(s), 0 provider error/unsupported response(s).",
+            "Evidence": "24 root namespace row(s), 0 PATH tool command(s), 0 provider error/unsupported response(s).",
             "NextStep": "No usable thermal/fan provider was exposed; use BIOS/UEFI, motherboard/GPU vendor tools, or physical inspection."
           },
           {
@@ -4622,10 +4572,10 @@
           }
         ],
         "NotRunDiagnosticCount": 1,
-        "LimitedDiagnosticCount": 6
+        "LimitedDiagnosticCount": 7
       },
       "signals": [
-        "18 software-visible proof gap(s) remain after all safe live checks."
+        "20 software-visible proof gap(s) remain after all safe live checks."
       ],
       "recommendations": [
         "Use this list as the exact remaining verification checklist. Do not treat these hardware angles as clean until the named offline diagnostic, vendor tool, opt-in probe, or physical inspection is completed."
@@ -4637,7 +4587,7 @@
     {
       "name": "Device Manager problem-code sweep",
       "status": "passed",
-      "evidence": "0 problem device(s) from 299 enumerated PnP device(s).",
+      "evidence": "0 problem device(s) from 300 enumerated PnP device(s).",
       "nextStep": "No Device Manager problem codes found."
     },
     {
@@ -4709,14 +4659,20 @@
     {
       "name": "Physical disk to volume correlation",
       "status": "passed",
-      "evidence": "10 disk/partition mapping row(s), 5 mapped drive-letter volume(s), 0 unmapped drive-letter volume(s), 0 dirty mapped volume(s).",
+      "evidence": "11 disk/partition mapping row(s), 5 mapped drive-letter volume(s), 0 unmapped drive-letter volume(s), 0 dirty mapped volume(s).",
       "nextStep": "Volume-to-physical-disk mapping is available for future storage warnings."
     },
     {
       "name": "Storage live performance counter sweep",
       "status": "passed",
-      "evidence": "4 physical disk counter row(s), 10 logical disk counter row(s), 0 busy physical row(s), 0 busy logical row(s).",
-      "nextStep": "No live disk queue/disk-time pressure was visible; retest while storage symptoms are happening."
+      "evidence": "4 physical disk counter row(s), 11 logical disk counter row(s), 0 busy physical row(s), 0 busy logical row(s).",
+      "nextStep": "No live disk queue/disk-time pressure was visible in this sample; retest while storage symptoms are happening."
+    },
+    {
+      "name": "Hardware event-provider coverage sweep",
+      "status": "passed",
+      "evidence": "14 provider(s) queried, 3 provider(s) returned rows, 0 provider(s) returned warning/error/critical rows, 23 total event row(s).",
+      "nextStep": "Provider coverage is recorded; lack of problem events only applies to the scan window."
     },
     {
       "name": "WHEA and recent hardware event sweep",
@@ -4727,13 +4683,13 @@
     {
       "name": "CPU topology and live counter sweep",
       "status": "passed",
-      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=0.",
+      "evidence": "1 processor package row(s), 16 logical processor(s), 2 total counter row(s), 16 logical processor counter row(s), processor queue length=8.",
       "nextStep": "Use CPU load, clock, interrupt, queue, cache, and virtualization rows for correlation; run controlled thermal/load diagnostics only if symptoms require it."
     },
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 42C, PState P0, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 54C, PState P0, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -4751,7 +4707,7 @@
     {
       "name": "Sensor provider availability sweep",
       "status": "limited",
-      "evidence": "22 root namespace row(s), 0 PATH tool command(s), 0 provider error/unsupported response(s).",
+      "evidence": "24 root namespace row(s), 0 PATH tool command(s), 0 provider error/unsupported response(s).",
       "nextStep": "No usable thermal/fan provider was exposed; use BIOS/UEFI, motherboard/GPU vendor tools, or physical inspection."
     },
     {
@@ -4763,7 +4719,7 @@
     {
       "name": "Memory live pressure and paging counters",
       "status": "passed",
-      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=66335 MB, pages output/sec=0.",
+      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=23%, available=73543 MB, pages output/sec=0.",
       "nextStep": "No live memory pressure/pagefile warning was visible; offline diagnostics are still required for physical RAM certainty."
     },
     {
@@ -4787,8 +4743,8 @@
     {
       "name": "Driver package signer cross-check",
       "status": "passed",
-      "evidence": "301 PnP signed-driver row(s), 76 pnputil driver package row(s), 12 WMI-unsigned row(s), 12 WMI-unsigned row(s) with package signer(s), 0 unresolved unsigned row(s).",
-      "nextStep": "No unresolved unsigned package was found; correlate listed package-signed WMI mismatches only if matching hardware has symptoms."
+      "evidence": "302 PnP signed-driver row(s), 77 pnputil driver package row(s), 0 WMI-unsigned row(s), 0 WMI-unsigned row(s) with package signer(s), 0 unresolved unsigned row(s).",
+      "nextStep": "No unsigned PnP driver evidence was found."
     },
     {
       "name": "Reliability Monitor and WER crash sweep",
@@ -4798,8 +4754,8 @@
     },
     {
       "name": "Crash dump artifact sweep",
-      "status": "passed",
-      "evidence": "0 recent dump file(s), 0 LiveKernelReports file(s), 0 unique bounded keyword hint(s), 0 inaccessible/missing dump root(s).",
+      "status": "limited",
+      "evidence": "0 recent dump file(s), 0 LiveKernelReports file(s), 0 unique bounded keyword hint(s), 1 inaccessible/missing dump root(s).",
       "nextStep": "If dump files exist, preserve them and use debugger tooling for root-cause confirmation; if roots are inaccessible, rerun elevated."
     },
     {
@@ -4829,7 +4785,7 @@
     {
       "name": "Remaining proof-gap checklist",
       "status": "limited",
-      "evidence": "11 unknown component row(s), 7 underlying limited/not-run/unavailable diagnostic row(s) remain after safe live scanning.",
+      "evidence": "12 unknown component row(s), 8 underlying limited/not-run/unavailable diagnostic row(s) remain after safe live scanning.",
       "nextStep": "Open the Scanner Coverage component named 'Remaining proof gaps and required next checks' and complete the listed offline, vendor-tool, opt-in, or physical checks only if that level of certainty is required."
     }
   ],
@@ -4841,19 +4797,37 @@
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   ],
   "raw": {
-    "RecentEventCount": 5,
+    "RecentEventCount": 23,
     "RecentEvents": [
-      "06/24/2026 09:07:13 | Id=508 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has been constrained to a periodic tick Reason: BCD override.",
-      "06/24/2026 09:07:13 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
-      "06/24/2026 09:06:46 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
-      "06/24/2026 09:06:43 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API",
-      "06/24/2026 09:34:54 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service HidUsb for Device Instance ID USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000 with the following status: 0."
+      "06/24/2026 10:21:59 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
+      "06/24/2026 10:21:32 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
+      "06/24/2026 10:21:30 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API",
+      "06/24/2026 10:12:21 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
+      "06/24/2026 10:13:01 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service HidUsb for Device Instance ID USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000 with the following status: 0.",
+      "06/24/2026 10:13:00 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service AmdPpkgSvc for Device Instance ID ACPI\\AMDI0052\\2&DABA3FF&0 with the following status: 0.",
+      "06/24/2026 10:13:00 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service AmdPpkg for Device Instance ID ACPI\\AMDI0052\\2&DABA3FF&0 with the following status: 0.",
+      "06/24/2026 10:12:58 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service NVDisplay.ContainerLocalSystem for Device Instance ID PCI\\VEN_10DE&DEV_2C02&SUBSYS_41961458&REV_A1\\AD03D6761A2DB04800 with the following status: 0.",
+      "06/24/2026 10:12:58 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service nvlddmkm for Device Instance ID PCI\\VEN_10DE&DEV_2C02&SUBSYS_41961458&REV_A1\\AD03D6761A2DB04800 with the following status: 0.",
+      "06/24/2026 10:12:56 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service BTHMODEM for Device Instance ID BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_VID&00023537_PID&1022\\C&2B7ACB7D&0&D62040BEFDE1_C00000000 with the following status: 0.",
+      "06/24/2026 10:12:55 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service WUDFWpdFs for Device Instance ID SWD\\WPDBUSENUM\\_??_USBSTOR#DISK&VEN_USB_3.0&PROD_USB_3.0&REV_2.00#1142151091563008469&0#{53F56307-B6BF-11D0-94F2-00A0C91EFB8B} with the following status: 0.",
+      "06/24/2026 10:12:55 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service WUDFWpdFs for Device Instance ID SWD\\WPDBUSENUM\\{E011A254-FD7A-11F0-B528-806E6F6E6963}#0000000000100000 with the following status: 0.",
+      "06/24/2026 10:12:55 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service BTHMODEM for Device Instance ID BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\\C&2B7ACB7D&0&000000000000_00000000 with the following status: 0.",
+      "06/24/2026 10:12:55 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service WUDFWpdFs for Device Instance ID SWD\\WPDBUSENUM\\{E011A22B-FD7A-11F0-B528-806E6F6E6963}#0000000000100000 with the following status: 0.",
+      "06/24/2026 10:12:55 | Id=10100 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The driver package installation has succeeded.",
+      "06/24/2026 10:12:55 | Id=10002 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The UMDF service WpdFs (CLSID {112de495-ac4c-46f8-b663-6a4266c53313}) was upgraded. It requires framework version 2.35.0 or higher.",
+      "06/24/2026 10:12:55 | Id=10000 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | A driver package which uses user-mode driver framework version 2.35.0 is being installed on device SWD\\WPDBUSENUM\\_??_USBSTOR#DISK&VEN_USB_3.0&PROD_USB_3.0&REV_2.00#1142151091563008469&0#{53F56307-B6BF-11D0-94F2-00A0C91EFB8B}.",
+      "06/24/2026 10:12:55 | Id=10100 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The driver package installation has succeeded.",
+      "06/24/2026 10:12:55 | Id=10002 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The UMDF service WpdFs (CLSID {112de495-ac4c-46f8-b663-6a4266c53313}) was upgraded. It requires framework version 2.35.0 or higher.",
+      "06/24/2026 10:12:55 | Id=10000 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | A driver package which uses user-mode driver framework version 2.35.0 is being installed on device SWD\\WPDBUSENUM\\{E011A254-FD7A-11F0-B528-806E6F6E6963}#0000000000100000.",
+      "06/24/2026 10:12:55 | Id=10100 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The driver package installation has succeeded.",
+      "06/24/2026 10:12:55 | Id=10001 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | The UMDF service WpdFs (CLSID {112de495-ac4c-46f8-b663-6a4266c53313}) was installed. It requires framework version 2.35.0 or higher.",
+      "06/24/2026 10:12:55 | Id=10000 | Provider=Microsoft-Windows-DriverFrameworks-UserMode | Level=Information | A driver package which uses user-mode driver framework version 2.35.0 is being installed on device SWD\\WPDBUSENUM\\{E011A22B-FD7A-11F0-B528-806E6F6E6963}#0000000000100000."
     ],
     "NvidiaDetail": [
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Wed Jun 24 10:04:08 2026",
+      "Timestamp : Wed Jun 24 10:33:27 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4873,15 +4847,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 219760 us",
+      " SW Power Capping : 219767 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 42 C",
-      " GPU Current T.Limit Temp : 46 C",
+      " GPU Current Temp : 54 C",
+      " GPU Current T.Limit Temp : 34 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -4889,8 +4863,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 57.97 W",
-      " Instantaneous Power Draw : 57.96 W",
+      " Average Power Draw : 68.85 W",
+      " Instantaneous Power Draw : 69.57 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 400.00 W",
       " Requested Power Limit : 400.00 W",
@@ -4902,11 +4876,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 5.02 sec",
+      " Duration : 2.26 sec",
       " Number of Samples : 119",
-      " Max : 60.06 W",
-      " Min : 57.84 W",
-      " Avg : 58.31 W",
+      " Max : 71.82 W",
+      " Min : 67.17 W",
+      " Avg : 68.93 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -4960,7 +4934,7 @@
     "CrashDumpFiles": [],
     "CrashDumpRoots": [
       "C:\\Windows\\LiveKernelReports | Exists=True | RecentDumpCount=0 | Errors=",
-      "C:\\Windows\\Minidump | Exists=True | RecentDumpCount=0 | Errors=",
+      "C:\\Windows\\Minidump | Exists=False | RecentDumpCount=0 | Errors=Path not found or not accessible to this process.",
       "C:\\Windows\\MEMORY.DMP | Exists=False | RecentDumpCount=0 | Errors=Path not found or not accessible to this process."
     ],
     "CrashDumpHints": [],
