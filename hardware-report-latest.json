@@ -1,15 +1,15 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-23T16:57:16.5594471Z",
+  "generatedAt": "2026-06-24T06:43:55.5238781Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
-    "overallStatus": "unknown",
-    "componentCount": 83,
-    "findingCount": 0,
+    "overallStatus": "warning",
+    "componentCount": 84,
+    "findingCount": 1,
     "criticalCount": 0,
-    "warningCount": 0,
+    "warningCount": 1,
     "unknownCount": 9
   },
   "components": [
@@ -23,7 +23,7 @@
         "TotalMemoryGB": 93.64,
         "Manufacturer": "Gigabyte Technology Co., Ltd.",
         "Model": "X870E AORUS PRO",
-        "LastBoot": "2026-06-23T15:48:05.5+03:00",
+        "LastBoot": "2026-06-24T09:07:10.5+03:00",
         "OS": "Microsoft Windows 11 Pro"
       },
       "signals": [],
@@ -140,8 +140,8 @@
             "NumberOfLogicalProcessors": "16",
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
-            "CurrentClockSpeed": "4668",
-            "LoadPercentage": "42",
+            "CurrentClockSpeed": "4700",
+            "LoadPercentage": "4",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -155,8 +155,8 @@
         "SystemProcessorQueue": [
           {
             "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "30359",
-            "SystemCallsPersec": "1769910"
+            "ContextSwitchesPersec": "28650",
+            "SystemCallsPersec": "203926"
           }
         ],
         "LogicalProcessorCounterCount": 16,
@@ -164,22 +164,22 @@
           {
             "Name": "0,_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "45",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "21",
+            "PercentUserTime": "1",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "142537"
+            "InterruptsPerSec": "11744"
           },
           {
             "Name": "_Total",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "45",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "21",
+            "PercentUserTime": "1",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "142537"
+            "InterruptsPerSec": "11744"
           }
         ],
         "TotalEnabledCores": 8,
@@ -187,162 +187,162 @@
           {
             "Name": "0,0",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "43",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "18",
-            "PercentInterruptTime": "0",
-            "InterruptsPerSec": "7977"
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "49",
+            "PercentUserTime": "0",
+            "PercentInterruptTime": "6",
+            "InterruptsPerSec": "1816"
           },
           {
             "Name": "0,1",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "42",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "6768"
+            "InterruptsPerSec": "371"
           },
           {
             "Name": "0,10",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "46",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "61",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "8218"
+            "InterruptsPerSec": "712"
           },
           {
             "Name": "0,11",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "38",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "24",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "30",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "9883"
+            "InterruptsPerSec": "253"
           },
           {
             "Name": "0,12",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "36",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "6",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "7313"
+            "InterruptsPerSec": "771"
           },
           {
             "Name": "0,13",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "36",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "24",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "12",
             "PercentUserTime": "12",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5570"
+            "InterruptsPerSec": "182"
           },
           {
             "Name": "0,14",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "56",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "36",
-            "PercentUserTime": "6",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "14931"
+            "InterruptsPerSec": "728"
           },
           {
             "Name": "0,15",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "61",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "92",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "14595"
+            "InterruptsPerSec": "997"
           },
           {
             "Name": "0,2",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "45",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "6649"
+            "InterruptsPerSec": "914"
           },
           {
             "Name": "0,3",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "43",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "43",
-            "PercentUserTime": "6",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "6297"
+            "InterruptsPerSec": "684"
           },
           {
             "Name": "0,4",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "65",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "36",
-            "PercentUserTime": "6",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "9397"
+            "InterruptsPerSec": "724"
           },
           {
             "Name": "0,5",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "65",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "43",
-            "PercentUserTime": "24",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "49",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "9025"
+            "InterruptsPerSec": "265"
           },
           {
             "Name": "0,6",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "35",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "24",
-            "PercentUserTime": "18",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "8519"
+            "InterruptsPerSec": "961"
           },
           {
             "Name": "0,7",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "33",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "12",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "8385"
+            "InterruptsPerSec": "838"
           },
           {
             "Name": "0,8",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "44",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "18",
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "12",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "7748"
+            "InterruptsPerSec": "791"
           },
           {
             "Name": "0,9",
             "PercentProcessorPerformance": "98",
-            "PercentProcessorUtility": "39",
-            "ProcessorFrequency": "4668",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "6",
-            "PercentInterruptTime": "6",
-            "InterruptsPerSec": "11255"
+            "PercentProcessorUtility": "98",
+            "ProcessorFrequency": "4700",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "0",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "732"
           }
         ]
       },
@@ -449,6 +449,44 @@
       ],
       "recommendations": [
         "Use this topology to match physical DIMMs and slots before reseating, upgrading, or isolating RAM faults. Cell-level RAM certainty still requires Windows Memory Diagnostic, MemTest86, or another boot-time memory test."
+      ]
+    },
+    {
+      "id": "memory-live-pressure-ram-pressure-paging-and-pagefile-evidence",
+      "category": "Memory Live Pressure",
+      "name": "RAM pressure, paging, and pagefile evidence",
+      "status": "ok",
+      "confidence": "medium",
+      "evidence": {
+        "CommittedGB": 30.67,
+        "AvailableMemoryMB": 65759,
+        "PageWritesPerSec": 0,
+        "PagesOutputPerSec": 0,
+        "PageFaultsPerSec": 5942,
+        "PageFiles": [
+          {
+            "Name": "C:\\pagefile.sys",
+            "AllocatedMB": "13824",
+            "CurrentUsageMB": "1518",
+            "PeakUsageMB": "1904",
+            "CurrentUsagePercent": 11,
+            "PeakUsagePercent": 13.8,
+            "TempPageFile": false,
+            "Status": null
+          }
+        ],
+        "PageReadsPerSec": 163,
+        "CommitLimitGB": 107.14,
+        "CounterRows": 1,
+        "PoolPagedGB": 6.93,
+        "PageFileCount": 1,
+        "PagesInputPerSec": 163,
+        "PoolNonpagedGB": 4.5,
+        "CommitPercent": 28
+      },
+      "signals": [],
+      "recommendations": [
+        "No live commit/pagefile pressure signal was visible at scan time. This improves RAM subsystem evidence but does not prove physical RAM cells healthy without a boot-level memory diagnostic."
       ]
     },
     {
@@ -658,7 +696,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1664.88,
+        "FreeGB": 1692.63,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -715,7 +753,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 503.25,
+        "FreeGB": 481.9,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -767,7 +805,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 503.25,
+            "VolumeFreeGB": 481.9,
             "DirtyBit": false
           },
           {
@@ -818,7 +856,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1664.88,
+            "VolumeFreeGB": 1692.63,
             "DirtyBit": false
           },
           {
@@ -954,14 +992,14 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "90",
-            "WritesPerSec": "59",
-            "ReadMBPerSec": 0.22,
-            "WriteMBPerSec": 0.23,
-            "PercentDiskTime": "1",
-            "PercentFreeSpace": "89",
-            "FreeGB": 1666.87,
-            "SplitIOPerSec": "0"
+            "ReadsPerSec": "0",
+            "WritesPerSec": "2469",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 64.4,
+            "PercentDiskTime": "6",
+            "PercentFreeSpace": "91",
+            "FreeGB": 1693.73,
+            "SplitIOPerSec": "132"
           },
           {
             "LogicalDisk": "D:",
@@ -1007,8 +1045,8 @@
             "ReadMBPerSec": 0,
             "WriteMBPerSec": 0,
             "PercentDiskTime": "0",
-            "PercentFreeSpace": "52",
-            "FreeGB": 503.25,
+            "PercentFreeSpace": "50",
+            "FreeGB": 481.9,
             "SplitIOPerSec": "0"
           },
           {
@@ -1042,10 +1080,74 @@
             "PercentFreeSpace": "60",
             "FreeGB": 0.06,
             "SplitIOPerSec": "0"
+          },
+          {
+            "LogicalDisk": "HarddiskVolume10",
+            "DiskIndex": null,
+            "DiskModel": null,
+            "PhysicalDrive": null,
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "12",
+            "FreeGB": 0,
+            "SplitIOPerSec": "0"
+          },
+          {
+            "LogicalDisk": "HarddiskVolume4",
+            "DiskIndex": null,
+            "DiskModel": null,
+            "PhysicalDrive": null,
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "14",
+            "FreeGB": 0.11,
+            "SplitIOPerSec": "0"
+          },
+          {
+            "LogicalDisk": "HarddiskVolume5",
+            "DiskIndex": null,
+            "DiskModel": null,
+            "PhysicalDrive": null,
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "14",
+            "FreeGB": 0.11,
+            "SplitIOPerSec": "0"
+          },
+          {
+            "LogicalDisk": "HarddiskVolume8",
+            "DiskIndex": null,
+            "DiskModel": null,
+            "PhysicalDrive": null,
+            "CurrentQueueLength": "0",
+            "AvgQueueLength": "0",
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentFreeSpace": "0",
+            "FreeGB": 0,
+            "SplitIOPerSec": "0"
           }
         ],
         "BusyLogicalDisks": [],
-        "LogicalCounterCount": 6,
+        "LogicalCounterCount": 10,
         "PhysicalDisks": [
           {
             "CounterName": "0 C: D:",
@@ -1055,13 +1157,13 @@
             "LogicalDisks": "C: D:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "73",
-            "WritesPerSec": "827",
-            "ReadMBPerSec": 0.26,
-            "WriteMBPerSec": 123.34,
-            "PercentDiskTime": "9",
-            "PercentIdleTime": "89",
-            "SplitIOPerSec": "123"
+            "ReadsPerSec": "0",
+            "WritesPerSec": "0",
+            "ReadMBPerSec": 0,
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentIdleTime": "99",
+            "SplitIOPerSec": "0"
           },
           {
             "CounterName": "1 F:",
@@ -1341,7 +1443,7 @@
         "Status": "OK",
         "AdapterRAMGB": 2,
         "RecentGpuEvents": 0,
-        "DriverVersion": "32.0.21043.19003",
+        "DriverVersion": "32.0.21043.12001",
         "NvidiaTelemetry": null
       },
       "signals": [],
@@ -1365,18 +1467,18 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "1312",
-          "MemoryFreeMiB": "14666",
+          "MemoryUsedMiB": "1076",
+          "MemoryFreeMiB": "14902",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 1.28,
-          "MemoryFreeGB": 14.32,
-          "TemperatureC": "38",
+          "MemoryUsedGB": 1.05,
+          "MemoryFreeGB": 14.55,
+          "TemperatureC": "41",
           "FanPercent": "0",
-          "PState": "P3",
-          "PowerDrawW": "35.74",
-          "PowerLimitW": "360.00",
-          "GraphicsClockMhz": "795",
-          "MemoryClockMhz": "7001",
+          "PState": "P0",
+          "PowerDrawW": "59.93",
+          "PowerLimitW": "400.00",
+          "GraphicsClockMhz": "2902",
+          "MemoryClockMhz": "15001",
           "PcieGen": "5",
           "PcieGenMax": "5",
           "PcieWidth": "16",
@@ -1404,9 +1506,9 @@
             "PNPDeviceID": "PCI\\VEN_1002&DEV_13C0&SUBSYS_D0001458&REV_CB\\4&16012499&0&0041",
             "AdapterCompatibility": "Advanced Micro Devices, Inc.",
             "VideoProcessor": "AMD Radeon Graphics Processor (0x13C0)",
-            "DriverVersion": "32.0.21043.19003",
-            "DriverDate": "2026-06-19T03:00:00+03:00",
-            "InfFilename": "oem72.inf",
+            "DriverVersion": "32.0.21043.12001",
+            "DriverDate": "2026-05-29T03:00:00+03:00",
+            "InfFilename": "oem1.inf",
             "CurrentResolution": "3840x2160",
             "CurrentRefreshRateHz": "60",
             "CurrentBitsPerPixel": "32",
@@ -1433,8 +1535,8 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 1.28,
-            "NvidiaMemoryFreeGB": 14.32,
+            "NvidiaMemoryUsedGB": 1.05,
+            "NvidiaMemoryFreeGB": 14.55,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 5/5, x16/x16"
           }
@@ -1566,8 +1668,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 461657,
-            "BytesSentPerSec": 354666,
+            "BytesReceivedPerSec": 12171,
+            "BytesSentPerSec": 4009,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -2207,7 +2309,7 @@
             "ControllerDeviceID": "PCI\\VEN_1022&DEV_43FD&SUBSYS_11421B21&REV_01\\8&6E1E7A&0&006000400011",
             "ControllerName": "AMD USB 3.20 eXtensible Host Controller - 1.10 (Microsoft)",
             "ControllerStatus": "OK",
-            "DeviceCount": 54,
+            "DeviceCount": 64,
             "HubOrRouterCount": 2,
             "StoragePathCount": 0,
             "ProblemPathCount": 0
@@ -2277,7 +2379,7 @@
           }
         ],
         "ProblemPathCount": 0,
-        "AssociationCount": 100,
+        "AssociationCount": 110,
         "ProblemAssociations": [],
         "SampleAssociations": [
           {
@@ -2649,6 +2751,13 @@
             "DeviceID": "USB\\VID_1B1C&PID_1B07&MI_02\\9&198A58C7&0&0002"
           },
           {
+            "Name": "Bluetooth Low Energy GATT compliant HID device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00001812-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&001F"
+          },
+          {
             "Name": "USB Input Device",
             "PNPClass": "HIDClass",
             "Status": "OK",
@@ -2690,16 +2799,9 @@
             "ConfigManagerErrorCode": "0",
             "DeviceID": "USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000"
           },
-          {
-            "Name": "HID-compliant vendor-defined device",
-            "PNPClass": "HIDClass",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "HID\\VID_046D&PID_C548&MI_02&COL01\\A&1146ABF8&0&0000"
-          },
           "... truncated 1 more item(s)"
         ],
-        "DeviceCount": 30,
+        "DeviceCount": 31,
         "ProblemDevices": []
       },
       "signals": [],
@@ -2738,6 +2840,20 @@
             "DeviceID": "BTHENUM\\{00001200-0000-1000-8000-00805F9B34FB}_VID&0002045E_PID&0B05\\C&B181178&0&14CB658953BD_C00000000"
           },
           {
+            "Name": "Device Information Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{0000180A-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&000E"
+          },
+          {
+            "Name": "Bluetooth LE Generic Attribute Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00010000-0000-1000-8000-011F2000046D}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&0043"
+          },
+          {
             "Name": "Michael's S25 Ultra Hands-Free HF Audio",
             "PNPClass": "MEDIA",
             "Status": "OK",
@@ -2759,6 +2875,27 @@
             "DeviceID": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002045E_PID&0B05\\C&B181178&0&14CB658953BD_C00000000"
           },
           {
+            "Name": "LIFT",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLE\\DEV_DA659FF42146\\C&2FFD9217&0&DA659FF42146"
+          },
+          {
+            "Name": "Generic Attribute Profile",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00001801-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&000A"
+          },
+          {
+            "Name": "Bluetooth LE Generic Attribute Service",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{0000FD72-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&0036"
+          },
+          {
             "Name": "Bluetooth Peripheral Device",
             "PNPClass": null,
             "Status": "OK",
@@ -2771,6 +2908,13 @@
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
             "DeviceID": "BTH\\MS_BTHLE\\B&1FD3DE35&0&3"
+          },
+          {
+            "Name": "Generic Access Profile",
+            "PNPClass": "Bluetooth",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00001800-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&0001"
           },
           {
             "Name": "MX Anywhere 3S",
@@ -2794,6 +2938,13 @@
             "DeviceID": "BTHENUM\\{0000FD7E-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
           },
           {
+            "Name": "Bluetooth Low Energy GATT compliant HID device",
+            "PNPClass": "HIDClass",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "BTHLEDEVICE\\{00001812-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B031_REV&0011_DA659FF42146\\D&3A214C9&0&001F"
+          },
+          {
             "Name": "Michael's S25 Ultra Hands-Free HF",
             "PNPClass": "System",
             "Status": "OK",
@@ -2807,58 +2958,9 @@
             "ConfigManagerErrorCode": "0",
             "DeviceID": "USB\\VID_0489&PID_E10D\\A&AB935FC&0&11"
           },
-          {
-            "Name": "Bluetooth Peripheral Device",
-            "PNPClass": null,
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHENUM\\{594A34FC-31DB-11EA-978F-2E728CE88125}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
-          },
-          {
-            "Name": "Bluetooth LE Generic Attribute Service",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHLEDEVICE\\{E73E0001-EF1B-4E74-8291-2E4F3164F3B5}_45E6C79F4CAE\\D&DF8C832&0&0090"
-          },
-          {
-            "Name": "Bluetooth LE Generic Attribute Service",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHLEDEVICE\\{0000180F-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B037_REV&0003_DCEAAAECE9CE\\D&52BACA5&0&001B"
-          },
-          {
-            "Name": "Michael's S25 Ultra Avrcp Transport",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHENUM\\{0000110C-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
-          },
-          {
-            "Name": "Bluetooth LE Generic Attribute Service",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHLEDEVICE\\{0000184C-0000-1000-8000-00805F9B34FB}_45E6C79F4CAE\\D&DF8C832&0&005A"
-          },
-          {
-            "Name": "Object Push Service",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTHENUM\\{00001105-0000-1000-8000-00805F9B34FB}_VID&00010075_PID&0100\\C&B181178&0&68DFE412D4EF_C00000000"
-          },
-          {
-            "Name": "Microsoft Bluetooth Enumerator",
-            "PNPClass": "Bluetooth",
-            "Status": "OK",
-            "ConfigManagerErrorCode": "0",
-            "DeviceID": "BTH\\MS_BTHBRB\\B&1FD3DE35&0&1"
-          },
           "... truncated 1 more item(s)"
         ],
-        "DeviceCount": 50,
+        "DeviceCount": 58,
         "ProblemDevices": []
       },
       "signals": [],
@@ -3256,7 +3358,7 @@
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
             "Manufacturer": "Advanced Micro Devices, Inc.",
-            "Service": "amduw23g-201588-df09ebb6",
+            "Service": "amduw23g-201163-242f9a0a",
             "DeviceID": "PCI\\VEN_1002&DEV_13C0&SUBSYS_D0001458&REV_CB\\4&16012499&0&0041"
           },
           {
@@ -3574,7 +3676,7 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "EndpointCount": 4,
+        "EndpointCount": 6,
         "MediaDevices": [
           {
             "Name": "Michael's S25 Ultra Hands-Free HF Audio",
@@ -3723,13 +3825,27 @@
             "PNPClass": "AudioEndpoint",
             "Status": "OK",
             "ConfigManagerErrorCode": "0",
-            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{ACF389C3-5804-4A27-8427-9629607D3B55}"
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{B128A60C-F250-4483-9D1C-DFF563D020CE}"
+          },
+          {
+            "Name": "Speakers (Michael's S25 Ultra Hands-Free HF Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.0.00000000}.{A26CEDFC-3882-4C4E-8412-8224EAF25526}"
+          },
+          {
+            "Name": "Microphone (Michael's S25 Ultra Hands-Free HF Audio)",
+            "PNPClass": "AudioEndpoint",
+            "Status": "OK",
+            "ConfigManagerErrorCode": "0",
+            "DeviceID": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{E1DB7D5B-6481-4364-A4F5-47814D2CC544}"
           }
         ],
         "ProblemDeviceCount": 0,
         "MediaDeviceCount": 17,
         "ProblemDevices": [],
-        "InventoryDeviceCount": 21
+        "InventoryDeviceCount": 23
       },
       "signals": [],
       "recommendations": [
@@ -3746,7 +3862,7 @@
         "UnresolvedUnsignedDriverCount": 0,
         "WmiUnsignedDriverCount": 12,
         "DriverCount": 301,
-        "DriverPackageCount": 76,
+        "DriverPackageCount": 78,
         "PackageSignedWmiUnsignedCount": 12,
         "NullSignedDrivers": [
           {
@@ -4078,15 +4194,17 @@
       "confidence": "medium",
       "evidence": {
         "Lines": [
-          "The following sleep states are available on this system:",
-          "    Standby (S3)",
-          "",
           "The following sleep states are not available on this system:",
           "    Standby (S1)",
           "\tThe system firmware does not support this standby state.",
+          "\tThe current power policy has disabled this standby state.",
           "",
           "    Standby (S2)",
           "\tThe system firmware does not support this standby state.",
+          "\tThe current power policy has disabled this standby state.",
+          "",
+          "    Standby (S3)",
+          "\tThe current power policy has disabled this standby state.",
           "",
           "    Hibernate",
           "\tHibernation has not been enabled.",
@@ -4095,9 +4213,7 @@
           "\tThe system firmware does not support this standby state.",
           "",
           "    Hybrid Sleep",
-          "\tHibernation is not available.",
-          "\tThe hypervisor does not support this standby state.",
-          "",
+          "\tStandby (S3) is not available.",
           "... truncated 1 more item(s)"
         ]
       },
@@ -4132,7 +4248,7 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "EventCount": 0,
+        "EventCount": 1,
         "ProblemEvents": [],
         "ProblemEventCount": 0
       },
@@ -4152,7 +4268,7 @@
         "HardwareReliabilityRecordCount": 0,
         "WindowsErrorReportingHardwareEventCount": 0,
         "ReliabilityRecords": [],
-        "ReliabilityRecordCount": 0
+        "ReliabilityRecordCount": 12
       },
       "signals": [],
       "recommendations": [
@@ -4212,7 +4328,17 @@
       ]
     }
   ],
-  "findings": [],
+  "findings": [
+    {
+      "severity": "warning",
+      "component": "Power stability",
+      "title": "Recent power-loss or crash-path events",
+      "detail": "Kernel-Power or volmgr events can indicate forced shutdowns, PSU instability, crashes, or power loss.",
+      "evidence": "4 event(s) since 06/10/2026 09:43:46",
+      "recommendation": "If unexpected shutdowns are happening, inspect PSU, wall power, GPU power cables, and crash dumps.",
+      "confidence": "medium"
+    }
+  ],
   "diagnostics": [
     {
       "name": "Device Manager problem-code sweep",
@@ -4229,13 +4355,13 @@
     {
       "name": "USB controller topology and path sweep",
       "status": "passed",
-      "evidence": "100 USB controller/device association row(s), 8 controller path group(s), 0 problem path(s).",
+      "evidence": "110 USB controller/device association row(s), 8 controller path group(s), 0 problem path(s).",
       "nextStep": "No USB controller path problem codes were found; retest during disconnect or power/performance symptoms for intermittent USB faults."
     },
     {
       "name": "Peripheral inventory problem-code sweep",
       "status": "passed",
-      "evidence": "HID=30, Bluetooth=50, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
+      "evidence": "HID=31, Bluetooth=58, Camera/Imaging=0, Sensors=0, Printers=3; 0 unique peripheral problem device(s).",
       "nextStep": "No peripheral Device Manager problem codes found in the explicit HID/Bluetooth/camera/sensor/printer sweep."
     },
     {
@@ -4253,7 +4379,7 @@
     {
       "name": "Audio endpoint and media device sweep",
       "status": "passed",
-      "evidence": "4 audio endpoint row(s), 17 media/audio device row(s), 0 audio problem device(s).",
+      "evidence": "6 audio endpoint row(s), 17 media/audio device row(s), 0 audio problem device(s).",
       "nextStep": "No audio endpoint/media Device Manager problem codes were found; live playback/recording symptoms still need symptom-time testing."
     },
     {
@@ -4289,7 +4415,7 @@
     {
       "name": "Storage live performance counter sweep",
       "status": "passed",
-      "evidence": "4 physical disk counter row(s), 6 logical disk counter row(s), 0 busy physical row(s), 0 busy logical row(s).",
+      "evidence": "4 physical disk counter row(s), 10 logical disk counter row(s), 0 busy physical row(s), 0 busy logical row(s).",
       "nextStep": "No live disk queue/disk-time pressure was visible; retest while storage symptoms are happening."
     },
     {
@@ -4307,7 +4433,7 @@
     {
       "name": "NVIDIA GPU live telemetry",
       "status": "passed",
-      "evidence": "NVIDIA GeForce RTX 5080: 38C, PState P3, driver 610.62",
+      "evidence": "NVIDIA GeForce RTX 5080: 41C, PState P0, driver 610.62",
       "nextStep": "Run vendor/load diagnostics only if symptoms happen under GPU load."
     },
     {
@@ -4327,6 +4453,12 @@
       "status": "passed",
       "evidence": "1 memory-array row(s), 2 populated DIMM row(s), 4 declared slot(s), 2 empty slot(s).",
       "nextStep": "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
+    },
+    {
+      "name": "Memory live pressure and paging counters",
+      "status": "passed",
+      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=65759 MB, pages output/sec=0.",
+      "nextStep": "No live memory pressure/pagefile warning was visible; offline diagnostics are still required for physical RAM certainty."
     },
     {
       "name": "RAM live evidence and diagnostic history",
@@ -4349,12 +4481,12 @@
     {
       "name": "Driver package signer cross-check",
       "status": "passed",
-      "evidence": "301 PnP signed-driver row(s), 76 pnputil driver package row(s), 12 WMI-unsigned row(s), 12 WMI-unsigned row(s) with package signer(s), 0 unresolved unsigned row(s).",
+      "evidence": "301 PnP signed-driver row(s), 78 pnputil driver package row(s), 12 WMI-unsigned row(s), 12 WMI-unsigned row(s) with package signer(s), 0 unresolved unsigned row(s).",
       "nextStep": "No unresolved unsigned package was found; correlate listed package-signed WMI mismatches only if matching hardware has symptoms."
     },
     {
       "name": "Reliability Monitor and WER crash sweep",
-      "status": "limited",
+      "status": "passed",
       "evidence": "0 hardware-matching Reliability Monitor record(s), 0 hardware-matching Windows Error Reporting event(s).",
       "nextStep": "If records exist, inspect the crash bucket/message text and correlate repeated patterns before replacing hardware."
     },
@@ -4391,13 +4523,19 @@
     "This scan is read-only and avoids rebooting, destructive filesystem repair, firmware flashing, and hardware stress testing."
   ],
   "raw": {
-    "RecentEventCount": 0,
-    "RecentEvents": [],
+    "RecentEventCount": 5,
+    "RecentEvents": [
+      "06/24/2026 09:07:13 | Id=508 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has been constrained to a periodic tick Reason: BCD override.",
+      "06/24/2026 09:07:13 | Id=172 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | Connectivity state in standby: Disconnected, Reason: NIC compliance",
+      "06/24/2026 09:06:46 | Id=577 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The system has prepared for a system initiated reboot from Active.",
+      "06/24/2026 09:06:43 | Id=109 | Provider=Microsoft-Windows-Kernel-Power | Level=Information | The kernel power manager has initiated a shutdown transition. Action: Power Action Reboot Event Code: 0x0 Reason: Kernel API",
+      "06/24/2026 09:34:54 | Id=20003 | Provider=Microsoft-Windows-UserPnp | Level=Information | Driver Management has concluded the process to add Service HidUsb for Device Instance ID USB\\VID_046D&PID_C548&MI_00\\9&19CF8520&0&0000 with the following status: 0."
+    ],
     "NvidiaDetail": [
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Tue Jun 23 19:57:15 2026",
+      "Timestamp : Wed Jun 24 09:43:54 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4405,7 +4543,7 @@
       "",
       "Attached GPUs : 1",
       "GPU 00000000:01:00.0",
-      " Performance State : P3",
+      " Performance State : P0",
       " Clocks Event Reasons",
       " Idle : Not Active",
       " Applications Clocks Setting : Not Active",
@@ -4417,15 +4555,15 @@
       " SW Thermal Slowdown : Not Active",
       " Display Clock Setting : Not Active",
       " Clocks Event Reasons Counters",
-      " SW Power Capping : 932466332 us",
+      " SW Power Capping : 219760 us",
       " Sync Boost : 0 us",
       " SW Thermal Slowdown : 0 us",
       " HW Thermal Slowdown : 0 us",
       " HW Power Braking : 0 us",
       " Sparse Operation Mode : N/A",
       " Temperature",
-      " GPU Current Temp : 38 C",
-      " GPU Current T.Limit Temp : 50 C",
+      " GPU Current Temp : 41 C",
+      " GPU Current T.Limit Temp : 47 C",
       " GPU Shutdown T.Limit Temp Specification : -5 C",
       " GPU Slowdown T.Limit Temp Specification : -2 C",
       " GPU Max Operating T.Limit Temp Specification : 0 C",
@@ -4433,11 +4571,11 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 35.74 W",
-      " Instantaneous Power Draw : 33.43 W",
+      " Average Power Draw : 59.93 W",
+      " Instantaneous Power Draw : 58.63 W",
       " GPU Ceiling Power Limit",
-      " Current Power Limit : 360.00 W",
-      " Requested Power Limit : 360.00 W",
+      " Current Power Limit : 400.00 W",
+      " Requested Power Limit : 400.00 W",
       " Default Power Limit : 360.00 W",
       " GPU Base Power",
       " Current Base Power : N/A",
@@ -4446,11 +4584,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 2.33 sec",
+      " Duration : 5.85 sec",
       " Number of Samples : 119",
-      " Max : 50.38 W",
-      " Min : 30.72 W",
-      " Avg : 37.86 W",
+      " Max : 63.39 W",
+      " Min : 58.47 W",
+      " Avg : 58.82 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
@@ -4467,15 +4605,17 @@
     ],
     "DxDiagProblemLines": [],
     "PowerCfgAvailableSleepStates": [
-      "The following sleep states are available on this system:",
-      " Standby (S3)",
-      "",
       "The following sleep states are not available on this system:",
       " Standby (S1)",
       " The system firmware does not support this standby state.",
+      " The current power policy has disabled this standby state.",
       "",
       " Standby (S2)",
       " The system firmware does not support this standby state.",
+      " The current power policy has disabled this standby state.",
+      "",
+      " Standby (S3)",
+      " The current power policy has disabled this standby state.",
       "",
       " Hibernate",
       " Hibernation has not been enabled.",
@@ -4484,6 +4624,7 @@
       " The system firmware does not support this standby state.",
       "",
       " Hybrid Sleep",
+      " Standby (S3) is not available.",
       " Hibernation is not available.",
       " The hypervisor does not support this standby state.",
       "",

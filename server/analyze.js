@@ -11,6 +11,11 @@ export function summarizeReport(report) {
     if (component.status === "unknown") counts.unknownCount += 1;
   }
 
+  for (const finding of report.findings ?? []) {
+    if (finding.severity === "critical") counts.criticalCount += 1;
+    if (finding.severity === "warning") counts.warningCount += 1;
+  }
+
   let overallStatus = "ok";
   if (counts.criticalCount > 0) {
     overallStatus = "critical";

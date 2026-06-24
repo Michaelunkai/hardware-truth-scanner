@@ -32,6 +32,27 @@ describe("summarizeReport", () => {
 
     expect(summary.overallStatus).toBe("unknown");
   });
+
+  it("includes finding severities in top-level warning and critical counts", () => {
+    const summary = summarizeReport({
+      components: [
+        { status: "ok" }
+      ],
+      findings: [
+        { severity: "warning" },
+        { severity: "critical" }
+      ]
+    });
+
+    expect(summary).toMatchObject({
+      overallStatus: "critical",
+      componentCount: 1,
+      findingCount: 2,
+      criticalCount: 1,
+      warningCount: 1,
+      unknownCount: 0
+    });
+  });
 });
 
 describe("validateReportShape", () => {

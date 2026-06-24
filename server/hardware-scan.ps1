@@ -514,6 +514,8 @@ $processorPerfCounters = @(Invoke-OptionalProbe "processor information counters"
 $systemPerfCounters = @(Invoke-OptionalProbe "system processor queue counters" { Get-CimInstance Win32_PerfFormattedData_PerfOS_System })
 $memoryModules = @(Invoke-Probe "memory" { Get-CimInstance Win32_PhysicalMemory })
 $memoryArrays = @(Invoke-OptionalProbe "memory arrays" { Get-CimInstance Win32_PhysicalMemoryArray })
+$memoryPerfCounters = @(Invoke-OptionalProbe "memory performance counters" { Get-CimInstance Win32_PerfFormattedData_PerfOS_Memory })
+$pageFileUsage = @(Invoke-OptionalProbe "page file usage" { Get-CimInstance Win32_PageFileUsage })
 $diskDrives = @(Invoke-Probe "diskdrives" { Get-CimInstance Win32_DiskDrive })
 $diskPartitions = @(Invoke-Probe "disk partitions" { Get-CimInstance Win32_DiskPartition })
 $diskDriveToPartition = @(Invoke-Probe "disk drive partition map" { Get-CimInstance Win32_DiskDriveToDiskPartition })
@@ -880,6 +882,66 @@ New-Component -Category "Memory Slot Topology" -Name "DIMM slots and error-corre
   Arrays = $memoryArrayRows
   PopulatedSlots = $memorySlotRows
 } -Signals $memoryTopologySignals -Recommendations @("Use this topology to match physical DIMMs and slots before reseating, upgrading, or isolating RAM faults. Cell-level RAM certainty still requires Windows Memory Diagnostic, MemTest86, or another boot-time memory test.")
+
+$memoryPerfSample = @($memoryPerfCounters | Select-Object -First 1)
+$memoryPerf = if ($memoryPerfSample.Count -gt 0) { $memoryPerfSample[0] } else { $null }
+$commitPercent = if ($memoryPerf -and $null -ne $memoryPerf.PercentCommittedBytesInUse) { [double]$memoryPerf.PercentCommittedBytesInUse } else { $null }
+$availableMemoryMb = if ($memoryPerf -and $null -ne $memoryPerf.AvailableMBytes) { [double]$memoryPerf.AvailableMBytes } else { $null }
+$pagesOutputPerSec = if ($memoryPerf -and $null -ne $memoryPerf.PagesOutputPersec) { [double]$memoryPerf.PagesOutputPersec } else { $null }
+$pageReadsPerSec = if ($memoryPerf -and $null -ne $memoryPerf.PageReadsPersec) { [double]$memoryPerf.PageReadsPersec } else { $null }
+$pagesInputPerSec = if ($memoryPerf -and $null -ne $memoryPerf.PagesInputPersec) { [double]$memoryPerf.PagesInputPersec } else { $null }
+$memoryCommittedGb = if ($memoryPerf -and $null -ne $memoryPerf.CommittedBytes) { [math]::Round(([double]$memoryPerf.CommittedBytes / 1GB), 2) } else { $null }
+$memoryCommitLimitGb = if ($memoryPerf -and $null -ne $memoryPerf.CommitLimit) { [math]::Round(([double]$memoryPerf.CommitLimit / 1GB), 2) } else { $null }
+$pageFileRows = @($pageFileUsage | ForEach-Object {
+  $allocated = if ($null -ne $_.AllocatedBaseSize) { [double]$_.AllocatedBaseSize } else { 0 }
+  $current = if ($null -ne $_.CurrentUsage) { [double]$_.CurrentUsage } else { 0 }
+  $peak = if ($null -ne $_.PeakUsage) { [double]$_.PeakUsage } else { 0 }
+  [pscustomobject]@{
+    Name = $_.Name
+    AllocatedMB = $_.AllocatedBaseSize
+    CurrentUsageMB = $_.CurrentUsage
+    PeakUsageMB = $_.PeakUsage
+    CurrentUsagePercent = if ($allocated -gt 0) { [math]::Round(($current / $allocated) * 100, 1) } else { $null }
+    PeakUsagePercent = if ($allocated -gt 0) { [math]::Round(($peak / $allocated) * 100, 1) } else { $null }
+    TempPageFile = $_.TempPageFile
+    Status = $_.Status
+  }
+})
+$pageFilePressureRows = @($pageFileRows | Where-Object {
+  ($null -ne $_.CurrentUsagePercent -and $_.CurrentUsagePercent -ge 90) -or
+  ($null -ne $_.PeakUsagePercent -and $_.PeakUsagePercent -ge 90) -or
+  $_.TempPageFile -eq $true
+})
+$memoryPressureSignals = @()
+if ($memoryPerfSample.Count -eq 0) { $memoryPressureSignals += "Windows did not expose live memory performance counters to this scanner." }
+if ($commitPercent -ne $null -and $commitPercent -ge 90) { $memoryPressureSignals += "Committed memory is high at $commitPercent% of the commit limit." }
+if ($availableMemoryMb -ne $null -and $availableMemoryMb -lt 1024) { $memoryPressureSignals += "Available memory is low at $availableMemoryMb MB." }
+if ($pagesOutputPerSec -ne $null -and $pagesOutputPerSec -gt 50) { $memoryPressureSignals += "Windows is paging memory out to disk at $pagesOutputPerSec pages/sec." }
+if ($pageFileUsage.Count -eq 0) { $memoryPressureSignals += "Windows did not expose pagefile usage rows to this scanner." }
+if ($pageFilePressureRows.Count -gt 0) { $memoryPressureSignals += "$($pageFilePressureRows.Count) pagefile row(s) show high current/peak usage or a temporary pagefile." }
+$hasMemoryPressureWarning = (
+  ($commitPercent -ne $null -and $commitPercent -ge 90) -or
+  ($availableMemoryMb -ne $null -and $availableMemoryMb -lt 1024) -or
+  ($pagesOutputPerSec -ne $null -and $pagesOutputPerSec -gt 50) -or
+  $pageFilePressureRows.Count -gt 0
+)
+$memoryPressureStatus = if ($memoryPerfSample.Count -eq 0 -and $pageFileUsage.Count -eq 0) { "unknown" } elseif ($hasMemoryPressureWarning) { "warning" } else { "ok" }
+New-Component -Category "Memory Live Pressure" -Name "RAM pressure, paging, and pagefile evidence" -Status $memoryPressureStatus -Confidence "medium" -Evidence @{
+  CounterRows = $memoryPerfCounters.Count
+  AvailableMemoryMB = $availableMemoryMb
+  CommitPercent = $commitPercent
+  CommittedGB = $memoryCommittedGb
+  CommitLimitGB = $memoryCommitLimitGb
+  PagesInputPerSec = $pagesInputPerSec
+  PagesOutputPerSec = $pagesOutputPerSec
+  PageReadsPerSec = $pageReadsPerSec
+  PageWritesPerSec = if ($memoryPerf -and $null -ne $memoryPerf.PageWritesPersec) { [double]$memoryPerf.PageWritesPersec } else { $null }
+  PageFaultsPerSec = if ($memoryPerf -and $null -ne $memoryPerf.PageFaultsPersec) { [double]$memoryPerf.PageFaultsPersec } else { $null }
+  PoolNonpagedGB = if ($memoryPerf -and $null -ne $memoryPerf.PoolNonpagedBytes) { [math]::Round(([double]$memoryPerf.PoolNonpagedBytes / 1GB), 2) } else { $null }
+  PoolPagedGB = if ($memoryPerf -and $null -ne $memoryPerf.PoolPagedBytes) { [math]::Round(([double]$memoryPerf.PoolPagedBytes / 1GB), 2) } else { $null }
+  PageFileCount = $pageFileUsage.Count
+  PageFiles = $pageFileRows
+} -Signals $memoryPressureSignals -Recommendations $(if ($memoryPressureStatus -eq "warning") { @("Reduce memory pressure, check pagefile configuration/free system-drive space, and retest. If memory errors or crashes exist, still run an offline RAM diagnostic before replacing DIMMs.") } elseif ($memoryPressureStatus -eq "unknown") { @("Use Resource Monitor/Performance Monitor and an offline RAM diagnostic if memory symptoms exist because live memory counters were unavailable.") } else { @("No live commit/pagefile pressure signal was visible at scan time. This improves RAM subsystem evidence but does not prove physical RAM cells healthy without a boot-level memory diagnostic.") })
 
 $memoryEvents = @($events | Where-Object { $_.ProviderName -match "MemoryDiagnostics|WHEA" -and $_.Message -match "memory|RAM|cache hierarchy" })
 if ($memoryEvents.Count -gt 0) {
@@ -1777,6 +1839,7 @@ New-Diagnostic -Name "NVIDIA GPU live telemetry" -Status $(if ($nvidiaCommand -a
 New-Diagnostic -Name "GPU display mode, VRAM, and link telemetry" -Status $(if ($gpuDisplayProblemRows.Count -gt 0) { "warning" } elseif ($gpuDisplayRows.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($gpuDisplayRows.Count) video controller row(s), $($nvidiaRows.Count) NVIDIA telemetry row(s), $($gpuDisplayProblemRows.Count) problem display pipeline row(s)." -NextStep $(if ($gpuDisplayProblemRows.Count -gt 0) { "Fix video-controller status before replacing GPU, cable, monitor, or PCIe slot hardware." } elseif ($gpuDisplayRows.Count -eq 0) { "Use Device Manager and GPU vendor tools if display symptoms exist because video-controller rows were unavailable." } else { "Use display mode, VRAM, driver, and PCIe link rows to correlate symptoms; visually retest flicker/HDR/VRR/cable issues during symptoms." })
 New-Diagnostic -Name "Thermal and fan telemetry" -Status $(if ($hotThirdPartySensors.Count -gt 0) { "warning" } elseif ($thermalZones.Count -eq 0 -and $fans.Count -eq 0 -and $thirdPartySensors.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($thermalZones.Count) ACPI thermal zone(s), $($fans.Count) WMI fan sensor(s), $($thirdPartySensors.Count) third-party sensor row(s)." -NextStep "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
 New-Diagnostic -Name "Memory slot topology and error-correction sweep" -Status $(if ($memoryArrays.Count -eq 0 -and $memoryModules.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($memoryArrays.Count) memory-array row(s), $populatedMemorySlotCount populated DIMM row(s), $declaredMemorySlotCount declared slot(s), $emptyMemorySlotCount empty slot(s)." -NextStep "Use the DIMM locator, bank, speed, voltage, part number, and error-correction rows to match physical sticks before reseating, upgrading, or isolating RAM faults."
+New-Diagnostic -Name "Memory live pressure and paging counters" -Status $(if ($memoryPressureStatus -eq "warning") { "warning" } elseif ($memoryPressureStatus -eq "unknown") { "limited" } else { "passed" }) -Evidence "$($memoryPerfCounters.Count) memory counter row(s), $($pageFileUsage.Count) pagefile row(s), commit=$commitPercent%, available=$availableMemoryMb MB, pages output/sec=$pagesOutputPerSec." -NextStep $(if ($memoryPressureStatus -eq "warning") { "Investigate memory pressure/pagefile configuration before treating slowdowns or crashes as physical RAM failure; run boot-level RAM diagnostics if errors persist." } elseif ($memoryPressureStatus -eq "unknown") { "Use Performance Monitor/Resource Monitor and offline memory diagnostics because Windows did not expose live memory pressure rows." } else { "No live memory pressure/pagefile warning was visible; offline diagnostics are still required for physical RAM certainty." })
 New-Diagnostic -Name "RAM live evidence and diagnostic history" -Status $(if ($memoryDiagnosticProblemEvents.Count -gt 0) { "warning" } elseif ($memoryDiagnosticOkEvents.Count -gt 0) { "passed" } else { "limited" }) -Evidence "$($memoryModules.Count) DIMM(s) inventoried; $($memoryDiagnosticResults.Count) Windows Memory Diagnostic result event(s) in the last $RecentDays day(s)." -NextStep "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
 New-Diagnostic -Name "PCIe topology and lane-sensitive device sweep" -Status $(if ($pciBridgeProblems.Count -gt 0 -or $pciLaneSensitiveProblems.Count -gt 0) { "warning" } elseif ($pciBridgeDevices.Count -eq 0 -and $pciLaneSensitiveDevices.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($pciBridgeDevices.Count) PCIe bridge/root/switch port row(s), $($pciLaneSensitiveDevices.Count) lane-sensitive PCIe device row(s), $($pciBridgeProblems.Count) bridge/port problem device(s), $($pciLaneSensitiveProblems.Count) lane-sensitive problem device(s)." -NextStep $(if ($pciBridgeProblems.Count -gt 0 -or $pciLaneSensitiveProblems.Count -gt 0) { "Fix listed PCIe path devices before replacing GPU, NVMe, NIC, USB controller, or motherboard hardware." } elseif ($pciBridgeDevices.Count -eq 0 -and $pciLaneSensitiveDevices.Count -eq 0) { "Use BIOS/UEFI or vendor topology tools if PCIe symptoms exist because Windows topology rows were unavailable." } else { "No PCIe topology Device Manager problem codes were found; retest during GPU, NVMe, USB, or NIC symptoms for intermittent slot or lane faults." })
 New-Diagnostic -Name "PCI/PCIe and device setup reliability" -Status $(if ($pciProblems.Count -gt 0 -or $deviceReliabilityProblemEvents.Count -gt 0) { "warning" } else { "passed" }) -Evidence "$($pciDevices.Count) PCI/PCIe device(s), $($pciProblems.Count) PCI problem device(s), $($deviceReliabilityProblemEvents.Count) recent PnP/device setup warning or error event(s)." -NextStep "If warnings exist, fix the specific device/driver path before assuming motherboard, slot, or expansion-card failure."
