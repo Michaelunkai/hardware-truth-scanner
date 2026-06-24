@@ -578,6 +578,30 @@ $openHardwareSensors = @(Invoke-OptionalProbe "openhardwaremonitor sensors" { Ge
 $libreHardwareSensors = @(Invoke-OptionalProbe "librehardwaremonitor sensors" { Get-CimInstance -Namespace root\LibreHardwareMonitor -ClassName Sensor })
 $sensorRootNamespaces = @(Invoke-OptionalProbe "root namespaces" { Get-CimInstance -Namespace root -ClassName __Namespace | Select-Object -ExpandProperty Name })
 $sensorToolCommands = @(Invoke-OptionalProbe "sensor monitor commands" { Get-Command LibreHardwareMonitor.exe, OpenHardwareMonitor.exe, HWiNFO64.exe, FanControl.exe, MSIAfterburner.exe, RTSS.exe, smartctl.exe -ErrorAction SilentlyContinue })
+$diagnosticToolPatterns = "Samsung|Magician|Western Digital|WD Dashboard|Crucial|Storage Executive|Kingston|Intel.*Memory|Intel.*Storage|smartmontools|smartctl|SeaTools|Seagate|SanDisk|Kioxia|Toshiba|LibreHardwareMonitor|OpenHardwareMonitor|HWiNFO|FanControl|Afterburner|Ryzen Master|Armoury|MSI Center|iCUE|MemTest|OCCT|AIDA64|CrystalDisk"
+$diagnosticToolInstallRegistry = @(Invoke-OptionalProbe "installed diagnostic tools" {
+  $uninstallPaths = @(
+    "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*",
+    "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*",
+    "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
+  )
+  foreach ($path in $uninstallPaths) {
+    Get-ItemProperty $path -ErrorAction SilentlyContinue |
+      Where-Object { $_.DisplayName -match $diagnosticToolPatterns } |
+      Select-Object DisplayName, DisplayVersion, Publisher, InstallLocation, DisplayIcon
+  }
+})
+$diagnosticToolCommands = @(Invoke-OptionalProbe "diagnostic tool commands" { Get-Command smartctl.exe, SamsungMagician.exe, "WD Dashboard.exe", StorageExecutive.exe, SeaTools.exe, CrystalDiskInfo.exe, HWiNFO64.exe, LibreHardwareMonitor.exe, OpenHardwareMonitor.exe, FanControl.exe, MSIAfterburner.exe, RyzenMaster.exe, OCCT.exe, AIDA64.exe -ErrorAction SilentlyContinue })
+$diagnosticToolShortcuts = @(Invoke-OptionalProbe "diagnostic tool shortcuts" {
+  $shortcutRoots = @([Environment]::GetFolderPath("CommonPrograms"), [Environment]::GetFolderPath("Programs"), [Environment]::GetFolderPath("CommonDesktopDirectory"), [Environment]::GetFolderPath("DesktopDirectory"))
+  foreach ($root in $shortcutRoots) {
+    if (Test-Path -LiteralPath $root) {
+      Get-ChildItem -LiteralPath $root -Recurse -File -Include *.lnk -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -match $diagnosticToolPatterns } |
+        Select-Object Name, FullName
+    }
+  }
+})
 $enclosures = @(Invoke-Probe "enclosure" { Get-CimInstance Win32_SystemEnclosure })
 $tpm = @(Invoke-OptionalProbe "tpm" { Get-CimInstance -Namespace root\cimv2\Security\MicrosoftTpm -ClassName Win32_Tpm })
 
@@ -1895,6 +1919,30 @@ New-Diagnostic -Name "Crash dump artifact sweep" -Status $(if ($recentCrashDumps
 New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Count -gt 0) { "warning" } elseif ($volumeDirtyResults.Count -eq 0) { "limited" } else { "passed" }) -Evidence "$($volumeDirtyResults.Count) volume(s) checked; $($dirtyVolumes.Count) dirty volume(s); $($unsupportedDirtyChecks.Count) unsupported/failed check(s)." -NextStep "If a volume is dirty, back up first and schedule filesystem diagnostics before repair."
 New-Diagnostic -Name "Dirty-volume read-only filesystem check" -Status $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "warning" } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "limited" } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0 -and $dirtyVolumes.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($dirtyVolumeReadOnlyChecks.Count) dirty-volume read-only chkdsk check(s), $($dirtyVolumeReadOnlyProblemChecks.Count) with problem text, $($dirtyVolumeReadOnlyIncompleteChecks.Count) incomplete or without clean final verdict." -NextStep $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "Back up affected data and review read-only chkdsk output before any repair." } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "Rerun chkdsk manually during a quiet window; the app intentionally bounds read-only filesystem checks." } elseif ($dirtyVolumes.Count -gt 0) { "Dirty volume follow-up was captured; keep backups current and repair only in a planned window." } else { "No dirty volume needed read-only chkdsk follow-up." })
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
+
+$diagnosticToolRegistryRows = @($diagnosticToolInstallRegistry | Sort-Object DisplayName -Unique | Select-Object -First 40 DisplayName, DisplayVersion, Publisher, InstallLocation, DisplayIcon)
+$diagnosticToolCommandRows = @($diagnosticToolCommands | Sort-Object Name -Unique | Select-Object -First 40 Name, Source, Version)
+$diagnosticToolShortcutRows = @($diagnosticToolShortcuts | Sort-Object FullName -Unique | Select-Object -First 40 Name, FullName)
+$diagnosticToolStorageRows = @($diagnosticToolRegistryRows + $diagnosticToolCommandRows + $diagnosticToolShortcutRows | Where-Object { ($_.DisplayName, $_.Name, $_.Source, $_.FullName -join " ") -match "Samsung|Magician|Western Digital|WD Dashboard|Crucial|Storage Executive|Kingston|Intel.*Storage|smartmontools|smartctl|SeaTools|Seagate|SanDisk|Kioxia|Toshiba|CrystalDisk" })
+$diagnosticToolSensorRows = @($diagnosticToolRegistryRows + $diagnosticToolCommandRows + $diagnosticToolShortcutRows | Where-Object { ($_.DisplayName, $_.Name, $_.Source, $_.FullName -join " ") -match "LibreHardwareMonitor|OpenHardwareMonitor|HWiNFO|FanControl|Afterburner|Ryzen Master|Armoury|MSI Center|iCUE|OCCT|AIDA64" })
+$diagnosticToolMemoryRows = @($diagnosticToolRegistryRows + $diagnosticToolCommandRows + $diagnosticToolShortcutRows | Where-Object { ($_.DisplayName, $_.Name, $_.Source, $_.FullName -join " ") -match "MemTest|OCCT|AIDA64" })
+$diagnosticToolSignals = @()
+if ($diagnosticToolRegistryRows.Count -eq 0 -and $diagnosticToolCommandRows.Count -eq 0 -and $diagnosticToolShortcutRows.Count -eq 0) { $diagnosticToolSignals += "No known hardware diagnostic, sensor, SMART, memory-test, or vendor utility was discovered through registry, PATH, or Start Menu shortcuts." }
+if ($diagnosticToolStorageRows.Count -eq 0) { $diagnosticToolSignals += "No known storage SMART/vendor diagnostic tool was discovered locally." }
+if ($diagnosticToolSensorRows.Count -eq 0) { $diagnosticToolSignals += "No known live sensor or motherboard monitoring tool was discovered locally." }
+if ($diagnosticToolMemoryRows.Count -eq 0) { $diagnosticToolSignals += "No known memory-test utility was discovered locally." }
+New-Component -Category "Diagnostic Tool Availability" -Name "Installed vendor, SMART, sensor, and memory diagnostic utilities" -Status "info" -Confidence "medium" -Evidence @{
+  RegistryToolCount = $diagnosticToolRegistryRows.Count
+  PathCommandCount = $diagnosticToolCommandRows.Count
+  ShortcutCount = $diagnosticToolShortcutRows.Count
+  StorageToolEvidenceCount = $diagnosticToolStorageRows.Count
+  SensorToolEvidenceCount = $diagnosticToolSensorRows.Count
+  MemoryToolEvidenceCount = $diagnosticToolMemoryRows.Count
+  RegistryTools = $diagnosticToolRegistryRows
+  PathCommands = $diagnosticToolCommandRows
+  Shortcuts = $diagnosticToolShortcutRows
+} -Signals $diagnosticToolSignals -Recommendations $(if ($diagnosticToolStorageRows.Count -gt 0 -or $diagnosticToolSensorRows.Count -gt 0 -or $diagnosticToolMemoryRows.Count -gt 0) { @("Use the listed trusted tools manually for the matching proof gaps. This scanner only inventories them and does not launch tools, change firmware, stress hardware, or repair disks.") } else { @("Install or use trusted vendor diagnostics only if you need to close SMART, sensor, memory-test, or physical-certainty gaps. This scanner intentionally avoids downloading or running third-party tools automatically.") })
+New-Diagnostic -Name "Installed diagnostic tool availability sweep" -Status "passed" -Evidence "$($diagnosticToolRegistryRows.Count) registry tool row(s), $($diagnosticToolCommandRows.Count) PATH command row(s), $($diagnosticToolShortcutRows.Count) shortcut row(s) matched known hardware diagnostic names." -NextStep "If proof gaps remain, use any listed trusted tool manually for the matching hardware area; otherwise install/run the appropriate vendor diagnostic only if that certainty is required."
 
 $unknownComponentsBeforeCoverage = @($components | Where-Object { $_.Status -eq "unknown" })
 $limitedDiagnosticsBeforeCoverage = @($diagnostics | Where-Object { $_.Status -in @("limited", "not_run", "unavailable") })

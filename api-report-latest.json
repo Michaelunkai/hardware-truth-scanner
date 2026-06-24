@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-24T06:58:43.0424129Z",
+  "generatedAt": "2026-06-24T07:04:09.9125252Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "unknown",
-    "componentCount": 87,
+    "componentCount": 88,
     "findingCount": 0,
     "criticalCount": 0,
     "warningCount": 0,
@@ -141,7 +141,7 @@
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
             "CurrentClockSpeed": "4700",
-            "LoadPercentage": "45",
+            "LoadPercentage": "30",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -155,194 +155,194 @@
         "SystemProcessorQueue": [
           {
             "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "158993",
-            "SystemCallsPersec": "497519"
+            "ContextSwitchesPersec": "12607",
+            "SystemCallsPersec": "129889"
           }
         ],
         "LogicalProcessorCounterCount": 16,
         "TotalCounterRows": [
           {
             "Name": "0,_Total",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "18",
+            "PercentUserTime": "12",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "23889"
+            "InterruptsPerSec": "13159"
           },
           {
             "Name": "_Total",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "28",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "18",
+            "PercentUserTime": "12",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "23889"
+            "InterruptsPerSec": "13159"
           }
         ],
         "TotalEnabledCores": 8,
         "LogicalProcessorSamples": [
           {
             "Name": "0,0",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "0",
+            "PercentPrivilegedTime": "54",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "5166"
+            "InterruptsPerSec": "2435"
           },
           {
             "Name": "0,1",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "41",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "12",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1804"
+            "InterruptsPerSec": "362"
           },
           {
             "Name": "0,10",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "36",
+            "PercentUserTime": "12",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1251"
+            "InterruptsPerSec": "793"
           },
           {
             "Name": "0,11",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "11",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "18",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "574"
+            "InterruptsPerSec": "165"
           },
           {
             "Name": "0,12",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "5",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "18",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1384"
+            "InterruptsPerSec": "1144"
           },
           {
             "Name": "0,13",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "11",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "423"
+            "InterruptsPerSec": "242"
           },
           {
             "Name": "0,14",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "47",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "54",
+            "PercentUserTime": "30",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1569"
+            "InterruptsPerSec": "1217"
           },
           {
             "Name": "0,15",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "24",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1399"
+            "InterruptsPerSec": "732"
           },
           {
             "Name": "0,2",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "47",
-            "PercentUserTime": "17",
+            "PercentPrivilegedTime": "18",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1554"
+            "InterruptsPerSec": "828"
           },
           {
             "Name": "0,3",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "0",
+            "PercentUserTime": "12",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1157"
+            "InterruptsPerSec": "747"
           },
           {
             "Name": "0,4",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "41",
-            "PercentUserTime": "0",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1354"
+            "InterruptsPerSec": "693"
           },
           {
             "Name": "0,5",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "23",
-            "PercentUserTime": "0",
+            "PercentPrivilegedTime": "66",
+            "PercentUserTime": "24",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "718"
+            "InterruptsPerSec": "319"
           },
           {
             "Name": "0,6",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "41",
-            "PercentUserTime": "0",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "18",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1546"
+            "InterruptsPerSec": "924"
           },
           {
             "Name": "0,7",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "17",
+            "PercentPrivilegedTime": "0",
             "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1176"
+            "InterruptsPerSec": "766"
           },
           {
             "Name": "0,8",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "18",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1456"
+            "InterruptsPerSec": "1078"
           },
           {
             "Name": "0,9",
-            "PercentProcessorPerformance": "101",
-            "PercentProcessorUtility": "101",
+            "PercentProcessorPerformance": "95",
+            "PercentProcessorUtility": "95",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "29",
-            "PercentUserTime": "5",
+            "PercentPrivilegedTime": "6",
+            "PercentUserTime": "18",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1350"
+            "InterruptsPerSec": "705"
           }
         ]
       },
@@ -458,30 +458,30 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "CommittedGB": 30.81,
-        "AvailableMemoryMB": 66497,
+        "CommittedGB": 30.89,
+        "AvailableMemoryMB": 66335,
         "PageWritesPerSec": 0,
         "PagesOutputPerSec": 0,
-        "PageFaultsPerSec": 255783,
+        "PageFaultsPerSec": 14941,
         "PageFiles": [
           {
             "Name": "C:\\pagefile.sys",
             "AllocatedMB": "13824",
-            "CurrentUsageMB": "2004",
+            "CurrentUsageMB": "1980",
             "PeakUsageMB": "2400",
-            "CurrentUsagePercent": 14.5,
+            "CurrentUsagePercent": 14.3,
             "PeakUsagePercent": 17.4,
             "TempPageFile": false,
             "Status": null
           }
         ],
-        "PageReadsPerSec": 466,
+        "PageReadsPerSec": 233,
         "CommitLimitGB": 107.14,
         "CounterRows": 1,
-        "PoolPagedGB": 6.73,
+        "PoolPagedGB": 6.75,
         "PageFileCount": 1,
-        "PagesInputPerSec": 17406,
-        "PoolNonpagedGB": 4.3,
+        "PagesInputPerSec": 2993,
+        "PoolNonpagedGB": 4.31,
         "CommitPercent": 28
       },
       "signals": [],
@@ -735,7 +735,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1693.6,
+        "FreeGB": 1693.49,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -792,7 +792,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 466.5,
+        "FreeGB": 461.6,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -844,7 +844,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 466.5,
+            "VolumeFreeGB": 461.6,
             "DirtyBit": false
           },
           {
@@ -895,7 +895,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1693.6,
+            "VolumeFreeGB": 1693.49,
             "DirtyBit": false
           },
           {
@@ -1031,13 +1031,13 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "322",
-            "WritesPerSec": "7",
-            "ReadMBPerSec": 55.21,
-            "WriteMBPerSec": 0.03,
-            "PercentDiskTime": "4",
+            "ReadsPerSec": "837",
+            "WritesPerSec": "117",
+            "ReadMBPerSec": 17.9,
+            "WriteMBPerSec": 0.46,
+            "PercentDiskTime": "5",
             "PercentFreeSpace": "91",
-            "FreeGB": 1693.69,
+            "FreeGB": 1693.5,
             "SplitIOPerSec": "0"
           },
           {
@@ -1079,13 +1079,13 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE1",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "0",
-            "WritesPerSec": "1610",
-            "ReadMBPerSec": 0,
-            "WriteMBPerSec": 60.65,
-            "PercentDiskTime": "38",
-            "PercentFreeSpace": "49",
-            "FreeGB": 474.79,
+            "ReadsPerSec": "876",
+            "WritesPerSec": "316",
+            "ReadMBPerSec": 3.42,
+            "WriteMBPerSec": 5.69,
+            "PercentDiskTime": "18",
+            "PercentFreeSpace": "48",
+            "FreeGB": 461.62,
             "SplitIOPerSec": "0"
           },
           {
@@ -1196,13 +1196,13 @@
             "LogicalDisks": "C: D:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "275",
-            "WritesPerSec": "7",
-            "ReadMBPerSec": 60.09,
-            "WriteMBPerSec": 0.03,
-            "PercentDiskTime": "4",
-            "PercentIdleTime": "95",
-            "SplitIOPerSec": "0"
+            "ReadsPerSec": "735",
+            "WritesPerSec": "130",
+            "ReadMBPerSec": 15.17,
+            "WriteMBPerSec": 4.4,
+            "PercentDiskTime": "5",
+            "PercentIdleTime": "88",
+            "SplitIOPerSec": "19"
           },
           {
             "CounterName": "1 F:",
@@ -1213,11 +1213,11 @@
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
             "ReadsPerSec": "0",
-            "WritesPerSec": "1593",
+            "WritesPerSec": "0",
             "ReadMBPerSec": 0,
-            "WriteMBPerSec": 66.32,
-            "PercentDiskTime": "37",
-            "PercentIdleTime": "62",
+            "WriteMBPerSec": 0,
+            "PercentDiskTime": "0",
+            "PercentIdleTime": "99",
             "SplitIOPerSec": "0"
           },
           {
@@ -1554,15 +1554,15 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "994",
-          "MemoryFreeMiB": "14984",
+          "MemoryUsedMiB": "999",
+          "MemoryFreeMiB": "14979",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 0.97,
+          "MemoryUsedGB": 0.98,
           "MemoryFreeGB": 14.63,
           "TemperatureC": "42",
           "FanPercent": "0",
           "PState": "P0",
-          "PowerDrawW": "59.04",
+          "PowerDrawW": "57.97",
           "PowerLimitW": "400.00",
           "GraphicsClockMhz": "2902",
           "MemoryClockMhz": "15001",
@@ -1622,7 +1622,7 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 0.97,
+            "NvidiaMemoryUsedGB": 0.98,
             "NvidiaMemoryFreeGB": 14.63,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 5/5, x16/x16"
@@ -1755,8 +1755,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 2858,
-            "BytesSentPerSec": 1404,
+            "BytesReceivedPerSec": 73717,
+            "BytesSentPerSec": 13824,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -4447,6 +4447,44 @@
       ]
     },
     {
+      "id": "diagnostic-tool-availability-installed-vendor-smart-sensor-and-memory-diagnostic-utilities",
+      "category": "Diagnostic Tool Availability",
+      "name": "Installed vendor, SMART, sensor, and memory diagnostic utilities",
+      "status": "info",
+      "confidence": "medium",
+      "evidence": {
+        "SensorToolEvidenceCount": 2,
+        "ShortcutCount": 1,
+        "Shortcuts": [
+          {
+            "Name": "Ryzen Master.lnk",
+            "FullName": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\AMD Ryzen Master\\Ryzen Master\\Ryzen Master.lnk"
+          }
+        ],
+        "PathCommandCount": 0,
+        "PathCommands": [],
+        "RegistryTools": [
+          {
+            "DisplayName": "AMD Ryzen Master",
+            "DisplayVersion": "3.1.0.5185",
+            "Publisher": "Advanced Micro Devices, Inc.",
+            "InstallLocation": "C:\\Program Files\\AMD\\RyzenMaster\\",
+            "DisplayIcon": null
+          }
+        ],
+        "RegistryToolCount": 1,
+        "MemoryToolEvidenceCount": 0,
+        "StorageToolEvidenceCount": 0
+      },
+      "signals": [
+        "No known storage SMART/vendor diagnostic tool was discovered locally.",
+        "No known memory-test utility was discovered locally."
+      ],
+      "recommendations": [
+        "Use the listed trusted tools manually for the matching proof gaps. This scanner only inventories them and does not launch tools, change firmware, stress hardware, or repair disks."
+      ]
+    },
+    {
       "id": "scanner-coverage-remaining-proof-gaps-and-required-next-checks",
       "category": "Scanner Coverage",
       "name": "Remaining proof gaps and required next checks",
@@ -4725,7 +4763,7 @@
     {
       "name": "Memory live pressure and paging counters",
       "status": "passed",
-      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=66497 MB, pages output/sec=0.",
+      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=66335 MB, pages output/sec=0.",
       "nextStep": "No live memory pressure/pagefile warning was visible; offline diagnostics are still required for physical RAM certainty."
     },
     {
@@ -4783,6 +4821,12 @@
       "nextStep": "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
     },
     {
+      "name": "Installed diagnostic tool availability sweep",
+      "status": "passed",
+      "evidence": "1 registry tool row(s), 0 PATH command row(s), 1 shortcut row(s) matched known hardware diagnostic names.",
+      "nextStep": "If proof gaps remain, use any listed trusted tool manually for the matching hardware area; otherwise install/run the appropriate vendor diagnostic only if that certainty is required."
+    },
+    {
       "name": "Remaining proof-gap checklist",
       "status": "limited",
       "evidence": "11 unknown component row(s), 7 underlying limited/not-run/unavailable diagnostic row(s) remain after safe live scanning.",
@@ -4809,7 +4853,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Wed Jun 24 09:58:42 2026",
+      "Timestamp : Wed Jun 24 10:04:08 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4845,8 +4889,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 59.04 W",
-      " Instantaneous Power Draw : 59.06 W",
+      " Average Power Draw : 57.97 W",
+      " Instantaneous Power Draw : 57.96 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 400.00 W",
       " Requested Power Limit : 400.00 W",
@@ -4858,11 +4902,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 5.04 sec",
+      " Duration : 5.02 sec",
       " Number of Samples : 119",
-      " Max : 63.27 W",
-      " Min : 58.55 W",
-      " Avg : 59.20 W",
+      " Max : 60.06 W",
+      " Min : 57.84 W",
+      " Avg : 58.31 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",
