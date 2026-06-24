@@ -1,12 +1,12 @@
 {
   "scanner": "hardware-truth-scanner",
-  "generatedAt": "2026-06-24T06:54:14.6118449Z",
+  "generatedAt": "2026-06-24T06:58:43.0424129Z",
   "host": "USER",
   "os": "Microsoft Windows 11 Pro 10.0.26200",
   "scanWindowDays": 14,
   "summary": {
     "overallStatus": "unknown",
-    "componentCount": 86,
+    "componentCount": 87,
     "findingCount": 0,
     "criticalCount": 0,
     "warningCount": 0,
@@ -141,7 +141,7 @@
             "ThreadCount": "16",
             "MaxClockSpeed": "4700",
             "CurrentClockSpeed": "4700",
-            "LoadPercentage": "27",
+            "LoadPercentage": "45",
             "L2CacheSize": "8192",
             "L3CacheSize": "98304",
             "VirtualizationFirmwareEnabled": true,
@@ -155,8 +155,8 @@
         "SystemProcessorQueue": [
           {
             "ProcessorQueueLength": "0",
-            "ContextSwitchesPersec": "100480",
-            "SystemCallsPersec": "685035"
+            "ContextSwitchesPersec": "158993",
+            "SystemCallsPersec": "497519"
           }
         ],
         "LogicalProcessorCounterCount": 16,
@@ -166,20 +166,20 @@
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "19",
-            "PercentUserTime": "16",
+            "PercentPrivilegedTime": "28",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "19732"
+            "InterruptsPerSec": "23889"
           },
           {
             "Name": "_Total",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "19",
-            "PercentUserTime": "16",
+            "PercentPrivilegedTime": "28",
+            "PercentUserTime": "6",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "19732"
+            "InterruptsPerSec": "23889"
           }
         ],
         "TotalEnabledCores": 8,
@@ -189,160 +189,160 @@
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "30",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "2261"
+            "InterruptsPerSec": "5166"
           },
           {
             "Name": "0,1",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "41",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "708"
+            "InterruptsPerSec": "1804"
           },
           {
             "Name": "0,10",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "6",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1427"
+            "InterruptsPerSec": "1251"
           },
           {
             "Name": "0,11",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "11",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "715"
+            "InterruptsPerSec": "574"
           },
           {
             "Name": "0,12",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "24",
+            "PercentPrivilegedTime": "5",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1302"
+            "InterruptsPerSec": "1384"
           },
           {
             "Name": "0,13",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "11",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "485"
+            "InterruptsPerSec": "423"
           },
           {
             "Name": "0,14",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "67",
-            "PercentUserTime": "12",
-            "PercentInterruptTime": "6",
-            "InterruptsPerSec": "1326"
+            "PercentPrivilegedTime": "47",
+            "PercentUserTime": "5",
+            "PercentInterruptTime": "0",
+            "InterruptsPerSec": "1569"
           },
           {
             "Name": "0,15",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "24",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1204"
+            "InterruptsPerSec": "1399"
           },
           {
             "Name": "0,2",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "48",
+            "PercentPrivilegedTime": "47",
+            "PercentUserTime": "17",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1510"
+            "InterruptsPerSec": "1554"
           },
           {
             "Name": "0,3",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1189"
+            "InterruptsPerSec": "1157"
           },
           {
             "Name": "0,4",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "41",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1451"
+            "InterruptsPerSec": "1354"
           },
           {
             "Name": "0,5",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "0",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "23",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "727"
+            "InterruptsPerSec": "718"
           },
           {
             "Name": "0,6",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "36",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "41",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1447"
+            "InterruptsPerSec": "1546"
           },
           {
             "Name": "0,7",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "6",
-            "PercentUserTime": "12",
+            "PercentPrivilegedTime": "17",
+            "PercentUserTime": "0",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1259"
+            "InterruptsPerSec": "1176"
           },
           {
             "Name": "0,8",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "18",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1463"
+            "InterruptsPerSec": "1456"
           },
           {
             "Name": "0,9",
             "PercentProcessorPerformance": "101",
             "PercentProcessorUtility": "101",
             "ProcessorFrequency": "4700",
-            "PercentPrivilegedTime": "12",
-            "PercentUserTime": "18",
+            "PercentPrivilegedTime": "29",
+            "PercentUserTime": "5",
             "PercentInterruptTime": "0",
-            "InterruptsPerSec": "1251"
+            "InterruptsPerSec": "1350"
           }
         ]
       },
@@ -458,30 +458,30 @@
       "status": "ok",
       "confidence": "medium",
       "evidence": {
-        "CommittedGB": 31.05,
-        "AvailableMemoryMB": 65887,
+        "CommittedGB": 30.81,
+        "AvailableMemoryMB": 66497,
         "PageWritesPerSec": 0,
         "PagesOutputPerSec": 0,
-        "PageFaultsPerSec": 186933,
+        "PageFaultsPerSec": 255783,
         "PageFiles": [
           {
             "Name": "C:\\pagefile.sys",
             "AllocatedMB": "13824",
-            "CurrentUsageMB": "2165",
+            "CurrentUsageMB": "2004",
             "PeakUsageMB": "2400",
-            "CurrentUsagePercent": 15.7,
+            "CurrentUsagePercent": 14.5,
             "PeakUsagePercent": 17.4,
             "TempPageFile": false,
             "Status": null
           }
         ],
-        "PageReadsPerSec": 442,
+        "PageReadsPerSec": 466,
         "CommitLimitGB": 107.14,
         "CounterRows": 1,
-        "PoolPagedGB": 6.84,
+        "PoolPagedGB": 6.73,
         "PageFileCount": 1,
-        "PagesInputPerSec": 442,
-        "PoolNonpagedGB": 4.6,
+        "PagesInputPerSec": 17406,
+        "PoolNonpagedGB": 4.3,
         "CommitPercent": 28
       },
       "signals": [],
@@ -735,7 +735,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "NTFS",
-        "FreeGB": 1693.3,
+        "FreeGB": 1693.6,
         "DriveType": "3",
         "SizeGB": 1860.68,
         "VolumeName": "",
@@ -792,7 +792,7 @@
       "confidence": "low",
       "evidence": {
         "FileSystem": "exFAT",
-        "FreeGB": 481.83,
+        "FreeGB": 466.5,
         "DriveType": "3",
         "SizeGB": 953.81,
         "VolumeName": "Ventoy",
@@ -844,7 +844,7 @@
             "VolumeName": "Ventoy",
             "FileSystem": "exFAT",
             "VolumeSizeGB": 953.81,
-            "VolumeFreeGB": 481.83,
+            "VolumeFreeGB": 466.5,
             "DirtyBit": false
           },
           {
@@ -895,7 +895,7 @@
             "VolumeName": "",
             "FileSystem": "NTFS",
             "VolumeSizeGB": 1860.68,
-            "VolumeFreeGB": 1693.3,
+            "VolumeFreeGB": 1693.6,
             "DirtyBit": false
           },
           {
@@ -1031,13 +1031,13 @@
             "PhysicalDrive": "\\\\.\\PHYSICALDRIVE0",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "0",
-            "WritesPerSec": "3",
-            "ReadMBPerSec": 0,
-            "WriteMBPerSec": 0.02,
-            "PercentDiskTime": "0",
-            "PercentFreeSpace": "90",
-            "FreeGB": 1693.2,
+            "ReadsPerSec": "322",
+            "WritesPerSec": "7",
+            "ReadMBPerSec": 55.21,
+            "WriteMBPerSec": 0.03,
+            "PercentDiskTime": "4",
+            "PercentFreeSpace": "91",
+            "FreeGB": 1693.69,
             "SplitIOPerSec": "0"
           },
           {
@@ -1080,12 +1080,12 @@
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
             "ReadsPerSec": "0",
-            "WritesPerSec": "0",
+            "WritesPerSec": "1610",
             "ReadMBPerSec": 0,
-            "WriteMBPerSec": 0,
-            "PercentDiskTime": "0",
-            "PercentFreeSpace": "50",
-            "FreeGB": 481.83,
+            "WriteMBPerSec": 60.65,
+            "PercentDiskTime": "38",
+            "PercentFreeSpace": "49",
+            "FreeGB": 474.79,
             "SplitIOPerSec": "0"
           },
           {
@@ -1196,12 +1196,12 @@
             "LogicalDisks": "C: D:",
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
-            "ReadsPerSec": "0",
-            "WritesPerSec": "3",
-            "ReadMBPerSec": 0,
-            "WriteMBPerSec": 0.02,
-            "PercentDiskTime": "0",
-            "PercentIdleTime": "99",
+            "ReadsPerSec": "275",
+            "WritesPerSec": "7",
+            "ReadMBPerSec": 60.09,
+            "WriteMBPerSec": 0.03,
+            "PercentDiskTime": "4",
+            "PercentIdleTime": "95",
             "SplitIOPerSec": "0"
           },
           {
@@ -1213,11 +1213,11 @@
             "CurrentQueueLength": "0",
             "AvgQueueLength": "0",
             "ReadsPerSec": "0",
-            "WritesPerSec": "0",
+            "WritesPerSec": "1593",
             "ReadMBPerSec": 0,
-            "WriteMBPerSec": 0,
-            "PercentDiskTime": "0",
-            "PercentIdleTime": "99",
+            "WriteMBPerSec": 66.32,
+            "PercentDiskTime": "37",
+            "PercentIdleTime": "62",
             "SplitIOPerSec": "0"
           },
           {
@@ -1554,15 +1554,15 @@
           "DriverVersion": "610.62",
           "VbiosVersion": "98.03.3b.40.11",
           "MemoryTotalMiB": "16303",
-          "MemoryUsedMiB": "1007",
-          "MemoryFreeMiB": "14971",
+          "MemoryUsedMiB": "994",
+          "MemoryFreeMiB": "14984",
           "MemoryTotalGB": 15.92,
-          "MemoryUsedGB": 0.98,
-          "MemoryFreeGB": 14.62,
+          "MemoryUsedGB": 0.97,
+          "MemoryFreeGB": 14.63,
           "TemperatureC": "42",
           "FanPercent": "0",
           "PState": "P0",
-          "PowerDrawW": "59.82",
+          "PowerDrawW": "59.04",
           "PowerLimitW": "400.00",
           "GraphicsClockMhz": "2902",
           "MemoryClockMhz": "15001",
@@ -1622,8 +1622,8 @@
             "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
             "WmiAdapterRamGB": 4,
             "NvidiaMemoryTotalGB": 15.92,
-            "NvidiaMemoryUsedGB": 0.98,
-            "NvidiaMemoryFreeGB": 14.62,
+            "NvidiaMemoryUsedGB": 0.97,
+            "NvidiaMemoryFreeGB": 14.63,
             "NvidiaDisplayActive": "Enabled",
             "NvidiaPcieLink": "Gen 5/5, x16/x16"
           }
@@ -1755,8 +1755,8 @@
             "SpeedMbps": 1000,
             "CounterName": "Realtek PCIe 2.5GbE Family Controller",
             "CurrentBandwidthMbps": 1000,
-            "BytesReceivedPerSec": 17671,
-            "BytesSentPerSec": 4680,
+            "BytesReceivedPerSec": 2858,
+            "BytesSentPerSec": 1404,
             "ReceivedPacketErrors": 0,
             "OutboundPacketErrors": 0,
             "ReceivedPacketDiscards": 0,
@@ -4445,6 +4445,153 @@
       "recommendations": [
         "No Device Manager problem devices were found."
       ]
+    },
+    {
+      "id": "scanner-coverage-remaining-proof-gaps-and-required-next-checks",
+      "category": "Scanner Coverage",
+      "name": "Remaining proof gaps and required next checks",
+      "status": "info",
+      "confidence": "high",
+      "evidence": {
+        "UnavailableDiagnosticCount": 0,
+        "UnknownComponentCount": 11,
+        "ProofGaps": [
+          {
+            "Source": "Component",
+            "Name": "Cooling Fan Sensor: WMI fan telemetry",
+            "Status": "unknown",
+            "Evidence": "Windows did not expose fan sensors through WMI.",
+            "NextStep": "Use BIOS, motherboard software, or physical inspection to verify fans and pump behavior."
+          },
+          {
+            "Source": "Component",
+            "Name": "DirectX Diagnostic: dxdiag display/audio/input",
+            "Status": "unknown",
+            "Evidence": "Live dxdiag did not run in the default safe scan path.",
+            "NextStep": "If graphics/audio/input symptoms persist and you accept the driver-probing risk, set HARDWARE_TRUTH_RUN_DXDIAG=1 before launching or run dxdiag manually."
+          },
+          {
+            "Source": "Component",
+            "Name": "Memory Diagnostic History: Windows Memory Diagnostic results",
+            "Status": "unknown",
+            "Evidence": "No recent Windows Memory Diagnostic result was found in the scan window.",
+            "NextStep": "Run Windows Memory Diagnostic or MemTest86 from boot if RAM certainty is required."
+          },
+          {
+            "Source": "Component",
+            "Name": "Memory: DIMM P0 CHANNEL A 48 GB",
+            "Status": "unknown",
+            "Evidence": "Windows inventory cannot prove RAM cells are healthy without a memory test.",
+            "NextStep": "Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults."
+          },
+          {
+            "Source": "Component",
+            "Name": "Memory: DIMM P0 CHANNEL B 48 GB",
+            "Status": "unknown",
+            "Evidence": "Windows inventory cannot prove RAM cells are healthy without a memory test.",
+            "NextStep": "Run Windows Memory Diagnostic or MemTest86 from boot to rule out physical RAM faults."
+          },
+          {
+            "Source": "Component",
+            "Name": "Sensor Provider Coverage: Thermal, fan, and monitoring-provider availability",
+            "Status": "unknown",
+            "Evidence": "ACPI thermal-zone provider returned no sensor rows.",
+            "NextStep": "Windows did not expose usable thermal/fan sensors through the checked providers. Use BIOS/UEFI, motherboard/GPU vendor tools, or physical inspection for cooling certainty."
+          },
+          {
+            "Source": "Component",
+            "Name": "Sensor Telemetry: OpenHardwareMonitor/LibreHardwareMonitor sensors",
+            "Status": "unknown",
+            "Evidence": "No OpenHardwareMonitor or LibreHardwareMonitor WMI sensor namespace was available.",
+            "NextStep": "Install or run a trusted sensor tool if CPU package temperature, fan RPM, pump RPM, VRM temperature, or motherboard sensor certainty is required."
+          },
+          {
+            "Source": "Component",
+            "Name": "Storage Advanced Health: SMART and Storage module telemetry",
+            "Status": "unknown",
+            "Evidence": "Advanced storage health providers were unavailable on this Windows installation.",
+            "NextStep": "Install or run vendor storage diagnostics such as Samsung Magician, the SSD vendor tool, or smartctl to prove SMART attribute health beyond Windows generic disk status."
+          },
+          {
+            "Source": "Component",
+            "Name": "Storage SMART Prediction: MSStorageDriver FailurePredictStatus",
+            "Status": "unknown",
+            "Evidence": "Windows did not expose SMART failure-prediction rows to this scanner.",
+            "NextStep": "Use the SSD/HDD vendor tool or smartctl for drive attribute verification."
+          },
+          {
+            "Source": "Component",
+            "Name": "Storage SMART Provider Coverage: SMART WMI provider availability and attribute coverage",
+            "Status": "unknown",
+            "Evidence": "Windows WMI SMART provider classes returned no attribute or threshold rows to this scanner.",
+            "NextStep": "Windows did not expose SMART attribute/threshold providers here. Use each SSD/HDD vendor diagnostic or smartctl from a trusted package for drive-internal certainty."
+          },
+          {
+            "Source": "Component",
+            "Name": "Thermal Sensor: ACPI thermal telemetry",
+            "Status": "unknown",
+            "Evidence": "Windows did not expose ACPI thermal zones to this scanner.",
+            "NextStep": "Use motherboard/GPU vendor tools for sensor-grade thermal validation."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "DirectX display/audio/input diagnostic",
+            "Status": "limited",
+            "Evidence": "dxdiag skipped in the default safe scan path.",
+            "NextStep": "Use HARDWARE_TRUTH_RUN_DXDIAG=1 only if you explicitly want live dxdiag probing."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "Physical inspection boundary",
+            "Status": "not_run",
+            "Evidence": "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults.",
+            "NextStep": "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "RAM live evidence and diagnostic history",
+            "Status": "limited",
+            "Evidence": "2 DIMM(s) inventoried; 0 Windows Memory Diagnostic result event(s) in the last 14 day(s).",
+            "NextStep": "Run Windows Memory Diagnostic or MemTest86 from boot for current physical RAM fault testing."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "Sensor provider availability sweep",
+            "Status": "limited",
+            "Evidence": "22 root namespace row(s), 0 PATH tool command(s), 0 provider error/unsupported response(s).",
+            "NextStep": "No usable thermal/fan provider was exposed; use BIOS/UEFI, motherboard/GPU vendor tools, or physical inspection."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "SMART provider availability sweep",
+            "Status": "limited",
+            "Evidence": "0 total SMART WMI provider row(s); 0 provider error/unsupported response(s).",
+            "NextStep": "Windows did not expose SMART attribute/threshold rows; use vendor diagnostics or smartctl for drive-internal certainty."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "Storage SMART and reliability telemetry",
+            "Status": "limited",
+            "Evidence": "Windows advanced storage providers were unavailable; generic disk status and event logs were used.",
+            "NextStep": "Use vendor SSD/HDD diagnostics or smartctl for full drive attribute verification."
+          },
+          {
+            "Source": "Diagnostic",
+            "Name": "Thermal and fan telemetry",
+            "Status": "limited",
+            "Evidence": "0 ACPI thermal zone(s), 0 WMI fan sensor(s), 0 third-party sensor row(s).",
+            "NextStep": "Use BIOS/vendor tools and physical inspection for definitive fan, pump, dust, and thermal-paste validation."
+          }
+        ],
+        "NotRunDiagnosticCount": 1,
+        "LimitedDiagnosticCount": 6
+      },
+      "signals": [
+        "18 software-visible proof gap(s) remain after all safe live checks."
+      ],
+      "recommendations": [
+        "Use this list as the exact remaining verification checklist. Do not treat these hardware angles as clean until the named offline diagnostic, vendor tool, opt-in probe, or physical inspection is completed."
+      ]
     }
   ],
   "findings": [],
@@ -4578,7 +4725,7 @@
     {
       "name": "Memory live pressure and paging counters",
       "status": "passed",
-      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=65887 MB, pages output/sec=0.",
+      "evidence": "1 memory counter row(s), 1 pagefile row(s), commit=28%, available=66497 MB, pages output/sec=0.",
       "nextStep": "No live memory pressure/pagefile warning was visible; offline diagnostics are still required for physical RAM certainty."
     },
     {
@@ -4634,6 +4781,12 @@
       "status": "not_run",
       "evidence": "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults.",
       "nextStep": "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
+    },
+    {
+      "name": "Remaining proof-gap checklist",
+      "status": "limited",
+      "evidence": "11 unknown component row(s), 7 underlying limited/not-run/unavailable diagnostic row(s) remain after safe live scanning.",
+      "nextStep": "Open the Scanner Coverage component named 'Remaining proof gaps and required next checks' and complete the listed offline, vendor-tool, opt-in, or physical checks only if that level of certainty is required."
     }
   ],
   "coverageLimits": [
@@ -4656,7 +4809,7 @@
       "",
       "==============NVSMI LOG==============",
       "",
-      "Timestamp : Wed Jun 24 09:54:13 2026",
+      "Timestamp : Wed Jun 24 09:58:42 2026",
       "Driver Version : 610.62 [Deprecated; will be removed in CUDA 14.0. Use KMD Version instead]",
       "CUDA Version : 13.3 [Deprecated; will be removed in CUDA 14.0. Use CUDA UMD Version instead]",
       "KMD Version : 610.62",
@@ -4692,8 +4845,8 @@
       " Memory Current Temp : N/A",
       " Memory Max Operating T.Limit Temp Specification: N/A",
       " GPU Power Readings",
-      " Average Power Draw : 59.82 W",
-      " Instantaneous Power Draw : 59.80 W",
+      " Average Power Draw : 59.04 W",
+      " Instantaneous Power Draw : 59.06 W",
       " GPU Ceiling Power Limit",
       " Current Power Limit : 400.00 W",
       " Requested Power Limit : 400.00 W",
@@ -4705,11 +4858,11 @@
       " Min Power Limit : 250.00 W",
       " Max Power Limit : 400.00 W",
       " Power Samples",
-      " Duration : 4.72 sec",
+      " Duration : 5.04 sec",
       " Number of Samples : 119",
-      " Max : 60.84 W",
-      " Min : 59.23 W",
-      " Avg : 59.91 W",
+      " Max : 63.27 W",
+      " Min : 58.55 W",
+      " Avg : 59.20 W",
       " GPU Memory Power Readings ",
       " Average Power Draw : N/A",
       " Instantaneous Power Draw : N/A",

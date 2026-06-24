@@ -1896,6 +1896,44 @@ New-Diagnostic -Name "Filesystem dirty-bit sweep" -Status $(if ($dirtyVolumes.Co
 New-Diagnostic -Name "Dirty-volume read-only filesystem check" -Status $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "warning" } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "limited" } elseif ($dirtyVolumeReadOnlyChecks.Count -eq 0 -and $dirtyVolumes.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($dirtyVolumeReadOnlyChecks.Count) dirty-volume read-only chkdsk check(s), $($dirtyVolumeReadOnlyProblemChecks.Count) with problem text, $($dirtyVolumeReadOnlyIncompleteChecks.Count) incomplete or without clean final verdict." -NextStep $(if ($dirtyVolumeReadOnlyProblemChecks.Count -gt 0) { "Back up affected data and review read-only chkdsk output before any repair." } elseif ($dirtyVolumeReadOnlyIncompleteChecks.Count -gt 0) { "Rerun chkdsk manually during a quiet window; the app intentionally bounds read-only filesystem checks." } elseif ($dirtyVolumes.Count -gt 0) { "Dirty volume follow-up was captured; keep backups current and repair only in a planned window." } else { "No dirty volume needed read-only chkdsk follow-up." })
 New-Diagnostic -Name "Physical inspection boundary" -Status "not_run" -Evidence "Software cannot see loose cables, dust, port wear, bent pins, fan bearing noise, PSU ripple, swollen capacitors, or intermittent movement-sensitive faults." -NextStep "Physically inspect and test ports/cables/fans/PSU only if symptoms or this report point there."
 
+$unknownComponentsBeforeCoverage = @($components | Where-Object { $_.Status -eq "unknown" })
+$limitedDiagnosticsBeforeCoverage = @($diagnostics | Where-Object { $_.Status -in @("limited", "not_run", "unavailable") })
+$proofGapRows = @(
+  @($unknownComponentsBeforeCoverage | ForEach-Object {
+    [pscustomobject]@{
+      Source = "Component"
+      Name = "$($_.Category): $($_.Name)"
+      Status = $_.Status
+      Evidence = if ($_.Signals.Count -gt 0) { Convert-ToBoundedText $_.Signals[0] 240 } else { "Component status is unknown." }
+      NextStep = if ($_.Recommendations.Count -gt 0) { Convert-ToBoundedText $_.Recommendations[0] 260 } else { "Review component evidence and rerun with the needed provider/tool." }
+    }
+  })
+  @($limitedDiagnosticsBeforeCoverage | ForEach-Object {
+    [pscustomobject]@{
+      Source = "Diagnostic"
+      Name = $_.Name
+      Status = $_.Status
+      Evidence = Convert-ToBoundedText $_.Evidence 240
+      NextStep = Convert-ToBoundedText $_.NextStep 260
+    }
+  })
+)
+$uniqueProofGapRows = @($proofGapRows | Where-Object { $_ } | Sort-Object Source, Name -Unique)
+$proofGapRecommendations = @()
+if ($uniqueProofGapRows.Count -gt 0) {
+  $proofGapRecommendations += "Use this list as the exact remaining verification checklist. Do not treat these hardware angles as clean until the named offline diagnostic, vendor tool, opt-in probe, or physical inspection is completed."
+} else {
+  $proofGapRecommendations += "No unproven live-software coverage gaps were found by this scanner run."
+}
+New-Component -Category "Scanner Coverage" -Name "Remaining proof gaps and required next checks" -Status $(if ($uniqueProofGapRows.Count -gt 0) { "info" } else { "ok" }) -Confidence "high" -Evidence @{
+  UnknownComponentCount = $unknownComponentsBeforeCoverage.Count
+  LimitedDiagnosticCount = @($limitedDiagnosticsBeforeCoverage | Where-Object { $_.Status -eq "limited" }).Count
+  NotRunDiagnosticCount = @($limitedDiagnosticsBeforeCoverage | Where-Object { $_.Status -eq "not_run" }).Count
+  UnavailableDiagnosticCount = @($limitedDiagnosticsBeforeCoverage | Where-Object { $_.Status -eq "unavailable" }).Count
+  ProofGaps = @($uniqueProofGapRows | Select-Object -First 40)
+} -Signals $(if ($uniqueProofGapRows.Count -gt 0) { @("$($uniqueProofGapRows.Count) software-visible proof gap(s) remain after all safe live checks.") } else { @() }) -Recommendations $proofGapRecommendations
+New-Diagnostic -Name "Remaining proof-gap checklist" -Status $(if ($uniqueProofGapRows.Count -gt 0) { "limited" } else { "passed" }) -Evidence "$($unknownComponentsBeforeCoverage.Count) unknown component row(s), $($limitedDiagnosticsBeforeCoverage.Count) underlying limited/not-run/unavailable diagnostic row(s) remain after safe live scanning." -NextStep $(if ($uniqueProofGapRows.Count -gt 0) { "Open the Scanner Coverage component named 'Remaining proof gaps and required next checks' and complete the listed offline, vendor-tool, opt-in, or physical checks only if that level of certainty is required." } else { "No remaining proof-gap checklist items were generated." })
+
 if ($probeErrors.Count -gt 0) {
   New-Component -Category "Scanner Coverage" -Name "Probe errors" -Status "unknown" -Confidence "medium" -Evidence @{ Errors = $probeErrors } -Signals @("$($probeErrors.Count) probe(s) returned errors or no access.") -Recommendations @("Review probe errors before treating missing telemetry as healthy.")
 }
